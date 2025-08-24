@@ -1,4 +1,4 @@
-Please analyze the implementation plan from the /scratchpads folder and the mockups and/or prototypes in the /designs folder for the given Github Issue:
+Please analyze the implementation plan and the mockups and/or prototypes from the `/plans` folder for the given Github Issue:
   - determine which Github Issue is being worked on by the name of the branch
   - if that cannot be done then get the Github issue from $ARGUMENTS
   - if neither can be determined then ask the user which Github Issue is being implemented
@@ -19,7 +19,7 @@ Please analyze the implementation plan from the /scratchpads folder and the mock
 3. Think hard about the what was intended to be implemented for this feature
 4. Use the playwright MCP server to test the changes in the UI to ensure that the intended acceptance criteria were satisfied
 5. If there are any issues that need to be addressed now provide feedback to the `senior-software-engineer` subagent to address any issues
-   - if there are any issues that are ok to handle later than add notes to the implementation plan listing what stories should be created for future work giving enough context to help prioritize the work appropriately
+   - if there are any issues that are ok to handle later than add notes to the implementation-log.md listing what stories should be created for future work giving enough context to help prioritize the work appropriately
 6. Include Playwright tests to cover all of the behaviors added or changed in the given feature
 7. Run the full test suite to ensure you haven't broken anything
 8. If the tests are failing, fix them
@@ -32,7 +32,7 @@ Please analyze the implementation plan from the /scratchpads folder and the mock
    - Ensure that the code changes are clean readable code and DRY
    - Look for opportunities to where components should have been reused rather than duplicating logic or functionality
    - If there are any significant issues then provide feedback to the `senior-software-engineer` subagent with changes that need to be made
-   - If there are any changes that can be made later then add notes to the implementation plan listing what stories should be created for future work giving enough context to help prioritize the work appropriately
+   - If there are any changes that can be made later then add notes to the implementation-log.md listing what stories should be created for future work giving enough context to help prioritize the work appropriately
    - Ensure that all tasks and/or acceptance criteria on the GitHub Issue then ensure that they have been satisfied. Update the GitHub Issue description checking off any tasks and acceptance criteria items that have been completed.
 3. Open a PR and request a review and approval from me
 

@@ -1,8 +1,8 @@
-Create high-fidelity mockups and interactive prototypes for the GitHub Issue: $ARGUMENTS
+Create high-fidelity HTML/CSS/JavaScript prototypes and interactive mockups for the GitHub Issue: $ARGUMENTS
 
-## Prototype Creation Process
+## Interactive Prototype Creation Process
 
-Using the `ui-ux-prototyping-specialist` subagent create detailed visual designs and interactive prototypes that developers can implement with precision.
+Using the `ui-ux-prototyping-specialist` subagent create functional HTML/CSS/JavaScript prototypes that provide realistic user experiences and serve as implementation blueprints for development teams.
 
 # ANALYZE
 1. Review the provided product specifications and requirements:
@@ -32,13 +32,13 @@ Using the `ui-ux-prototyping-specialist` subagent create detailed visual designs
    - Plan integration points with existing features and workflows
    - Consider brand consistency and visual identity application
 
-# HIGH-FIDELITY DESIGN
-1. Use the `ui-ux-prototyping-specialist` subagent to create detailed visual designs:
-   - Create pixel-perfect mockups for all required screens and states
-   - Apply design system components with exact specifications and measurements
-   - Design all interaction states (default, hover, focus, active, disabled, loading, error)
-   - Implement responsive layouts for mobile, tablet, and desktop breakpoints
-   - Ensure WCAG 2.1 AA accessibility compliance with proper color contrast and touch targets
+# FUNCTIONAL PROTOTYPE DEVELOPMENT
+1. Use the `ui-ux-prototyping-specialist` subagent to create working HTML/CSS/JavaScript prototypes:
+   - Build semantic HTML markup with proper accessibility features and structure
+   - Implement modern CSS with responsive design using flexbox, grid, and media queries
+   - Add interactive JavaScript functionality including form validation, navigation, and dynamic content
+   - Create all interaction states with CSS hover effects, focus indicators, and JavaScript event handling
+   - Ensure WCAG 2.1 AA accessibility compliance with proper ARIA labels and keyboard navigation
 
 2. Create comprehensive design specifications:
    - Document exact measurements, spacing, typography, and color specifications
@@ -47,20 +47,20 @@ Using the `ui-ux-prototyping-specialist` subagent create detailed visual designs
    - Create asset inventory with all required icons, images, and graphics
    - Prepare developer handoff documentation with implementation guidance
 
-# INTERACTIVE PROTOTYPING
-1. The `ui-ux-prototyping-specialist` will create interactive prototypes:
-   - Build clickable prototypes demonstrating key user workflows and interactions
-   - Implement realistic content and data to show actual usage scenarios
-   - Create micro-interaction demonstrations with animation and transition previews
-   - Design responsive prototype behavior showing layout adaptation across devices
-   - Include accessibility interaction patterns with keyboard navigation and focus management
+# INTERACTIVE WEB PROTOTYPING
+1. The `ui-ux-prototyping-specialist` will create functional web-based prototypes:
+   - Build fully working HTML/CSS/JavaScript prototypes with realistic user interactions
+   - Implement form validation, data handling, and dynamic content updates using JavaScript
+   - Create CSS animations and transitions for micro-interactions and smooth user experience
+   - Design responsive prototype behavior with actual breakpoint functionality across devices
+   - Include accessibility interaction patterns with proper keyboard navigation and screen reader support
 
-2. Prototype features to include:
-   - Complete user workflow demonstration from entry to task completion
-   - Form interactions with validation patterns and error state handling
-   - Navigation patterns and page transition demonstrations
-   - Loading states and progressive enhancement patterns
-   - Error handling and edge case scenario demonstrations
+2. Web prototype features to implement:
+   - Complete functional user workflows with working forms, buttons, and navigation
+   - JavaScript form validation with real-time feedback and error state handling
+   - Multi-page navigation or single-page app routing with smooth transitions
+   - Loading states with CSS animations and JavaScript progress indicators
+   - Error handling with JavaScript error catching and user-friendly error displays
 
 # DESIGN REVIEW
 1. Use the `staff-ux-designer` subagent for comprehensive design review:
@@ -78,19 +78,19 @@ Using the `ui-ux-prototyping-specialist` subagent create detailed visual designs
    - Accessibility compliance with comprehensive inclusive design validation
 
 # STAKEHOLDER PRESENTATION
-1. Present the high-fidelity designs and prototypes:
-   - **Visual Design Showcase**: Present pixel-perfect mockups with detailed specifications
-   - **Interactive Prototype Demo**: Demonstrate key user workflows and interactions
-   - **Responsive Design Review**: Show layout adaptations across all target breakpoints
-   - **Accessibility Features**: Highlight inclusive design elements and compliance measures
-   - **Developer Handoff Materials**: Present comprehensive specifications and asset organization
+1. Present the functional HTML/CSS/JavaScript prototypes:
+   - **Working Prototype Demo**: Demonstrate fully functional user workflows with real interactions
+   - **Code Quality Showcase**: Present clean, semantic HTML and modern CSS/JavaScript implementation
+   - **Responsive Functionality Review**: Show actual responsive behavior across devices and browsers
+   - **Accessibility Implementation**: Demonstrate working keyboard navigation and screen reader compatibility
+   - **Developer Ready Code**: Present production-ready HTML/CSS/JavaScript that can be integrated directly
 
 2. Provide comprehensive deliverables:
-   - High-resolution mockups for all screens and interaction states
-   - Interactive clickable prototypes for user workflow testing
-   - Detailed design specifications with exact measurements and implementation guidance
-   - Complete asset library with optimized files and organized folder structure
-   - Accessibility documentation with ARIA labels and keyboard navigation patterns
+   - Complete HTML/CSS/JavaScript codebase with semantic markup and modern styling
+   - Fully functional web prototypes that can be opened in any browser for testing
+   - Clean, well-documented code with comments and organized file structure
+   - Responsive CSS implementation that works across all modern devices and browsers
+   - Accessibility-compliant code with proper ARIA implementation and keyboard navigation
 
 # ITERATION AND REFINEMENT
 1. Collect stakeholder feedback and iterate on designs:
@@ -116,19 +116,19 @@ Using the `ui-ux-prototyping-specialist` subagent create detailed visual designs
 - WCAG 2.1 AA accessibility compliance including color contrast and touch target sizing
 - Comprehensive state design including all interaction states and edge cases
 
-**Prototype Functionality Requirements:**
-- Interactive demonstration of all major user workflows and task completion scenarios
-- Realistic content integration with representative data and actual copy where possible
-- Cross-device compatibility with proper responsive behavior and touch interaction support
-- Performance optimization with reasonable loading times and efficient asset usage
-- User testing readiness with clear navigation and intuitive interaction patterns
+**HTML/CSS/JavaScript Prototype Requirements:**
+- Fully functional web prototypes with working forms, navigation, and interactive elements
+- Semantic HTML structure with proper accessibility implementation and screen reader compatibility
+- Modern CSS with responsive design, animations, and cross-browser compatibility
+- JavaScript functionality including form validation, dynamic content updates, and user interaction handling
+- Production-ready code quality with clean, maintainable, and well-documented implementation
 
-**Developer Handoff Requirements:**
-- Comprehensive design specifications with exact measurements and implementation guidance
-- Complete asset library with optimized files and clear naming conventions
-- Component documentation showing all variations, states, and responsive behaviors
-- Accessibility implementation guidance with ARIA labels and keyboard navigation patterns
-- Technical feasibility validation with realistic implementation constraints considered
+**Developer Integration Requirements:**
+- Clean, production-ready HTML/CSS/JavaScript code that can be directly integrated
+- Well-structured codebase with organized files, clear naming conventions, and documentation
+- Responsive CSS implementation using modern techniques (flexbox, grid, media queries)
+- Accessible JavaScript interactions with proper event handling and keyboard support
+- Cross-browser tested code that works consistently across modern web browsers
 
 ## Success Indicators
 
@@ -139,10 +139,10 @@ Using the `ui-ux-prototyping-specialist` subagent create detailed visual designs
 - Accessibility compliance with full WCAG 2.1 AA standards implementation
 
 **Prototype Effectiveness:**
-- Interactive prototypes that accurately demonstrate intended user workflows and interactions
-- Stakeholder validation with clear understanding of proposed user experience and functionality
-- User testing readiness with realistic content and intuitive navigation patterns
-- Developer implementation clarity with comprehensive specifications and asset preparation
+- Fully functional web prototypes that provide realistic user experience for comprehensive testing
+- Stakeholder validation through actual interaction with working HTML/CSS/JavaScript implementations
+- User testing readiness with realistic functionality and cross-device compatibility
+- Developer implementation efficiency with production-ready code that serves as direct implementation reference
 
 **Stakeholder Satisfaction:**
 - Clear communication of design decisions with rationale for user experience and business alignment
@@ -150,6 +150,6 @@ Using the `ui-ux-prototyping-specialist` subagent create detailed visual designs
 - Accessibility compliance assurance with comprehensive inclusive design implementation
 - Performance optimization consideration with efficient asset usage and loading pattern planning
 
-Remember to create designs that serve as a clear blueprint for development while ensuring optimal user experience, accessibility compliance, and design system consistency throughout the entire prototype creation process.
+Remember to create functional HTML/CSS/JavaScript prototypes that serve as working implementation blueprints while providing realistic user experiences that stakeholders can actually interact with. Focus on creating prototypes that truly feel like the final product will feel, giving users and stakeholders a genuine preview of the end result through working web technology.
 
 Remember to use the Github CLI (`gh`) for all Github-related tasks.
