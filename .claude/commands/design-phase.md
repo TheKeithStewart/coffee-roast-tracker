@@ -1,4 +1,4 @@
-Please analyze and fix the GitHub issue: $ARGUMENTS.
+Please analyze and fix the GitHub Issue: $ARGUMENTS.
 
 # PLAN
 1. Use the `system-architect` subagent to work on the technical design for the feature
