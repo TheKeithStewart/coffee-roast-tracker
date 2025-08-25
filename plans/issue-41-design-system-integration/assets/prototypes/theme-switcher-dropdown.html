@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coffee Roast Tracker - Theme Switcher Prototype</title>
+    <style>
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* CSS Custom Properties - Base Theme System */
+        :root {
+            /* Typography */
+            --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            --font-mono: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, monospace;
+            
+            /* Spacing */
+            --space-1: 0.25rem;
+            --space-2: 0.5rem;
+            --space-3: 0.75rem;
+            --space-4: 1rem;
+            --space-6: 1.5rem;
+            --space-8: 2rem;
+            
+            /* Touch targets */
+            --touch-target-min: 44px;
+            --touch-target-preferred: 60px;
+            --touch-target-large: 80px;
+            
+            /* Focus */
+            --focus-ring-width: 4px;
+            --focus-ring-offset: 2px;
+            
+            /* Border radius */
+            --radius-sm: 0.25rem;
+            --radius-md: 0.5rem;
+            --radius-lg: 0.75rem;
+            --radius-xl: 1rem;
+            --radius-full: 9999px;
+            
+            /* Shadows */
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            
+            /* Animation */
+            --duration-150: 150ms;
+            --duration-200: 200ms;
+            --duration-300: 300ms;
+            --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Classic Coffee Theme (Default) */
+        :root,
+        [data-theme="classic"] {
+            --color-primary-500: #c8794a;
+            --color-primary-600: #b86c3e;
+            --color-primary-700: #995536;
+            --color-primary-100: #f9ede0;
+            --color-primary-50: #fdf7f0;
+            
+            --color-text-primary: #1c1917;
+            --color-text-secondary: #57534e;
+            --color-text-tertiary: #78716c;
+            --color-text-on-primary: #fafaf9;
+            
+            --color-background: #fafaf9;
+            --color-surface: #ffffff;
+            --color-surface-secondary: #f5f5f4;
+            
+            --color-border: #e7e5e4;
+            --color-border-secondary: #d6d3d1;
+            
+            --color-focus: var(--color-primary-500);
+            --color-focus-ring: rgba(200, 121, 74, 0.5);
+            
+            --theme-name: "Classic Coffee";
+            --theme-description: "Warm, familiar coffee tones";
+            --theme-preview-color: var(--color-primary-500);
+        }
+
+        /* High Contrast Theme */
+        [data-theme="contrast"] {
+            --color-primary-500: #000000;
+            --color-primary-600: #000000;
+            --color-primary-700: #000000;
+            --color-primary-100: #f0f0f0;
+            --color-primary-50: #ffffff;
+            
+            --color-text-primary: #000000;
+            --color-text-secondary: #000000;
+            --color-text-tertiary: #404040;
+            --color-text-on-primary: #ffffff;
+            
+            --color-background: #ffffff;
+            --color-surface: #ffffff;
+            --color-surface-secondary: #f0f0f0;
+            
+            --color-border: #000000;
+            --color-border-secondary: #404040;
+            
+            --color-focus: #000000;
+            --color-focus-ring: rgba(0, 0, 0, 0.8);
+            
+            --focus-ring-width: 6px;
+            --shadow-md: 0 4px 8px 0 rgba(0, 0, 0, 0.3);
+            
+            --theme-name: "High Contrast";
+            --theme-description: "Maximum contrast for accessibility";
+            --theme-preview-color: #000000;
+        }
+
+        /* Cool Focus Theme */
+        [data-theme="focus"] {
+            --color-primary-500: #0ea5e9;
+            --color-primary-600: #0284c7;
+            --color-primary-700: #0369a1;
+            --color-primary-100: #e0f2fe;
+            --color-primary-50: #f0f9ff;
+            
+            --color-text-primary: #0f172a;
+            --color-text-secondary: #334155;
+            --color-text-tertiary: #64748b;
+            --color-text-on-primary: #f8fafc;
+            
+            --color-background: #f8fafc;
+            --color-surface: #ffffff;
+            --color-surface-secondary: #f1f5f9;
+            
+            --color-border: #e2e8f0;
+            --color-border-secondary: #cbd5e1;
+            
+            --color-focus: var(--color-primary-500);
+            --color-focus-ring: rgba(14, 165, 233, 0.5);
+            
+            --theme-name: "Cool Focus";
+            --theme-description: "Calming blues for concentration";
+            --theme-preview-color: var(--color-primary-500);
+        }
+
+        /* Energizing Theme */
+        [data-theme="energizing"] {
+            --color-primary-500: #f97316;
+            --color-primary-600: #ea580c;
+            --color-primary-700: #c2410c;
+            --color-primary-100: #ffedd5;
+            --color-primary-50: #fff7ed;
+            
+            --color-text-primary: #1f2937;
+            --color-text-secondary: #4b5563;
+            --color-text-tertiary: #6b7280;
+            --color-text-on-primary: #ffffff;
+            
+            --color-background: #fffbeb;
+            --color-surface: #ffffff;
+            --color-surface-secondary: #ffedd5;
+            
+            --color-border: #fed7aa;
+            --color-border-secondary: #fdba74;
+            
+            --color-focus: var(--color-primary-500);
+            --color-focus-ring: rgba(249, 115, 22, 0.5);
+            
+            --theme-name: "Energizing";
+            --theme-description: "Vibrant oranges for motivation";
+            --theme-preview-color: var(--color-primary-500);
+        }
+
+        /* Base styles */
+        body {
+            font-family: var(--font-primary);
+            background-color: var(--color-background);
+            color: var(--color-text-primary);
+            line-height: 1.5;
+            transition: background-color var(--duration-200) var(--ease-in-out),
+                       color var(--duration-200) var(--ease-in-out);
+        }
+
+        /* Navigation */
+        .nav {
+            background-color: var(--color-surface);
+            border-bottom: 2px solid var(--color-border);
+            padding: var(--space-4) var(--space-6);
+            box-shadow: var(--shadow-sm);
+            transition: all var(--duration-200) var(--ease-in-out);
+        }
+
+        .nav__content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav__brand {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--color-text-primary);
+        }
+
+        .nav__logo {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--color-primary-500), var(--color-primary-600));
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-text-on-primary);
+            font-size: 1.2rem;
+        }
+
+        .nav__links {
+            display: flex;
+            gap: var(--space-6);
+            list-style: none;
+        }
+
+        .nav__link {
+            color: var(--color-text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            padding: var(--space-2) var(--space-3);
+            border-radius: var(--radius-md);
+            transition: all var(--duration-150) var(--ease-in-out);
+        }
+
+        .nav__link:hover {
+            color: var(--color-text-primary);
+            background-color: var(--color-surface-secondary);
+        }
+
+        .nav__actions {
+            display: flex;
+            align-items: center;
+            gap: var(--space-4);
+        }
+
+        /* Theme Switcher */
+        .theme-switcher {
+            position: relative;
+            display: inline-block;
+        }
+
+        .theme-switcher__trigger {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+            min-height: var(--touch-target-preferred);
+            padding: var(--space-3) var(--space-4);
+            background-color: var(--color-surface);
+            border: 2px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            color: var(--color-text-primary);
+            font-family: inherit;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all var(--duration-150) var(--ease-in-out);
+            user-select: none;
+        }
+
+        .theme-switcher__trigger:hover {
+            border-color: var(--color-primary-500);
+            box-shadow: var(--shadow-sm);
+            transform: translateY(-1px);
+        }
+
+        .theme-switcher__trigger:focus {
+            outline: none;
+            box-shadow: 0 0 0 var(--focus-ring-width) var(--color-focus-ring);
+        }
+
+        .theme-switcher__trigger[aria-expanded="true"] {
+            border-color: var(--color-primary-500);
+            background-color: var(--color-primary-50);
+        }
+
+        .theme-switcher__preview {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background-color: var(--theme-preview-color);
+            border: 2px solid var(--color-surface);
+            box-shadow: 0 0 0 1px var(--color-border);
+        }
+
+        .theme-switcher__text {
+            flex: 1;
+            text-align: left;
+        }
+
+        .theme-switcher__arrow {
+            width: 16px;
+            height: 16px;
+            transition: transform var(--duration-200) var(--ease-in-out);
+        }
+
+        .theme-switcher__trigger[aria-expanded="true"] .theme-switcher__arrow {
+            transform: rotate(180deg);
+        }
+
+        /* Dropdown */
+        .theme-switcher__dropdown {
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            min-width: 280px;
+            background-color: var(--color-surface);
+            border: 2px solid var(--color-border);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-lg);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-8px);
+            transition: all var(--duration-200) var(--ease-in-out);
+            z-index: 1000;
+        }
+
+        .theme-switcher__dropdown.is-open {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .theme-switcher__options {
+            list-style: none;
+            padding: var(--space-4);
+        }
+
+        .theme-switcher__option {
+            margin-bottom: var(--space-2);
+        }
+
+        .theme-switcher__option:last-child {
+            margin-bottom: 0;
+        }
+
+        .theme-switcher__button {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+            width: 100%;
+            min-height: var(--touch-target-preferred);
+            padding: var(--space-3) var(--space-4);
+            background: none;
+            border: none;
+            border-radius: var(--radius-lg);
+            color: var(--color-text-primary);
+            font-family: inherit;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            text-align: left;
+            transition: all var(--duration-150) var(--ease-in-out);
+        }
+
+        .theme-switcher__button:hover {
+            background-color: var(--color-surface-secondary);
+        }
+
+        .theme-switcher__button:focus {
+            outline: none;
+            background-color: var(--color-primary-50);
+            box-shadow: 0 0 0 var(--focus-ring-offset) var(--color-focus-ring);
+        }
+
+        .theme-switcher__button[aria-selected="true"] {
+            background-color: var(--color-primary-100);
+            color: var(--color-primary-700);
+        }
+
+        .theme-switcher__radio {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--color-border-secondary);
+            border-radius: 50%;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .theme-switcher__button[aria-selected="true"] .theme-switcher__radio {
+            border-color: var(--color-primary-500);
+        }
+
+        .theme-switcher__button[aria-selected="true"] .theme-switcher__radio::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 8px;
+            height: 8px;
+            background-color: var(--color-primary-500);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .theme-switcher__option-content {
+            flex: 1;
+        }
+
+        .theme-switcher__option-name {
+            font-weight: 500;
+            margin-bottom: 2px;
+        }
+
+        .theme-switcher__option-desc {
+            font-size: 0.75rem;
+            color: var(--color-text-tertiary);
+        }
+
+        .theme-switcher__color-preview {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 2px solid var(--color-surface);
+            box-shadow: 0 0 0 1px var(--color-border);
+            flex-shrink: 0;
+        }
+
+        /* Demo content */
+        .demo-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: var(--space-8) var(--space-6);
+        }
+
+        .demo-section {
+            margin-bottom: var(--space-8);
+        }
+
+        .demo-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--color-text-primary);
+            margin-bottom: var(--space-6);
+        }
+
+        .demo-buttons {
+            display: flex;
+            gap: var(--space-4);
+            flex-wrap: wrap;
+            margin-bottom: var(--space-6);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-2);
+            min-height: var(--touch-target-preferred);
+            padding: var(--space-3) var(--space-6);
+            font-family: inherit;
+            font-size: 1rem;
+            font-weight: 500;
+            border: 2px solid transparent;
+            border-radius: var(--radius-lg);
+            cursor: pointer;
+            transition: all var(--duration-200) var(--ease-in-out);
+            text-decoration: none;
+            user-select: none;
+        }
+
+        .btn:focus {
+            outline: none;
+            box-shadow: 0 0 0 var(--focus-ring-width) var(--color-focus-ring);
+        }
+
+        .btn--primary {
+            background-color: var(--color-primary-500);
+            color: var(--color-text-on-primary);
+            border-color: var(--color-primary-600);
+        }
+
+        .btn--primary:hover {
+            background-color: var(--color-primary-600);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn--secondary {
+            background-color: var(--color-surface);
+            color: var(--color-text-primary);
+            border-color: var(--color-border-secondary);
+        }
+
+        .btn--secondary:hover {
+            background-color: var(--color-surface-secondary);
+            border-color: var(--color-primary-500);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .demo-text {
+            font-size: 1.125rem;
+            color: var(--color-text-secondary);
+            line-height: 1.6;
+            margin-bottom: var(--space-4);
+        }
+
+        /* Mobile styles */
+        @media (max-width: 768px) {
+            .nav__content {
+                flex-direction: column;
+                gap: var(--space-4);
+            }
+
+            .nav__links {
+                display: none;
+            }
+
+            .theme-switcher__dropdown {
+                right: auto;
+                left: 0;
+                min-width: 100vw;
+                margin: 0 -var(--space-6);
+            }
+
+            .demo-buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                min-height: var(--touch-target-large);
+                font-size: 1.125rem;
+            }
+        }
+
+        /* High contrast media query support */
+        @media (prefers-contrast: high) {
+            .theme-switcher__trigger,
+            .theme-switcher__dropdown,
+            .btn {
+                border-width: 3px;
+            }
+        }
+
+        /* Reduced motion support */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                transition-duration: 0.01ms !important;
+                animation-duration: 0.01ms !important;
+            }
+        }
+
+        /* Loading state */
+        .theme-loading {
+            pointer-events: none;
+            opacity: 0.8;
+            transition: opacity var(--duration-300) var(--ease-in-out);
+        }
+
+        /* Screen reader only */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Skip link for accessibility -->
+    <a href="#main-content" class="sr-only">Skip to main content</a>
+
+    <!-- Navigation -->
+    <nav class="nav" role="navigation" aria-label="Main navigation">
+        <div class="nav__content">
+            <div class="nav__brand">
+                <div class="nav__logo" aria-hidden="true">☕</div>
+                Coffee Roast Tracker
+            </div>
+
+            <ul class="nav__links">
+                <li><a href="#" class="nav__link">Dashboard</a></li>
+                <li><a href="#" class="nav__link">Roasts</a></li>
+                <li><a href="#" class="nav__link">Beans</a></li>
+            </ul>
+
+            <div class="nav__actions">
+                <!-- Theme Switcher -->
+                <div class="theme-switcher">
+                    <button
+                        class="theme-switcher__trigger"
+                        aria-expanded="false"
+                        aria-haspopup="listbox"
+                        aria-label="Select color theme, current: Classic Coffee"
+                        id="theme-trigger"
+                    >
+                        <div class="theme-switcher__preview" aria-hidden="true"></div>
+                        <span class="theme-switcher__text">Classic Coffee</span>
+                        <svg class="theme-switcher__arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+
+                    <div class="theme-switcher__dropdown" id="theme-dropdown">
+                        <ul class="theme-switcher__options" role="listbox" aria-labelledby="theme-trigger">
+                            <li class="theme-switcher__option" role="none">
+                                <button
+                                    class="theme-switcher__button"
+                                    role="option"
+                                    aria-selected="true"
+                                    data-theme="classic"
+                                >
+                                    <div class="theme-switcher__radio" aria-hidden="true"></div>
+                                    <div class="theme-switcher__option-content">
+                                        <div class="theme-switcher__option-name">Classic Coffee</div>
+                                        <div class="theme-switcher__option-desc">Warm, familiar coffee tones</div>
+                                    </div>
+                                    <div 
+                                        class="theme-switcher__color-preview" 
+                                        style="background-color: #c8794a;"
+                                        aria-hidden="true"
+                                    ></div>
+                                </button>
+                            </li>
+
+                            <li class="theme-switcher__option" role="none">
+                                <button
+                                    class="theme-switcher__button"
+                                    role="option"
+                                    aria-selected="false"
+                                    data-theme="contrast"
+                                >
+                                    <div class="theme-switcher__radio" aria-hidden="true"></div>
+                                    <div class="theme-switcher__option-content">
+                                        <div class="theme-switcher__option-name">High Contrast</div>
+                                        <div class="theme-switcher__option-desc">Maximum contrast for accessibility</div>
+                                    </div>
+                                    <div 
+                                        class="theme-switcher__color-preview" 
+                                        style="background-color: #000000;"
+                                        aria-hidden="true"
+                                    ></div>
+                                </button>
+                            </li>
+
+                            <li class="theme-switcher__option" role="none">
+                                <button
+                                    class="theme-switcher__button"
+                                    role="option"
+                                    aria-selected="false"
+                                    data-theme="focus"
+                                >
+                                    <div class="theme-switcher__radio" aria-hidden="true"></div>
+                                    <div class="theme-switcher__option-content">
+                                        <div class="theme-switcher__option-name">Cool Focus</div>
+                                        <div class="theme-switcher__option-desc">Calming blues for concentration</div>
+                                    </div>
+                                    <div 
+                                        class="theme-switcher__color-preview" 
+                                        style="background-color: #0ea5e9;"
+                                        aria-hidden="true"
+                                    ></div>
+                                </button>
+                            </li>
+
+                            <li class="theme-switcher__option" role="none">
+                                <button
+                                    class="theme-switcher__button"
+                                    role="option"
+                                    aria-selected="false"
+                                    data-theme="energizing"
+                                >
+                                    <div class="theme-switcher__radio" aria-hidden="true"></div>
+                                    <div class="theme-switcher__option-content">
+                                        <div class="theme-switcher__option-name">Energizing</div>
+                                        <div class="theme-switcher__option-desc">Vibrant oranges for motivation</div>
+                                    </div>
+                                    <div 
+                                        class="theme-switcher__color-preview" 
+                                        style="background-color: #f97316;"
+                                        aria-hidden="true"
+                                    ></div>
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- User menu placeholder -->
+                <button class="btn btn--secondary" aria-label="User menu">
+                    👤
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main content -->
+    <main class="demo-content" id="main-content">
+        <section class="demo-section">
+            <h1 class="demo-title">Design System Theme Demonstration</h1>
+            
+            <p class="demo-text">
+                This interactive prototype demonstrates the Coffee Roast Tracker design system with four distinct color themes. 
+                Use the theme switcher in the navigation to see how all components adapt seamlessly to your preference.
+            </p>
+
+            <div class="demo-buttons">
+                <button class="btn btn--primary">Start Roast</button>
+                <button class="btn btn--secondary">Save Profile</button>
+                <button class="btn btn--secondary">View History</button>
+            </div>
+
+            <p class="demo-text">
+                Each theme is carefully designed to meet WCAG 2.1 AA accessibility standards while providing 
+                a unique user experience optimized for different lighting conditions and user preferences.
+            </p>
+        </section>
+    </main>
+
+    <!-- Live region for screen reader announcements -->
+    <div id="live-region" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+
+    <script>
+        class ThemeSwitcher {
+            constructor() {
+                this.trigger = document.getElementById('theme-trigger');
+                this.dropdown = document.getElementById('theme-dropdown');
+                this.options = document.querySelectorAll('.theme-switcher__button');
+                this.liveRegion = document.getElementById('live-region');
+                this.isOpen = false;
+                this.currentTheme = 'classic';
+                
+                this.init();
+            }
+
+            init() {
+                // Load saved theme
+                const savedTheme = localStorage.getItem('coffee-tracker-theme');
+                if (savedTheme) {
+                    this.setTheme(savedTheme, false);
+                }
+
+                // Event listeners
+                this.trigger.addEventListener('click', () => this.toggleDropdown());
+                this.trigger.addEventListener('keydown', (e) => this.handleTriggerKeydown(e));
+                
+                // Option buttons
+                this.options.forEach(option => {
+                    option.addEventListener('click', (e) => {
+                        const theme = e.currentTarget.dataset.theme;
+                        this.setTheme(theme);
+                        this.closeDropdown();
+                    });
+                    
+                    option.addEventListener('keydown', (e) => this.handleOptionKeydown(e));
+                });
+
+                // Close on outside click
+                document.addEventListener('click', (e) => {
+                    if (!this.trigger.contains(e.target) && !this.dropdown.contains(e.target)) {
+                        this.closeDropdown();
+                    }
+                });
+
+                // Close on escape
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape' && this.isOpen) {
+                        this.closeDropdown();
+                        this.trigger.focus();
+                    }
+                });
+            }
+
+            toggleDropdown() {
+                this.isOpen ? this.closeDropdown() : this.openDropdown();
+            }
+
+            openDropdown() {
+                this.isOpen = true;
+                this.trigger.setAttribute('aria-expanded', 'true');
+                this.dropdown.classList.add('is-open');
+                
+                // Focus first option
+                const firstOption = this.dropdown.querySelector('[aria-selected="true"]') || 
+                                  this.dropdown.querySelector('.theme-switcher__button');
+                firstOption?.focus();
+            }
+
+            closeDropdown() {
+                this.isOpen = false;
+                this.trigger.setAttribute('aria-expanded', 'false');
+                this.dropdown.classList.remove('is-open');
+            }
+
+            handleTriggerKeydown(e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    this.toggleDropdown();
+                } else if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    this.openDropdown();
+                }
+            }
+
+            handleOptionKeydown(e) {
+                const options = Array.from(this.options);
+                const currentIndex = options.indexOf(e.currentTarget);
+                
+                switch (e.key) {
+                    case 'Enter':
+                    case ' ':
+                        e.preventDefault();
+                        e.currentTarget.click();
+                        break;
+                        
+                    case 'ArrowDown':
+                        e.preventDefault();
+                        const nextIndex = (currentIndex + 1) % options.length;
+                        options[nextIndex].focus();
+                        break;
+                        
+                    case 'ArrowUp':
+                        e.preventDefault();
+                        const prevIndex = currentIndex === 0 ? options.length - 1 : currentIndex - 1;
+                        options[prevIndex].focus();
+                        break;
+                        
+                    case 'Home':
+                        e.preventDefault();
+                        options[0].focus();
+                        break;
+                        
+                    case 'End':
+                        e.preventDefault();
+                        options[options.length - 1].focus();
+                        break;
+                }
+            }
+
+            setTheme(theme, announce = true) {
+                if (theme === this.currentTheme) return;
+                
+                // Add loading class
+                document.body.classList.add('theme-loading');
+                
+                // Brief delay for visual feedback
+                setTimeout(() => {
+                    // Update data attribute
+                    document.documentElement.setAttribute('data-theme', theme);
+                    
+                    // Update current theme
+                    this.currentTheme = theme;
+                    
+                    // Update UI
+                    this.updateUI(theme);
+                    
+                    // Save to localStorage
+                    localStorage.setItem('coffee-tracker-theme', theme);
+                    
+                    // Announce to screen readers
+                    if (announce) {
+                        const themeName = this.getThemeName(theme);
+                        this.liveRegion.textContent = `Theme changed to ${themeName}`;
+                    }
+                    
+                    // Remove loading class
+                    document.body.classList.remove('theme-loading');
+                }, 50);
+            }
+
+            updateUI(theme) {
+                // Update trigger text
+                const themeName = this.getThemeName(theme);
+                this.trigger.querySelector('.theme-switcher__text').textContent = themeName;
+                this.trigger.setAttribute('aria-label', `Select color theme, current: ${themeName}`);
+                
+                // Update selected states
+                this.options.forEach(option => {
+                    const isSelected = option.dataset.theme === theme;
+                    option.setAttribute('aria-selected', isSelected);
+                });
+            }
+
+            getThemeName(theme) {
+                const themeNames = {
+                    classic: 'Classic Coffee',
+                    contrast: 'High Contrast',
+                    focus: 'Cool Focus',
+                    energizing: 'Energizing'
+                };
+                return themeNames[theme] || 'Classic Coffee';
+            }
+        }
+
+        // Initialize theme switcher when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            new ThemeSwitcher();
+        });
+
+        // Performance monitoring
+        const observer = new PerformanceObserver((list) => {
+            for (const entry of list.getEntries()) {
+                if (entry.name === 'theme-switch') {
+                    console.log(`Theme switch took ${entry.duration}ms`);
+                }
+            }
+        });
+        observer.observe({ entryTypes: ['measure'] });
+
+        // Analytics tracking (placeholder)
+        function trackThemeChange(theme) {
+            // Analytics implementation would go here
+            console.log('Theme changed to:', theme);
+        }
+    </script>
+</body>
+</html>
