@@ -158,6 +158,70 @@
   height: var(--touch-target-large);
 }
 
+/* BaseButton Component Enhancements */
+.btn__content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  width: 100%;
+}
+
+.btn__text {
+  line-height: 1;
+  font-weight: inherit;
+}
+
+.btn__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.btn__icon--left {
+  order: -1;
+}
+
+.btn__icon--right {
+  order: 1;
+}
+
+.btn--icon-left .btn__icon--left {
+  margin-right: var(--space-1);
+}
+
+.btn--icon-right .btn__icon--right {
+  margin-left: var(--space-1);
+}
+
+.btn__spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.btn__content--loading {
+  opacity: 0.8;
+}
+
+.btn__loading-text {
+  margin-left: var(--space-2);
+}
+
+.btn--loading {
+  cursor: not-allowed;
+  pointer-events: auto;
+}
+
+.btn--high-contrast {
+  border-width: 3px;
+  font-weight: var(--font-weight-bold);
+}
+
 /* ================================ */
 /* TIMER DISPLAY COMPONENTS */
 /* ================================ */
@@ -1067,5 +1131,18 @@
   
   .auto-save__icon {
     animation: none;
+  }
+  
+  .btn__spinner {
+    animation: none;
+    border-right-color: currentColor;
+  }
+}
+
+/* High contrast mode enhancements for buttons */
+@media (prefers-contrast: high) {
+  .btn {
+    border-width: 3px;
+    font-weight: var(--font-weight-bold);
   }
 }

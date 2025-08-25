@@ -4,6 +4,7 @@
  */
 
 import { ThemeSwitcher } from '@/components/ThemeSwitcher'
+import { BaseButton } from '@/components/BaseButton'
 
 export default function Home() {
   return (
@@ -88,7 +89,7 @@ export default function Home() {
                 </p>
               </div>
               <div className="card__footer">
-                <button className="btn btn--small">Select</button>
+                <BaseButton size="sm" variant="primary">Select</BaseButton>
                 <span style={{ fontSize: 'var(--font-size-sm)', color: 'var(--color-text-tertiary)' }}>In Stock</span>
               </div>
             </div>
@@ -104,7 +105,7 @@ export default function Home() {
                 </p>
               </div>
               <div className="card__footer">
-                <button className="btn btn--small">Select</button>
+                <BaseButton size="sm" variant="primary">Select</BaseButton>
                 <span style={{ fontSize: 'var(--font-size-sm)', color: 'var(--color-text-tertiary)' }}>In Stock</span>
               </div>
             </div>
@@ -126,14 +127,40 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Button Variants */}
-          <div style={{ display: 'flex', gap: 'var(--space-4)', marginBottom: 'var(--space-8)', flexWrap: 'wrap', alignItems: 'center' }}>
-            <button className="btn btn--primary">Primary</button>
-            <button className="btn btn--secondary">Secondary</button>
-            <button className="btn btn--success">Success</button>
-            <button className="btn btn--emergency">Emergency Stop</button>
-            <button className="btn btn--ghost">Ghost</button>
-            <button className="btn btn--primary" disabled>Disabled</button>
+          {/* Button Variants with BaseButton */}
+          <div style={{ marginBottom: 'var(--space-8)' }}>
+            <h3 className="typography-h3" style={{ marginBottom: 'var(--space-4)' }}>Button Variants</h3>
+            <div style={{ display: 'flex', gap: 'var(--space-4)', marginBottom: 'var(--space-4)', flexWrap: 'wrap', alignItems: 'center' }}>
+              <BaseButton variant="primary">Primary</BaseButton>
+              <BaseButton variant="secondary">Secondary</BaseButton>
+              <BaseButton variant="success">Success</BaseButton>
+              <BaseButton variant="emergency">Emergency Stop</BaseButton>
+              <BaseButton variant="ghost">Ghost</BaseButton>
+              <BaseButton variant="primary" disabled>Disabled</BaseButton>
+            </div>
+            
+            <h4 className="typography-h4" style={{ marginBottom: 'var(--space-3)', marginTop: 'var(--space-6)' }}>Button Sizes</h4>
+            <div style={{ display: 'flex', gap: 'var(--space-4)', marginBottom: 'var(--space-4)', flexWrap: 'wrap', alignItems: 'center' }}>
+              <BaseButton size="sm">Small</BaseButton>
+              <BaseButton size="md">Medium (Default)</BaseButton>
+              <BaseButton size="lg">Large</BaseButton>
+              <BaseButton size="xl">Extra Large</BaseButton>
+            </div>
+            
+            <h4 className="typography-h4" style={{ marginBottom: 'var(--space-3)', marginTop: 'var(--space-6)' }}>Loading States</h4>
+            <div style={{ display: 'flex', gap: 'var(--space-4)', marginBottom: 'var(--space-4)', flexWrap: 'wrap', alignItems: 'center' }}>
+              <BaseButton loading>Loading...</BaseButton>
+              <BaseButton loading loadingText="Processing data...">Process Data</BaseButton>
+              <BaseButton variant="emergency" loading loadingText="Emergency stop in progress">Emergency</BaseButton>
+            </div>
+            
+            <h4 className="typography-h4" style={{ marginBottom: 'var(--space-3)', marginTop: 'var(--space-6)' }}>Icon Buttons</h4>
+            <div style={{ display: 'flex', gap: 'var(--space-4)', marginBottom: 'var(--space-4)', flexWrap: 'wrap', alignItems: 'center' }}>
+              <BaseButton icon={<span>🔥</span>} iconPosition="left">Start Roast</BaseButton>
+              <BaseButton icon={<span>⏸️</span>} iconPosition="right" variant="secondary">Pause</BaseButton>
+              <BaseButton icon={<span>⏹️</span>} iconOnly variant="emergency" aria-label="Emergency stop" />
+              <BaseButton icon={<span>📊</span>} iconOnly variant="ghost" aria-label="View statistics" />
+            </div>
           </div>
 
           {/* Timer Display Test */}
