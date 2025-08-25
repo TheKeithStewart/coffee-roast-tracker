@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADHD-Optimized Coffee Roast Tracker - Roasting Interface Prototype</title>
+    <style>
+        /* CSS Custom Properties for ADHD-optimized theming */
+        :root {
+            --color-primary: #2563eb;
+            --color-primary-hover: #1d4ed8;
+            --color-success: #059669;
+            --color-warning: #d97706;
+            --color-danger: #dc2626;
+            --color-danger-hover: #b91c1c;
+            --color-text-primary: #111827;
+            --color-text-secondary: #6b7280;
+            --color-background: #ffffff;
+            --color-surface: #f9fafb;
+            --color-border: #e5e7eb;
+            
+            /* ADHD-specific spacing */
+            --spacing-xs: 4px;
+            --spacing-sm: 8px;
+            --spacing-md: 16px;
+            --spacing-lg: 24px;
+            --spacing-xl: 32px;
+            --spacing-2xl: 48px;
+            
+            /* Touch target sizes */
+            --touch-target-sm: 44px;
+            --touch-target-md: 60px;
+            --touch-target-lg: 80px;
+            
+            /* Typography scale */
+            --text-xs: 0.75rem;
+            --text-sm: 0.875rem;
+            --text-base: 1rem;
+            --text-lg: 1.125rem;
+            --text-xl: 1.25rem;
+            --text-2xl: 1.5rem;
+            --text-3xl: 1.875rem;
+            --text-4xl: 2.25rem;
+            --text-5xl: 3rem;
+            --text-6xl: 3.75rem;
+        }
+        
+        /* High contrast mode support */
+        @media (prefers-contrast: high) {
+            :root {
+                --color-text-primary: #000000;
+                --color-background: #ffffff;
+                --color-primary: #0000ff;
+                --color-danger: #ff0000;
+                --color-success: #008000;
+                --color-border: #000000;
+            }
+        }
+        
+        /* Reduced motion support */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+        
+        /* Base reset and typography */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            font-size: var(--text-base);
+            line-height: 1.5;
+            color: var(--color-text-primary);
+            background-color: var(--color-background);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        /* ADHD-optimized button base styles */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-sm);
+            padding: var(--spacing-md) var(--spacing-lg);
+            min-height: var(--touch-target-sm);
+            border: 2px solid transparent;
+            border-radius: 8px;
+            font-size: var(--text-base);
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.15s ease-in-out;
+            position: relative;
+            outline: none;
+            user-select: none;
+        }
+        
+        /* Focus states for accessibility */
+        .btn:focus {
+            outline: 3px solid var(--color-primary);
+            outline-offset: 2px;
+        }
+        
+        .btn:active {
+            transform: scale(0.98);
+        }
+        
+        /* Button variants */
+        .btn-primary {
+            background-color: var(--color-primary);
+            color: white;
+            border-color: var(--color-primary);
+        }
+        
+        .btn-primary:hover:not(:disabled) {
+            background-color: var(--color-primary-hover);
+            border-color: var(--color-primary-hover);
+        }
+        
+        .btn-danger {
+            background-color: var(--color-danger);
+            color: white;
+            border-color: var(--color-danger);
+            min-height: var(--touch-target-md);
+            font-size: var(--text-lg);
+            font-weight: 700;
+        }
+        
+        .btn-danger:hover:not(:disabled) {
+            background-color: var(--color-danger-hover);
+            border-color: var(--color-danger-hover);
+        }
+        
+        .btn-success {
+            background-color: var(--color-success);
+            color: white;
+            border-color: var(--color-success);
+        }
+        
+        .btn-warning {
+            background-color: var(--color-warning);
+            color: white;
+            border-color: var(--color-warning);
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            color: var(--color-text-primary);
+            border-color: var(--color-border);
+        }
+        
+        .btn-outline:hover:not(:disabled) {
+            background-color: var(--color-surface);
+        }
+        
+        /* Large button variant for critical actions */
+        .btn-large {
+            min-height: var(--touch-target-lg);
+            padding: var(--spacing-lg) var(--spacing-2xl);
+            font-size: var(--text-xl);
+            border-radius: 12px;
+        }
+        
+        /* Disabled state */
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+        
+        /* Main container with ADHD-optimized layout */
+        .roasting-container {
+            max-width: 768px;
+            margin: 0 auto;
+            padding: var(--spacing-md);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Header with minimal distraction */
+        .roasting-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--spacing-md) 0;
+            border-bottom: 1px solid var(--color-border);
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        .roasting-title {
+            font-size: var(--text-xl);
+            font-weight: 600;
+            color: var(--color-text-primary);
+        }
+        
+        .bean-info {
+            font-size: var(--text-sm);
+            color: var(--color-text-secondary);
+        }
+        
+        /* Main roasting display */
+        .roasting-main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-xl);
+            text-align: center;
+        }
+        
+        /* Large timer display - primary focus element */
+        .timer-display {
+            font-size: var(--text-6xl);
+            font-weight: 700;
+            color: var(--color-text-primary);
+            font-variant-numeric: tabular-nums;
+            line-height: 1;
+            margin-bottom: var(--spacing-sm);
+        }
+        
+        /* Phase indicator */
+        .phase-indicator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-sm);
+            padding: var(--spacing-md) var(--spacing-lg);
+            background-color: var(--color-surface);
+            border: 2px solid var(--color-border);
+            border-radius: 8px;
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        .phase-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: var(--color-text-secondary);
+        }
+        
+        .phase-dot.active {
+            background-color: var(--color-primary);
+            box-shadow: 0 0 8px rgba(37, 99, 235, 0.5);
+        }
+        
+        .phase-text {
+            font-size: var(--text-lg);
+            font-weight: 600;
+            color: var(--color-text-primary);
+        }
+        
+        /* Temperature display */
+        .temp-display {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-lg);
+            padding: var(--spacing-lg);
+            background-color: var(--color-surface);
+            border-radius: 8px;
+            border: 1px solid var(--color-border);
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        .temp-value {
+            font-size: var(--text-3xl);
+            font-weight: 600;
+            color: var(--color-text-primary);
+        }
+        
+        .temp-unit {
+            font-size: var(--text-lg);
+            color: var(--color-text-secondary);
+        }
+        
+        /* Action buttons area */
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-lg);
+            width: 100%;
+            max-width: 400px;
+            margin-top: var(--spacing-xl);
+        }
+        
+        /* Emergency stop special styling */
+        .emergency-stop {
+            position: relative;
+            background: linear-gradient(135deg, #dc2626, #b91c1c);
+            border: 3px solid #7f1d1d;
+            box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+        }
+        
+        .emergency-stop:focus {
+            outline: 4px solid #fca5a5;
+            outline-offset: 3px;
+        }
+        
+        .emergency-stop:hover:not(:disabled) {
+            box-shadow: 0 6px 16px rgba(220, 38, 38, 0.4);
+        }
+        
+        /* Phase progression buttons */
+        .phase-controls {
+            display: flex;
+            gap: var(--spacing-md);
+            width: 100%;
+        }
+        
+        .phase-controls .btn {
+            flex: 1;
+        }
+        
+        /* Status bar */
+        .status-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--spacing-md);
+            background-color: var(--color-surface);
+            border-top: 1px solid var(--color-border);
+            margin-top: auto;
+        }
+        
+        .status-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: var(--spacing-xs);
+        }
+        
+        .status-label {
+            font-size: var(--text-xs);
+            color: var(--color-text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .status-value {
+            font-size: var(--text-sm);
+            font-weight: 600;
+            color: var(--color-text-primary);
+        }
+        
+        /* Responsive design for mobile */
+        @media (max-width: 480px) {
+            .roasting-container {
+                padding: var(--spacing-sm);
+            }
+            
+            .timer-display {
+                font-size: var(--text-5xl);
+            }
+            
+            .temp-value {
+                font-size: var(--text-2xl);
+            }
+            
+            .phase-controls {
+                flex-direction: column;
+            }
+        }
+        
+        /* Animation classes */
+        .pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: .5;
+            }
+        }
+        
+        /* Accessibility improvements */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+        
+        /* Focus trap styles */
+        .focus-trap-active .btn:not(.focus-allowed) {
+            opacity: 0.3;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="roasting-container" id="roastingApp">
+        <!-- Header -->
+        <header class="roasting-header">
+            <div>
+                <h1 class="roasting-title">Active Roast</h1>
+                <p class="bean-info" id="beanInfo">Ethiopia Yirgacheffe - Light Roast Profile</p>
+            </div>
+        </header>
+        
+        <!-- Main roasting interface -->
+        <main class="roasting-main" role="main">
+            <!-- Large timer display -->
+            <div class="timer-section">
+                <div class="timer-display" id="timerDisplay" aria-live="polite" aria-label="Roast timer">
+                    05:43
+                </div>
+                
+                <!-- Phase indicator -->
+                <div class="phase-indicator" role="status" aria-live="polite">
+                    <div class="phase-dot" aria-hidden="true"></div>
+                    <div class="phase-dot active" aria-hidden="true"></div>
+                    <div class="phase-dot" aria-hidden="true"></div>
+                    <div class="phase-dot" aria-hidden="true"></div>
+                    <span class="phase-text" id="phaseText">First Crack</span>
+                </div>
+            </div>
+            
+            <!-- Temperature display -->
+            <div class="temp-display" role="status" aria-live="polite">
+                <span class="temp-value" id="tempValue" aria-label="Current temperature">385</span>
+                <span class="temp-unit">°F</span>
+            </div>
+            
+            <!-- Action buttons -->
+            <div class="action-buttons">
+                <!-- Emergency stop - always prominent -->
+                <button 
+                    class="btn btn-danger btn-large emergency-stop focus-allowed" 
+                    id="emergencyStop"
+                    aria-label="Emergency stop - immediately end roast"
+                    type="button"
+                >
+                    <span aria-hidden="true">🛑</span>
+                    EMERGENCY STOP
+                </button>
+                
+                <!-- Phase control buttons -->
+                <div class="phase-controls">
+                    <button 
+                        class="btn btn-warning btn-large focus-allowed" 
+                        id="nextPhase"
+                        aria-label="Advance to next roasting phase"
+                        type="button"
+                    >
+                        Next Phase
+                    </button>
+                    
+                    <button 
+                        class="btn btn-success btn-large focus-allowed" 
+                        id="finishRoast"
+                        aria-label="Complete roast and save results"
+                        type="button"
+                    >
+                        Finish Roast
+                    </button>
+                </div>
+                
+                <!-- Secondary actions -->
+                <button 
+                    class="btn btn-outline" 
+                    id="addNote"
+                    aria-label="Add quick note to roast log"
+                    type="button"
+                >
+                    Add Note
+                </button>
+            </div>
+        </main>
+        
+        <!-- Status bar -->
+        <footer class="status-bar" role="contentinfo">
+            <div class="status-item">
+                <span class="status-label">Batch Size</span>
+                <span class="status-value" id="batchSize">450g</span>
+            </div>
+            <div class="status-item">
+                <span class="status-label">Phase Time</span>
+                <span class="status-value" id="phaseTime">02:15</span>
+            </div>
+            <div class="status-item">
+                <span class="status-label">Target</span>
+                <span class="status-value" id="targetTemp">400°F</span>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Screen reader announcements -->
+    <div id="announcements" aria-live="assertive" aria-atomic="true" class="sr-only"></div>
+
+    <script>
+        /**
+         * ADHD-Optimized Coffee Roast Tracker - Roasting Interface
+         * 
+         * This prototype demonstrates key ADHD-optimized interaction patterns:
+         * - Minimal cognitive load during time-sensitive tasks
+         * - Large touch targets and clear visual hierarchy
+         * - Focus management and accessibility compliance
+         * - Predictable state changes and clear feedback
+         */
+        
+        class ADHDRoastingInterface {
+            constructor() {
+                this.state = {
+                    isRoasting: true,
+                    currentPhase: 'firstCrack',
+                    elapsedTime: 343, // seconds
+                    currentTemp: 385,
+                    targetTemp: 400,
+                    batchSize: '450g',
+                    phases: ['drying', 'firstCrack', 'development', 'complete'],
+                    phaseIndex: 1,
+                    phaseStartTime: Date.now() - 135000 // 2:15 ago
+                };
+                
+                this.initializeElements();
+                this.bindEventListeners();
+                this.startRoastingTimer();
+                this.setupFocusManagement();
+                this.announceInitialState();
+            }
+            
+            initializeElements() {
+                // Cache DOM elements for performance
+                this.elements = {
+                    timerDisplay: document.getElementById('timerDisplay'),
+                    phaseText: document.getElementById('phaseText'),
+                    tempValue: document.getElementById('tempValue'),
+                    phaseTime: document.getElementById('phaseTime'),
+                    emergencyStop: document.getElementById('emergencyStop'),
+                    nextPhase: document.getElementById('nextPhase'),
+                    finishRoast: document.getElementById('finishRoast'),
+                    addNote: document.getElementById('addNote'),
+                    announcements: document.getElementById('announcements')
+                };
+            }
+            
+            bindEventListeners() {
+                // Emergency stop - highest priority
+                this.elements.emergencyStop.addEventListener('click', () => {
+                    this.handleEmergencyStop();
+                });
+                
+                // Phase progression
+                this.elements.nextPhase.addEventListener('click', () => {
+                    this.handleNextPhase();
+                });
+                
+                // Finish roast
+                this.elements.finishRoast.addEventListener('click', () => {
+                    this.handleFinishRoast();
+                });
+                
+                // Add note (secondary action)
+                this.elements.addNote.addEventListener('click', () => {
+                    this.handleAddNote();
+                });
+                
+                // Keyboard shortcuts for critical actions
+                document.addEventListener('keydown', (e) => {
+                    if (e.ctrlKey || e.metaKey) {
+                        switch(e.key) {
+                            case 'e':
+                                e.preventDefault();
+                                this.handleEmergencyStop();
+                                break;
+                            case 'n':
+                                e.preventDefault();
+                                this.handleNextPhase();
+                                break;
+                            case 'f':
+                                e.preventDefault();
+                                this.handleFinishRoast();
+                                break;
+                        }
+                    }
+                });
+                
+                // Visual feedback for button interactions
+                document.querySelectorAll('.btn').forEach(btn => {
+                    btn.addEventListener('mousedown', () => {
+                        btn.style.transform = 'scale(0.98)';
+                    });
+                    
+                    btn.addEventListener('mouseup', () => {
+                        btn.style.transform = '';
+                    });
+                    
+                    btn.addEventListener('mouseleave', () => {
+                        btn.style.transform = '';
+                    });
+                });
+            }
+            
+            startRoastingTimer() {
+                // Update timer every second
+                this.timerInterval = setInterval(() => {
+                    if (this.state.isRoasting) {
+                        this.state.elapsedTime++;
+                        this.updateTimerDisplay();
+                        this.updatePhaseTime();
+                        
+                        // Simulate temperature changes
+                        this.updateTemperature();
+                    }
+                }, 1000);
+            }
+            
+            updateTimerDisplay() {
+                const minutes = Math.floor(this.state.elapsedTime / 60);
+                const seconds = this.state.elapsedTime % 60;
+                const timeString = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                this.elements.timerDisplay.textContent = timeString;
+                
+                // Update page title for background awareness
+                document.title = `${timeString} - Coffee Roast Tracker`;
+            }
+            
+            updatePhaseTime() {
+                const phaseElapsed = Math.floor((Date.now() - this.state.phaseStartTime) / 1000);
+                const minutes = Math.floor(phaseElapsed / 60);
+                const seconds = phaseElapsed % 60;
+                const phaseTimeString = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                this.elements.phaseTime.textContent = phaseTimeString;
+            }
+            
+            updateTemperature() {
+                // Simulate realistic temperature progression
+                const tempIncrease = Math.random() * 2 - 0.5; // -0.5 to 1.5 degrees
+                this.state.currentTemp = Math.min(500, Math.max(200, this.state.currentTemp + tempIncrease));
+                this.elements.tempValue.textContent = Math.round(this.state.currentTemp);
+                
+                // Color coding for temperature ranges
+                if (this.state.currentTemp >= this.state.targetTemp) {
+                    this.elements.tempValue.style.color = 'var(--color-success)';
+                } else if (this.state.currentTemp >= this.state.targetTemp - 10) {
+                    this.elements.tempValue.style.color = 'var(--color-warning)';
+                } else {
+                    this.elements.tempValue.style.color = 'var(--color-text-primary)';
+                }
+            }
+            
+            handleEmergencyStop() {
+                this.state.isRoasting = false;
+                clearInterval(this.timerInterval);
+                
+                // Immediate visual feedback
+                this.elements.emergencyStop.style.backgroundColor = 'var(--color-danger-hover)';
+                this.elements.emergencyStop.textContent = 'STOPPED';
+                this.elements.emergencyStop.disabled = true;
+                
+                // Disable other controls
+                this.elements.nextPhase.disabled = true;
+                this.elements.finishRoast.disabled = true;
+                
+                // Clear, immediate announcement
+                this.announce('Emergency stop activated. Roast ended immediately.');
+                
+                // Show completion options after brief delay
+                setTimeout(() => {
+                    this.showEmergencyStopOptions();
+                }, 2000);
+            }
+            
+            handleNextPhase() {
+                if (this.state.phaseIndex < this.state.phases.length - 1) {
+                    this.state.phaseIndex++;
+                    this.state.phaseStartTime = Date.now();
+                    
+                    const newPhase = this.state.phases[this.state.phaseIndex];
+                    const phaseNames = {
+                        'drying': 'Drying Phase',
+                        'firstCrack': 'First Crack',
+                        'development': 'Development',
+                        'complete': 'Complete'
+                    };
+                    
+                    this.elements.phaseText.textContent = phaseNames[newPhase];
+                    this.updatePhaseIndicator();
+                    
+                    // Announce phase change
+                    this.announce(`Advanced to ${phaseNames[newPhase]} phase`);
+                    
+                    // Update button states based on phase
+                    if (this.state.phaseIndex === this.state.phases.length - 2) {
+                        this.elements.nextPhase.textContent = 'Final Phase';
+                    } else if (this.state.phaseIndex === this.state.phases.length - 1) {
+                        this.elements.nextPhase.disabled = true;
+                        this.elements.finishRoast.focus();
+                    }
+                }
+            }
+            
+            handleFinishRoast() {
+                this.state.isRoasting = false;
+                clearInterval(this.timerInterval);
+                
+                // Visual feedback
+                this.elements.finishRoast.style.backgroundColor = 'var(--color-success)';
+                this.elements.finishRoast.textContent = 'Completed!';
+                this.elements.finishRoast.disabled = true;
+                
+                // Disable other controls
+                this.elements.nextPhase.disabled = true;
+                this.elements.emergencyStop.disabled = true;
+                
+                // Completion announcement
+                this.announce('Roast completed successfully. Results saved.');
+                
+                // Show completion options
+                setTimeout(() => {
+                    this.showCompletionOptions();
+                }, 2000);
+            }
+            
+            handleAddNote() {
+                // Simple note input with voice-to-text preference indication
+                const noteText = prompt('Add a quick note to your roast:\n\n(Tip: Use voice-to-text for hands-free notes during roasting)');
+                
+                if (noteText && noteText.trim()) {
+                    // Visual feedback
+                    this.elements.addNote.style.backgroundColor = 'var(--color-success)';
+                    this.elements.addNote.textContent = 'Note Added';
+                    
+                    setTimeout(() => {
+                        this.elements.addNote.style.backgroundColor = '';
+                        this.elements.addNote.textContent = 'Add Note';
+                    }, 2000);
+                    
+                    this.announce('Note added to roast log');
+                }
+            }
+            
+            updatePhaseIndicator() {
+                const dots = document.querySelectorAll('.phase-dot');
+                dots.forEach((dot, index) => {
+                    if (index <= this.state.phaseIndex) {
+                        dot.classList.add('active');
+                    } else {
+                        dot.classList.remove('active');
+                    }
+                });
+            }
+            
+            setupFocusManagement() {
+                // During active roasting, limit focus to critical actions only
+                const criticalActions = [
+                    this.elements.emergencyStop,
+                    this.elements.nextPhase,
+                    this.elements.finishRoast
+                ];
+                
+                // Add visual indication of focusable elements
+                criticalActions.forEach(element => {
+                    element.classList.add('focus-allowed');
+                });
+                
+                // Trap focus within critical actions during emergency situations
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Tab' && !this.state.isRoasting) {
+                        // Allow normal tab navigation when not actively roasting
+                        return;
+                    }
+                    
+                    if (e.key === 'Escape') {
+                        // Escape key focuses emergency stop
+                        this.elements.emergencyStop.focus();
+                    }
+                });
+            }
+            
+            announce(message) {
+                // Clear previous announcement
+                this.elements.announcements.textContent = '';
+                
+                // Add new announcement after brief delay for screen readers
+                setTimeout(() => {
+                    this.elements.announcements.textContent = message;
+                }, 100);
+                
+                // Clear announcement after 5 seconds
+                setTimeout(() => {
+                    this.elements.announcements.textContent = '';
+                }, 5000);
+            }
+            
+            announceInitialState() {
+                const phase = this.elements.phaseText.textContent;
+                const time = this.elements.timerDisplay.textContent;
+                const temp = this.elements.tempValue.textContent;
+                
+                this.announce(`Roast in progress. Current phase: ${phase}. Time: ${time}. Temperature: ${temp} degrees Fahrenheit.`);
+            }
+            
+            showEmergencyStopOptions() {
+                // Replace action buttons with emergency stop options
+                const actionButtons = document.querySelector('.action-buttons');
+                actionButtons.innerHTML = `
+                    <button class="btn btn-primary btn-large" onclick="window.location.reload()">
+                        Start New Roast
+                    </button>
+                    <button class="btn btn-outline btn-large" onclick="alert('Roast data saved for analysis')">
+                        Save & Analyze
+                    </button>
+                    <button class="btn btn-outline" onclick="alert('Help resources opened')">
+                        Get Help
+                    </button>
+                `;
+            }
+            
+            showCompletionOptions() {
+                // Replace action buttons with completion options
+                const actionButtons = document.querySelector('.action-buttons');
+                actionButtons.innerHTML = `
+                    <button class="btn btn-success btn-large" onclick="alert('Rating saved!')">
+                        ⭐⭐⭐⭐⭐ Rate This Roast
+                    </button>
+                    <button class="btn btn-primary btn-large" onclick="window.location.reload()">
+                        Start New Roast
+                    </button>
+                    <button class="btn btn-outline" onclick="alert('Detailed analysis opened')">
+                        View Analysis
+                    </button>
+                `;
+            }
+        }
+        
+        // Initialize the roasting interface when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            // Check for ADHD-specific preferences
+            const preferReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            const preferHighContrast = window.matchMedia('(prefers-contrast: high)').matches;
+            
+            if (preferReducedMotion) {
+                document.body.classList.add('reduced-motion');
+            }
+            
+            if (preferHighContrast) {
+                document.body.classList.add('high-contrast');
+            }
+            
+            // Initialize the main application
+            window.roastingApp = new ADHDRoastingInterface();
+            
+            // Add PWA-like features
+            if ('serviceWorker' in navigator) {
+                console.log('PWA features would be initialized here');
+            }
+            
+            // Prevent accidental page refresh during active roasting
+            window.addEventListener('beforeunload', (e) => {
+                if (window.roastingApp && window.roastingApp.state.isRoasting) {
+                    e.preventDefault();
+                    e.returnValue = 'You have an active roast in progress. Are you sure you want to leave?';
+                    return e.returnValue;
+                }
+            });
+        });
+        
+        // Utility function for announcements from outside the class
+        function announceToUser(message) {
+            if (window.roastingApp) {
+                window.roastingApp.announce(message);
+            }
+        }
+    </script>
+</body>
+</html>

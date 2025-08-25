@@ -1,0 +1,1607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User-Friendly Navigation System - Coffee Roast Tracker</title>
+    <style>
+        /* User-friendly navigation system CSS variables */
+        :root {
+            --color-primary: #2563eb;
+            --color-primary-hover: #1d4ed8;
+            --color-success: #059669;
+            --color-warning: #d97706;
+            --color-danger: #dc2626;
+            --color-text-primary: #111827;
+            --color-text-secondary: #6b7280;
+            --color-background: #ffffff;
+            --color-surface: #f9fafb;
+            --color-border: #e5e7eb;
+            --color-nav-active: #dbeafe;
+            --color-nav-active-border: #3b82f6;
+            
+            --spacing-xs: 4px;
+            --spacing-sm: 8px;
+            --spacing-md: 16px;
+            --spacing-lg: 24px;
+            --spacing-xl: 32px;
+            --spacing-2xl: 48px;
+            
+            --touch-target-sm: 44px;
+            --touch-target-md: 60px;
+            --touch-target-lg: 80px;
+            
+            --text-xs: 0.75rem;
+            --text-sm: 0.875rem;
+            --text-base: 1rem;
+            --text-lg: 1.125rem;
+            --text-xl: 1.25rem;
+            --text-2xl: 1.5rem;
+            --text-3xl: 1.875rem;
+            
+            --z-nav: 50;
+            --z-modal: 100;
+            --z-toast: 200;
+        }
+        
+        @media (prefers-contrast: high) {
+            :root {
+                --color-text-primary: #000000;
+                --color-background: #ffffff;
+                --color-primary: #0000ff;
+                --color-border: #000000;
+                --color-surface: #f0f0f0;
+            }
+        }
+        
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+        
+        /* Base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            font-size: var(--text-base);
+            line-height: 1.5;
+            color: var(--color-text-primary);
+            background-color: var(--color-background);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
+        }
+        
+        .app-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        
+        /* Main content area */
+        .main-content {
+            flex: 1;
+            padding: var(--spacing-md);
+            padding-bottom: calc(var(--touch-target-lg) + var(--spacing-xl)); /* Space for bottom nav */
+            max-width: 768px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        
+        /* Top header with breadcrumbs */
+        .top-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--spacing-md) var(--spacing-md) 0;
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        .breadcrumb-nav {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            font-size: var(--text-sm);
+        }
+        
+        .breadcrumb-item {
+            color: var(--color-text-secondary);
+            text-decoration: none;
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: 4px;
+            transition: all 0.15s ease;
+        }
+        
+        .breadcrumb-item:hover {
+            background-color: var(--color-surface);
+            color: var(--color-text-primary);
+        }
+        
+        .breadcrumb-item:focus {
+            outline: 2px solid var(--color-primary);
+            outline-offset: 2px;
+        }
+        
+        .breadcrumb-item.current {
+            color: var(--color-text-primary);
+            font-weight: 600;
+        }
+        
+        .breadcrumb-separator {
+            color: var(--color-text-secondary);
+            font-size: var(--text-xs);
+        }
+        
+        /* Header actions */
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+        
+        .header-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: var(--touch-target-sm);
+            height: var(--touch-target-sm);
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            background-color: var(--color-background);
+            color: var(--color-text-primary);
+            cursor: pointer;
+            transition: all 0.15s ease;
+            outline: none;
+            font-size: var(--text-lg);
+        }
+        
+        .header-btn:hover {
+            background-color: var(--color-surface);
+            border-color: var(--color-primary);
+        }
+        
+        .header-btn:focus {
+            outline: 3px solid var(--color-primary);
+            outline-offset: 2px;
+        }
+        
+        .header-btn.active {
+            background-color: var(--color-primary);
+            color: white;
+            border-color: var(--color-primary);
+        }
+        
+        /* Bottom navigation - User-friendly design */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: var(--color-background);
+            border-top: 2px solid var(--color-border);
+            display: flex;
+            justify-content: space-around;
+            padding: var(--spacing-sm) var(--spacing-md);
+            z-index: var(--z-nav);
+            box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: var(--touch-target-md);
+            min-width: var(--touch-target-md);
+            padding: var(--spacing-xs);
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--color-text-secondary);
+            transition: all 0.15s ease;
+            cursor: pointer;
+            outline: none;
+            position: relative;
+        }
+        
+        .nav-item:hover {
+            background-color: var(--color-surface);
+            color: var(--color-text-primary);
+        }
+        
+        .nav-item:focus {
+            outline: 3px solid var(--color-primary);
+            outline-offset: 2px;
+        }
+        
+        .nav-item.active {
+            background-color: var(--color-nav-active);
+            color: var(--color-primary);
+            border: 2px solid var(--color-nav-active-border);
+        }
+        
+        .nav-icon {
+            font-size: var(--text-xl);
+            margin-bottom: var(--spacing-xs);
+            line-height: 1;
+        }
+        
+        .nav-label {
+            font-size: var(--text-xs);
+            font-weight: 600;
+            text-align: center;
+            line-height: 1.2;
+        }
+        
+        /* Badge indicator for active roast */
+        .nav-badge {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            width: 12px;
+            height: 12px;
+            background-color: var(--color-danger);
+            border: 2px solid var(--color-background);
+            border-radius: 50%;
+            animation: pulse-badge 2s infinite;
+        }
+        
+        @keyframes pulse-badge {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        /* Settings panel overlay */
+        .settings-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: var(--z-modal);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .settings-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .settings-panel {
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+            max-width: 400px;
+            background-color: var(--color-background);
+            box-shadow: -4px 0 12px rgba(0, 0, 0, 0.1);
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .settings-overlay.active .settings-panel {
+            transform: translateX(0);
+        }
+        
+        /* Settings panel content */
+        .settings-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--spacing-lg);
+            border-bottom: 1px solid var(--color-border);
+            position: sticky;
+            top: 0;
+            background-color: var(--color-background);
+            z-index: 1;
+        }
+        
+        .settings-title {
+            font-size: var(--text-xl);
+            font-weight: 700;
+            color: var(--color-text-primary);
+        }
+        
+        .close-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: var(--touch-target-sm);
+            height: var(--touch-target-sm);
+            border: none;
+            border-radius: 8px;
+            background-color: transparent;
+            color: var(--color-text-secondary);
+            cursor: pointer;
+            font-size: var(--text-xl);
+            transition: all 0.15s ease;
+        }
+        
+        .close-btn:hover {
+            background-color: var(--color-surface);
+            color: var(--color-text-primary);
+        }
+        
+        .close-btn:focus {
+            outline: 3px solid var(--color-primary);
+            outline-offset: 2px;
+        }
+        
+        .settings-content {
+            flex: 1;
+            padding: var(--spacing-lg);
+        }
+        
+        .settings-section {
+            margin-bottom: var(--spacing-xl);
+        }
+        
+        .settings-section-title {
+            font-size: var(--text-lg);
+            font-weight: 600;
+            color: var(--color-text-primary);
+            margin-bottom: var(--spacing-md);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+        
+        .setting-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--spacing-md);
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            background-color: var(--color-surface);
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .setting-info {
+            flex: 1;
+        }
+        
+        .setting-label {
+            font-size: var(--text-base);
+            font-weight: 600;
+            color: var(--color-text-primary);
+            margin-bottom: var(--spacing-xs);
+        }
+        
+        .setting-description {
+            font-size: var(--text-sm);
+            color: var(--color-text-secondary);
+        }
+        
+        /* Toggle switch */
+        .toggle-switch {
+            position: relative;
+            width: 48px;
+            height: 24px;
+            background-color: var(--color-border);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background-color 0.15s ease;
+            outline: none;
+            border: none;
+        }
+        
+        .toggle-switch:focus {
+            outline: 3px solid var(--color-primary);
+            outline-offset: 2px;
+        }
+        
+        .toggle-switch.active {
+            background-color: var(--color-primary);
+        }
+        
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 20px;
+            height: 20px;
+            background-color: white;
+            border-radius: 50%;
+            transition: transform 0.15s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        .toggle-switch.active::after {
+            transform: translateX(24px);
+        }
+        
+        /* Select dropdown */
+        .setting-select {
+            padding: var(--spacing-sm) var(--spacing-md);
+            border: 1px solid var(--color-border);
+            border-radius: 6px;
+            background-color: var(--color-background);
+            color: var(--color-text-primary);
+            font-size: var(--text-base);
+            min-width: 120px;
+            cursor: pointer;
+        }
+        
+        .setting-select:focus {
+            outline: 2px solid var(--color-primary);
+            outline-offset: 1px;
+            border-color: var(--color-primary);
+        }
+        
+        /* User profile section */
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            padding: var(--spacing-lg);
+            background-color: var(--color-surface);
+            border-radius: 12px;
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        .user-avatar {
+            width: 48px;
+            height: 48px;
+            background-color: var(--color-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: var(--text-xl);
+            font-weight: 700;
+        }
+        
+        .user-info {
+            flex: 1;
+        }
+        
+        .user-name {
+            font-size: var(--text-lg);
+            font-weight: 600;
+            color: var(--color-text-primary);
+            margin-bottom: var(--spacing-xs);
+        }
+        
+        .user-stats {
+            font-size: var(--text-sm);
+            color: var(--color-text-secondary);
+        }
+        
+        /* Help system */
+        .help-section {
+            border-top: 1px solid var(--color-border);
+            padding-top: var(--spacing-lg);
+        }
+        
+        .help-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            padding: var(--spacing-md);
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            background-color: var(--color-background);
+            margin-bottom: var(--spacing-md);
+            cursor: pointer;
+            transition: all 0.15s ease;
+            text-decoration: none;
+            color: var(--color-text-primary);
+        }
+        
+        .help-item:hover {
+            background-color: var(--color-surface);
+            border-color: var(--color-primary);
+        }
+        
+        .help-item:focus {
+            outline: 3px solid var(--color-primary);
+            outline-offset: 2px;
+        }
+        
+        .help-icon {
+            width: var(--touch-target-sm);
+            height: var(--touch-target-sm);
+            background-color: var(--color-surface);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: var(--text-lg);
+        }
+        
+        /* Demo content styling */
+        .demo-content {
+            text-align: center;
+            padding: var(--spacing-2xl);
+            color: var(--color-text-secondary);
+        }
+        
+        .demo-title {
+            font-size: var(--text-2xl);
+            font-weight: 700;
+            margin-bottom: var(--spacing-md);
+            color: var(--color-text-primary);
+        }
+        
+        .demo-description {
+            font-size: var(--text-lg);
+            margin-bottom: var(--spacing-xl);
+        }
+        
+        .demo-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--spacing-lg);
+            margin-top: var(--spacing-xl);
+        }
+        
+        .feature-card {
+            padding: var(--spacing-lg);
+            background-color: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            text-align: left;
+        }
+        
+        .feature-icon {
+            font-size: var(--text-3xl);
+            margin-bottom: var(--spacing-md);
+            display: block;
+        }
+        
+        .feature-title {
+            font-size: var(--text-lg);
+            font-weight: 600;
+            margin-bottom: var(--spacing-sm);
+            color: var(--color-text-primary);
+        }
+        
+        .feature-description {
+            font-size: var(--text-sm);
+            color: var(--color-text-secondary);
+        }
+        
+        /* Accessibility helpers */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+        
+        /* Skip links */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 6px;
+            background: var(--color-primary);
+            color: white;
+            padding: 8px;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: var(--text-sm);
+            z-index: var(--z-toast);
+        }
+        
+        .skip-link:focus {
+            top: 6px;
+        }
+        
+        /* Mobile optimizations */
+        @media (max-width: 480px) {
+            .main-content {
+                padding: var(--spacing-sm);
+                padding-bottom: calc(var(--touch-target-lg) + var(--spacing-lg));
+            }
+            
+            .settings-panel {
+                width: 100%;
+            }
+            
+            .nav-label {
+                font-size: 10px;
+            }
+            
+            .demo-features {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Tablet and up */
+        @media (min-width: 768px) {
+            .bottom-nav {
+                position: relative;
+                border-top: none;
+                border-bottom: 1px solid var(--color-border);
+                order: -1;
+                box-shadow: none;
+                justify-content: center;
+                gap: var(--spacing-lg);
+                max-width: 500px;
+                margin: 0 auto;
+            }
+            
+            .main-content {
+                padding-bottom: var(--spacing-md);
+            }
+            
+            .nav-item {
+                flex-direction: row;
+                gap: var(--spacing-sm);
+                min-width: auto;
+                padding: var(--spacing-sm) var(--spacing-md);
+            }
+            
+            .nav-icon {
+                margin-bottom: 0;
+            }
+            
+            .nav-label {
+                font-size: var(--text-sm);
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    
+    <div class="app-container" id="appContainer">
+        <!-- Top header with breadcrumbs -->
+        <header class="top-header">
+            <nav class="breadcrumb-nav" role="navigation" aria-label="Breadcrumb">
+                <a href="#" class="breadcrumb-item" onclick="navigateToPage('home')">Home</a>
+                <span class="breadcrumb-separator" aria-hidden="true">›</span>
+                <span class="breadcrumb-item current" id="currentPage">Dashboard</span>
+            </nav>
+            
+            <div class="header-actions">
+                <button 
+                    class="header-btn" 
+                    id="helpBtn" 
+                    aria-label="Get help"
+                    title="Get help"
+                    onclick="showHelp()"
+                >
+                    ❓
+                </button>
+                <button 
+                    class="header-btn" 
+                    id="settingsBtn" 
+                    aria-label="Open settings"
+                    title="Settings"
+                    onclick="toggleSettings()"
+                >
+                    ⚙️
+                </button>
+            </div>
+        </header>
+        
+        <!-- Main content area -->
+        <main class="main-content" id="main-content">
+            <div class="demo-content" id="pageContent">
+                <h1 class="demo-title">User-Friendly Navigation System</h1>
+                <p class="demo-description">
+                    This prototype demonstrates a navigation system designed for optimal usability, 
+                    featuring clear visual hierarchy, predictable interactions, and simplified interface design.
+                </p>
+                
+                <div class="demo-features">
+                    <div class="feature-card">
+                        <span class="feature-icon" aria-hidden="true">🧭</span>
+                        <h3 class="feature-title">Bottom Navigation</h3>
+                        <p class="feature-description">
+                            Thumb-zone optimized navigation with large touch targets and clear visual states.
+                            Active roast indicator shows current session status.
+                        </p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <span class="feature-icon" aria-hidden="true">⚙️</span>
+                        <h3 class="feature-title">Settings Panel</h3>
+                        <p class="feature-description">
+                            Comprehensive display preferences including high contrast, reduced motion,
+                            and complexity mode selection for progressive disclosure.
+                        </p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <span class="feature-icon" aria-hidden="true">👤</span>
+                        <h3 class="feature-title">User Profile</h3>
+                        <p class="feature-description">
+                            Quick access to roasting history, preferences, and achievements.
+                            Contextual information without overwhelming detail.
+                        </p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <span class="feature-icon" aria-hidden="true">❓</span>
+                        <h3 class="feature-title">Help System</h3>
+                        <p class="feature-description">
+                            Context-aware help that doesn't disrupt navigation flow.
+                            User-friendly tutorials and quick reference guides.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <!-- Bottom navigation -->
+        <nav class="bottom-nav" role="navigation" aria-label="Main navigation">
+            <a 
+                href="#" 
+                class="nav-item active" 
+                id="nav-dashboard"
+                onclick="navigateToPage('dashboard')"
+                aria-label="Dashboard - Current page"
+            >
+                <span class="nav-icon" aria-hidden="true">🏠</span>
+                <span class="nav-label">Dashboard</span>
+            </a>
+            
+            <a 
+                href="#" 
+                class="nav-item" 
+                id="nav-roast"
+                onclick="navigateToPage('roast')"
+                aria-label="Start new roast"
+            >
+                <span class="nav-icon" aria-hidden="true">🔥</span>
+                <span class="nav-label">Roast</span>
+                <span class="nav-badge sr-only">Active roast in progress</span>
+            </a>
+            
+            <a 
+                href="#" 
+                class="nav-item" 
+                id="nav-beans"
+                onclick="navigateToPage('beans')"
+                aria-label="Manage coffee beans"
+            >
+                <span class="nav-icon" aria-hidden="true">☕</span>
+                <span class="nav-label">Beans</span>
+            </a>
+            
+            <a 
+                href="#" 
+                class="nav-item" 
+                id="nav-data"
+                onclick="navigateToPage('data')"
+                aria-label="View roasting data"
+            >
+                <span class="nav-icon" aria-hidden="true">📊</span>
+                <span class="nav-label">Data</span>
+            </a>
+            
+            <a 
+                href="#" 
+                class="nav-item" 
+                id="nav-profile"
+                onclick="navigateToPage('profile')"
+                aria-label="User profile"
+            >
+                <span class="nav-icon" aria-hidden="true">👤</span>
+                <span class="nav-label">Profile</span>
+            </a>
+        </nav>
+        
+        <!-- Settings overlay and panel -->
+        <div class="settings-overlay" id="settingsOverlay" onclick="closeSettings(event)">
+            <div class="settings-panel" role="dialog" aria-labelledby="settings-title" aria-modal="true">
+                <div class="settings-header">
+                    <h2 class="settings-title" id="settings-title">Settings</h2>
+                    <button 
+                        class="close-btn" 
+                        onclick="toggleSettings()"
+                        aria-label="Close settings"
+                    >
+                        ✕
+                    </button>
+                </div>
+                
+                <div class="settings-content">
+                    <!-- User profile section -->
+                    <div class="user-profile">
+                        <div class="user-avatar" aria-hidden="true">JD</div>
+                        <div class="user-info">
+                            <div class="user-name">John Doe</div>
+                            <div class="user-stats">47 roasts completed • Member since March 2024</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Focus Optimizations -->
+                    <div class="settings-section">
+                        <h3 class="settings-section-title">
+                            <span aria-hidden="true">🧠</span>
+                            Focus Optimizations
+                        </h3>
+                        
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-label">Complexity Mode</div>
+                                <div class="setting-description">
+                                    Control interface complexity and feature visibility
+                                </div>
+                            </div>
+                            <select class="setting-select" id="complexityMode" onchange="updateComplexityMode(this.value)">
+                                <option value="simple">Simple</option>
+                                <option value="standard" selected>Standard</option>
+                                <option value="advanced">Advanced</option>
+                            </select>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-label">Focus Mode During Roasting</div>
+                                <div class="setting-description">
+                                    Limit navigation and distractions during active roasts
+                                </div>
+                            </div>
+                            <button 
+                                class="toggle-switch active" 
+                                id="focusMode" 
+                                onclick="toggleSetting(this)"
+                                aria-pressed="true"
+                                aria-label="Focus mode toggle"
+                            ></button>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-label">Auto-Save Frequency</div>
+                                <div class="setting-description">
+                                    How often to automatically save your progress
+                                </div>
+                            </div>
+                            <select class="setting-select" id="autoSaveInterval">
+                                <option value="15">15 seconds</option>
+                                <option value="30" selected>30 seconds</option>
+                                <option value="60">1 minute</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- Accessibility Settings -->
+                    <div class="settings-section">
+                        <h3 class="settings-section-title">
+                            <span aria-hidden="true">♿</span>
+                            Accessibility
+                        </h3>
+                        
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-label">High Contrast Mode</div>
+                                <div class="setting-description">
+                                    Increase contrast for better visibility
+                                </div>
+                            </div>
+                            <button 
+                                class="toggle-switch" 
+                                id="highContrast" 
+                                onclick="toggleSetting(this)"
+                                aria-pressed="false"
+                                aria-label="High contrast toggle"
+                            ></button>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-label">Reduce Motion</div>
+                                <div class="setting-description">
+                                    Minimize animations and transitions
+                                </div>
+                            </div>
+                            <button 
+                                class="toggle-switch" 
+                                id="reduceMotion" 
+                                onclick="toggleSetting(this)"
+                                aria-pressed="false"
+                                aria-label="Reduce motion toggle"
+                            ></button>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-label">Large Touch Targets</div>
+                                <div class="setting-description">
+                                    Increase button and touch target sizes
+                                </div>
+                            </div>
+                            <button 
+                                class="toggle-switch active" 
+                                id="largeTouchTargets" 
+                                onclick="toggleSetting(this)"
+                                aria-pressed="true"
+                                aria-label="Large touch targets toggle"
+                            ></button>
+                        </div>
+                    </div>
+                    
+                    <!-- Notifications -->
+                    <div class="settings-section">
+                        <h3 class="settings-section-title">
+                            <span aria-hidden="true">🔔</span>
+                            Notifications
+                        </h3>
+                        
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-label">Roast Phase Alerts</div>
+                                <div class="setting-description">
+                                    Get notified when entering new roast phases
+                                </div>
+                            </div>
+                            <button 
+                                class="toggle-switch active" 
+                                id="phaseAlerts" 
+                                onclick="toggleSetting(this)"
+                                aria-pressed="true"
+                                aria-label="Phase alerts toggle"
+                            ></button>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-label">Background Timers</div>
+                                <div class="setting-description">
+                                    Show notifications when app is in background
+                                </div>
+                            </div>
+                            <button 
+                                class="toggle-switch active" 
+                                id="backgroundTimers" 
+                                onclick="toggleSetting(this)"
+                                aria-pressed="true"
+                                aria-label="Background timer notifications toggle"
+                            ></button>
+                        </div>
+                    </div>
+                    
+                    <!-- Help and Support -->
+                    <div class="help-section">
+                        <h3 class="settings-section-title">
+                            <span aria-hidden="true">❓</span>
+                            Help & Support
+                        </h3>
+                        
+                        <a href="#" class="help-item" onclick="showTutorial()">
+                            <div class="help-icon" aria-hidden="true">🎓</div>
+                            <div class="setting-info">
+                                <div class="setting-label">Interactive Tutorial</div>
+                                <div class="setting-description">Learn the basics of coffee roasting</div>
+                            </div>
+                        </a>
+                        
+                        <a href="#" class="help-item" onclick="showKeyboardShortcuts()">
+                            <div class="help-icon" aria-hidden="true">⌨️</div>
+                            <div class="setting-info">
+                                <div class="setting-label">Keyboard Shortcuts</div>
+                                <div class="setting-description">Quick reference for power users</div>
+                            </div>
+                        </a>
+                        
+                        <a href="#" class="help-item" onclick="contactSupport()">
+                            <div class="help-icon" aria-hidden="true">💬</div>
+                            <div class="setting-info">
+                                <div class="setting-label">Contact Support</div>
+                                <div class="setting-description">Get help from our team</div>
+                            </div>
+                        </a>
+                        
+                        <a href="#" class="help-item" onclick="showAbout()">
+                            <div class="help-icon" aria-hidden="true">ℹ️</div>
+                            <div class="setting-info">
+                                <div class="setting-label">About</div>
+                                <div class="setting-description">App version and credits</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Screen reader announcements -->
+    <div id="announcements" aria-live="polite" aria-atomic="true" class="sr-only"></div>
+
+    <script>
+        /**
+         * User-Friendly Navigation System
+         * 
+         * Features:
+         * - Bottom navigation with large touch targets
+         * - Settings panel with accessibility preferences
+         * - Focus management and keyboard navigation
+         * - Clear visual states and feedback
+         * - Progressive disclosure patterns
+         */
+        
+        class UserFriendlyNavigationSystem {
+            constructor() {
+                this.state = {
+                    currentPage: 'dashboard',
+                    settingsOpen: false,
+                    isRoasting: false,
+                    focusMode: true,
+                    preferences: {
+                        complexityMode: 'standard',
+                        highContrast: false,
+                        reduceMotion: false,
+                        largeTouchTargets: true,
+                        phaseAlerts: true,
+                        backgroundTimers: true,
+                        focusMode: true,
+                        autoSaveInterval: 30
+                    }
+                };
+                
+                this.pages = {
+                    dashboard: {
+                        title: 'Dashboard',
+                        breadcrumb: 'Dashboard',
+                        content: this.getDashboardContent()
+                    },
+                    roast: {
+                        title: 'Roast Coffee',
+                        breadcrumb: 'Roast',
+                        content: this.getRoastContent()
+                    },
+                    beans: {
+                        title: 'Manage Beans',
+                        breadcrumb: 'Bean Management',
+                        content: this.getBeansContent()
+                    },
+                    data: {
+                        title: 'Roasting Data',
+                        breadcrumb: 'Data & Analytics',
+                        content: this.getDataContent()
+                    },
+                    profile: {
+                        title: 'User Profile',
+                        breadcrumb: 'Profile',
+                        content: this.getProfileContent()
+                    }
+                };
+                
+                this.initializeElements();
+                this.bindEventListeners();
+                this.loadPreferences();
+                this.updateUI();
+                this.announceInitialState();
+            }
+            
+            initializeElements() {
+                this.elements = {
+                    currentPage: document.getElementById('currentPage'),
+                    pageContent: document.getElementById('pageContent'),
+                    settingsOverlay: document.getElementById('settingsOverlay'),
+                    settingsBtn: document.getElementById('settingsBtn'),
+                    announcements: document.getElementById('announcements'),
+                    navItems: document.querySelectorAll('.nav-item')
+                };
+            }
+            
+            bindEventListeners() {
+                // Keyboard shortcuts
+                document.addEventListener('keydown', (e) => {
+                    if (e.altKey) {
+                        switch(e.key) {
+                            case '1':
+                                e.preventDefault();
+                                this.navigateToPage('dashboard');
+                                break;
+                            case '2':
+                                e.preventDefault();
+                                this.navigateToPage('roast');
+                                break;
+                            case '3':
+                                e.preventDefault();
+                                this.navigateToPage('beans');
+                                break;
+                            case '4':
+                                e.preventDefault();
+                                this.navigateToPage('data');
+                                break;
+                            case '5':
+                                e.preventDefault();
+                                this.navigateToPage('profile');
+                                break;
+                        }
+                    }
+                    
+                    // Escape key closes settings
+                    if (e.key === 'Escape' && this.state.settingsOpen) {
+                        this.toggleSettings();
+                    }
+                    
+                    // Settings shortcut
+                    if (e.key === ',' && (e.ctrlKey || e.metaKey)) {
+                        e.preventDefault();
+                        this.toggleSettings();
+                    }
+                });
+                
+                // Focus trap for settings panel
+                document.addEventListener('keydown', (e) => {
+                    if (this.state.settingsOpen && e.key === 'Tab') {
+                        this.handleSettingsFocusTrap(e);
+                    }
+                });
+                
+                // Handle settings panel clicks
+                this.elements.settingsOverlay.addEventListener('click', (e) => {
+                    if (e.target === this.elements.settingsOverlay) {
+                        this.toggleSettings();
+                    }
+                });
+            }
+            
+            navigateToPage(pageId) {
+                if (this.state.currentPage === pageId) return;
+                
+                // Focus mode check during roasting
+                if (this.state.isRoasting && this.state.focusMode && pageId !== 'roast') {
+                    this.announce('Focus mode is active. Complete or stop your current roast to navigate to other pages.');
+                    return;
+                }
+                
+                this.state.currentPage = pageId;
+                const page = this.pages[pageId];
+                
+                // Update navigation states
+                this.elements.navItems.forEach(item => {
+                    const isActive = item.id === `nav-${pageId}`;
+                    item.classList.toggle('active', isActive);
+                    item.setAttribute('aria-label', 
+                        isActive ? `${page.title} - Current page` : page.title
+                    );
+                });
+                
+                // Update breadcrumb and content
+                this.elements.currentPage.textContent = page.breadcrumb;
+                this.elements.pageContent.innerHTML = page.content;
+                
+                // Update page title
+                document.title = `${page.title} - Coffee Roast Tracker`;
+                
+                // Announce navigation
+                this.announce(`Navigated to ${page.title}`);
+                
+                // Focus management
+                setTimeout(() => {
+                    const mainContent = document.getElementById('main-content');
+                    if (mainContent) {
+                        mainContent.focus();
+                        mainContent.scrollIntoView({ behavior: 'smooth' });
+                    }
+                }, 100);
+            }
+            
+            toggleSettings() {
+                this.state.settingsOpen = !this.state.settingsOpen;
+                this.elements.settingsOverlay.classList.toggle('active', this.state.settingsOpen);
+                this.elements.settingsBtn.classList.toggle('active', this.state.settingsOpen);
+                
+                if (this.state.settingsOpen) {
+                    // Focus first focusable element in settings
+                    setTimeout(() => {
+                        const firstFocusable = this.elements.settingsOverlay.querySelector(
+                            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+                        );
+                        if (firstFocusable) {
+                            firstFocusable.focus();
+                        }
+                    }, 100);
+                    
+                    this.announce('Settings panel opened');
+                    
+                    // Prevent body scroll
+                    document.body.style.overflow = 'hidden';
+                } else {
+                    // Return focus to settings button
+                    this.elements.settingsBtn.focus();
+                    this.announce('Settings panel closed');
+                    
+                    // Restore body scroll
+                    document.body.style.overflow = '';
+                }
+            }
+            
+            handleSettingsFocusTrap(e) {
+                const settingsPanel = document.querySelector('.settings-panel');
+                const focusableElements = settingsPanel.querySelectorAll(
+                    'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+                );
+                const firstFocusable = focusableElements[0];
+                const lastFocusable = focusableElements[focusableElements.length - 1];
+                
+                if (e.shiftKey) {
+                    if (document.activeElement === firstFocusable) {
+                        lastFocusable.focus();
+                        e.preventDefault();
+                    }
+                } else {
+                    if (document.activeElement === lastFocusable) {
+                        firstFocusable.focus();
+                        e.preventDefault();
+                    }
+                }
+            }
+            
+            toggleSetting(element) {
+                const isActive = element.classList.contains('active');
+                element.classList.toggle('active');
+                element.setAttribute('aria-pressed', (!isActive).toString());
+                
+                // Update preference based on element ID
+                const settingName = element.id;
+                this.state.preferences[settingName] = !isActive;
+                
+                // Apply setting changes
+                this.applySetting(settingName, !isActive);
+                
+                // Announce change
+                const settingLabels = {
+                    highContrast: 'High contrast mode',
+                    reduceMotion: 'Reduce motion',
+                    largeTouchTargets: 'Large touch targets',
+                    phaseAlerts: 'Phase alerts',
+                    backgroundTimers: 'Background timer notifications',
+                    focusMode: 'Focus mode during roasting'
+                };
+                
+                const label = settingLabels[settingName] || settingName;
+                this.announce(`${label} ${!isActive ? 'enabled' : 'disabled'}`);
+            }
+            
+            applySetting(settingName, value) {
+                switch(settingName) {
+                    case 'highContrast':
+                        document.body.classList.toggle('high-contrast', value);
+                        break;
+                    case 'reduceMotion':
+                        document.body.classList.toggle('reduce-motion', value);
+                        break;
+                    case 'largeTouchTargets':
+                        document.body.classList.toggle('large-targets', value);
+                        break;
+                    case 'focusMode':
+                        this.state.focusMode = value;
+                        break;
+                }
+                
+                // Save preferences
+                this.savePreferences();
+            }
+            
+            updateComplexityMode(mode) {
+                this.state.preferences.complexityMode = mode;
+                this.announce(`Complexity mode changed to ${mode}`);
+                this.savePreferences();
+            }
+            
+            loadPreferences() {
+                try {
+                    const saved = localStorage.getItem('coffee-tracker-preferences');
+                    if (saved) {
+                        this.state.preferences = { ...this.state.preferences, ...JSON.parse(saved) };
+                    }
+                } catch (e) {
+                    console.warn('Failed to load preferences:', e);
+                }
+                
+                // Apply loaded preferences
+                Object.entries(this.state.preferences).forEach(([key, value]) => {
+                    this.applySetting(key, value);
+                    
+                    // Update UI elements
+                    const element = document.getElementById(key);
+                    if (element) {
+                        if (element.tagName === 'SELECT') {
+                            element.value = value;
+                        } else if (element.classList.contains('toggle-switch')) {
+                            element.classList.toggle('active', value);
+                            element.setAttribute('aria-pressed', value.toString());
+                        }
+                    }
+                });
+            }
+            
+            savePreferences() {
+                try {
+                    localStorage.setItem('coffee-tracker-preferences', 
+                        JSON.stringify(this.state.preferences));
+                } catch (e) {
+                    console.warn('Failed to save preferences:', e);
+                }
+            }
+            
+            // Content generators for different pages
+            getDashboardContent() {
+                return `
+                    <h1 class="demo-title">Dashboard</h1>
+                    <p class="demo-description">
+                        Your roasting overview with quick access to recent roasts and key metrics.
+                    </p>
+                    <div class="demo-features">
+                        <div class="feature-card">
+                            <span class="feature-icon">📈</span>
+                            <h3 class="feature-title">Recent Activity</h3>
+                            <p class="feature-description">Your last 5 roasts with quick quality ratings and notes.</p>
+                        </div>
+                        <div class="feature-card">
+                            <span class="feature-icon">⏱️</span>
+                            <h3 class="feature-title">Quick Stats</h3>
+                            <p class="feature-description">Average roast time, favorite beans, and improvement trends.</p>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            getRoastContent() {
+                return `
+                    <h1 class="demo-title">Start New Roast</h1>
+                    <p class="demo-description">
+                        Begin a new roasting session with user-friendly controls and guidance.
+                    </p>
+                    <div class="demo-features">
+                        <div class="feature-card">
+                            <span class="feature-icon">🔥</span>
+                            <h3 class="feature-title">Active Session</h3>
+                            <p class="feature-description">Large timer display with emergency stop and phase controls.</p>
+                        </div>
+                        <div class="feature-card">
+                            <span class="feature-icon">🎯</span>
+                            <h3 class="feature-title">Focus Mode</h3>
+                            <p class="feature-description">Minimal distractions during time-sensitive roasting phases.</p>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            getBeansContent() {
+                return `
+                    <h1 class="demo-title">Bean Management</h1>
+                    <p class="demo-description">
+                        Manage your coffee bean inventory with progressive complexity modes.
+                    </p>
+                    <div class="demo-features">
+                        <div class="feature-card">
+                            <span class="feature-icon">☕</span>
+                            <h3 class="feature-title">Bean Selection</h3>
+                            <p class="feature-description">Visual grid with large touch targets and recently used beans.</p>
+                        </div>
+                        <div class="feature-card">
+                            <span class="feature-icon">🔍</span>
+                            <h3 class="feature-title">Smart Search</h3>
+                            <p class="feature-description">Progressive disclosure search with filters based on complexity mode.</p>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            getDataContent() {
+                return `
+                    <h1 class="demo-title">Roasting Data</h1>
+                    <p class="demo-description">
+                        Analyze your roasting progress with user-friendly data visualization.
+                    </p>
+                    <div class="demo-features">
+                        <div class="feature-card">
+                            <span class="feature-icon">📊</span>
+                            <h3 class="feature-title">Simple Charts</h3>
+                            <p class="feature-description">Clear, uncluttered visualizations focusing on key trends.</p>
+                        </div>
+                        <div class="feature-card">
+                            <span class="feature-icon">📈</span>
+                            <h3 class="feature-title">Progress Tracking</h3>
+                            <p class="feature-description">Achievement system and improvement metrics over time.</p>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            getProfileContent() {
+                return `
+                    <h1 class="demo-title">User Profile</h1>
+                    <p class="demo-description">
+                        Your roasting journey with achievements and personalized insights.
+                    </p>
+                    <div class="demo-features">
+                        <div class="feature-card">
+                            <span class="feature-icon">🏆</span>
+                            <h3 class="feature-title">Achievements</h3>
+                            <p class="feature-description">Milestone tracking and skill progression indicators.</p>
+                        </div>
+                        <div class="feature-card">
+                            <span class="feature-icon">📝</span>
+                            <h3 class="feature-title">Roast History</h3>
+                            <p class="feature-description">Complete log of your roasting sessions with ratings and notes.</p>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            updateUI() {
+                // Update any dynamic UI elements
+                this.navigateToPage(this.state.currentPage);
+                
+                // Show roasting indicator if active
+                const roastBadge = document.querySelector('.nav-badge');
+                if (roastBadge) {
+                    roastBadge.style.display = this.state.isRoasting ? 'block' : 'none';
+                }
+            }
+            
+            announce(message) {
+                this.elements.announcements.textContent = '';
+                setTimeout(() => {
+                    this.elements.announcements.textContent = message;
+                }, 100);
+                
+                setTimeout(() => {
+                    this.elements.announcements.textContent = '';
+                }, 5000);
+            }
+            
+            announceInitialState() {
+                this.announce('Navigation system loaded. Use Alt+1 through Alt+5 for quick page navigation, or Cmd+comma for settings.');
+            }
+            
+            // Methods called by UI interactions
+            showHelp() {
+                this.announce('Opening help system');
+                alert('Help system would open here with contextual guidance for the current page.');
+            }
+            
+            showTutorial() {
+                this.announce('Starting interactive tutorial');
+                alert('Interactive tutorial would begin here, designed for easy learning.');
+            }
+            
+            showKeyboardShortcuts() {
+                const shortcuts = `
+Keyboard Shortcuts:
+Alt+1: Dashboard
+Alt+2: Start Roast  
+Alt+3: Manage Beans
+Alt+4: View Data
+Alt+5: Profile
+Cmd/Ctrl+,: Settings
+Escape: Close panels
+Tab: Navigate focus
+Enter/Space: Activate buttons
+                `;
+                alert(shortcuts);
+            }
+            
+            contactSupport() {
+                this.announce('Opening support contact');
+                alert('Support contact form would open here.');
+            }
+            
+            showAbout() {
+                const aboutInfo = `
+Coffee Roast Tracker v1.0
+
+Designed for coffee roasters who value usability, featuring:
+- Simplified, distraction-free interface design
+- Focus management during roasting sessions  
+- Progressive complexity modes
+- Full WCAG 2.1 AA accessibility compliance
+- PWA capabilities for offline use
+
+Built with ♥ for the coffee community.
+                `;
+                alert(aboutInfo);
+            }
+        }
+        
+        // Global functions for HTML onclick handlers
+        function navigateToPage(pageId) {
+            if (window.navigationApp) {
+                window.navigationApp.navigateToPage(pageId);
+            }
+        }
+        
+        function toggleSettings() {
+            if (window.navigationApp) {
+                window.navigationApp.toggleSettings();
+            }
+        }
+        
+        function closeSettings(event) {
+            if (event.target === event.currentTarget && window.navigationApp) {
+                window.navigationApp.toggleSettings();
+            }
+        }
+        
+        function toggleSetting(element) {
+            if (window.navigationApp) {
+                window.navigationApp.toggleSetting(element);
+            }
+        }
+        
+        function updateComplexityMode(mode) {
+            if (window.navigationApp) {
+                window.navigationApp.updateComplexityMode(mode);
+            }
+        }
+        
+        function showHelp() {
+            if (window.navigationApp) {
+                window.navigationApp.showHelp();
+            }
+        }
+        
+        function showTutorial() {
+            if (window.navigationApp) {
+                window.navigationApp.showTutorial();
+            }
+        }
+        
+        function showKeyboardShortcuts() {
+            if (window.navigationApp) {
+                window.navigationApp.showKeyboardShortcuts();
+            }
+        }
+        
+        function contactSupport() {
+            if (window.navigationApp) {
+                window.navigationApp.contactSupport();
+            }
+        }
+        
+        function showAbout() {
+            if (window.navigationApp) {
+                window.navigationApp.showAbout();
+            }
+        }
+        
+        // Initialize the navigation system when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            // Check for user preferences
+            const preferReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            const preferHighContrast = window.matchMedia('(prefers-contrast: high)').matches;
+            
+            if (preferReducedMotion) {
+                document.body.classList.add('reduce-motion');
+            }
+            
+            if (preferHighContrast) {
+                document.body.classList.add('high-contrast');
+            }
+            
+            // Initialize the navigation app
+            window.navigationApp = new UserFriendlyNavigationSystem();
+            
+            // Handle install prompt for PWA
+            if ('serviceWorker' in navigator) {
+                console.log('PWA features would be initialized here');
+            }
+        });
+    </script>
+</body>
+</html>

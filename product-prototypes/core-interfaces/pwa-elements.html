@@ -1,0 +1,1388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PWA Elements - Coffee Roast Tracker</title>
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIkNvZmZlZSBSb2FzdCBUcmFja2VyIiwKICAic2hvcnRfbmFtZSI6ICJSb2FzdFRyYWNrZXIiLAogICJkZXNjcmlwdGlvbiI6ICJBREhELW9wdGltaXplZCBjb2ZmZWUgcm9hc3RpbmcgdHJhY2tlciBmb3IgcGVyZmVjdCByb2FzdHMgZXZlcnkgdGltZSIsCiAgInN0YXJ0X3VybCI6ICIvIiwKICAiZGlzcGxheSI6ICJzdGFuZGFsb25lIiwKICAiYmFja2dyb3VuZF9jb2xvciI6ICIjZmZmZmZmIiwKICAidGhlbWVfY29sb3IiOiAiIzI1NjNlYiIsCiAgImljb25zIjogWwogICAgewogICAgICAic3JjIjogImRhdGE6aW1hZ2Uvc3ZnK3htbCwlM0NzdmclMjB4bWxucyUzRCUyN2h0dHAlM0ElMkYlMkZ3d3cudzMub3JnJTJGMjAwMCUyRnN2ZyUyNyUyMHdpZHRoJTNEJTI3MTkyJTI3JTIwaGVpZ2h0JTNEJTI3MTkyJTI3JTIwdmlld0JveCUzRCUyNzAlMjAwJTIwMTkyJTIwMTkyJTI3JTNFJTNDZGVmcyUzRSUzQ2xpbmVhckdyYWRpZW50JTIwaWQlM0QlMjdhJTI3JTIweDElM0QlMjcwJTI1JTI3JTIweTElM0QlMjcwJTI1JTI3JTIweDIlM0QlMjcxMDAlMjUlMjclMjB5MiUzRCUyNzEwMCUyNSUyNyUzRSUzQ3N0b3AlMjBzdG9wLWNvbG9yJTNEJTI3JTIzMjU2M2ViJTI3JTJGJTNFJTNDc3RvcCUyMG9mZnNldCUzRCUyNzEwMCUyNSUyNyUyMHN0b3AtY29sb3IlM0QlMjclMjMxZDRlZDglMjclMkYlM0UlM0MlMkZsaW5lYXJHcmFkaWVudCUzRSUzQyUyRmRlZnMlM0UlM0NyZWN0JTIwd2lkdGglM0QlMjcxOTIlMjclMjBoZWlnaHQlM0QlMjcxOTIlMjclMjByeCUzRCUyNzI0JTI3JTIwZmlsbCUzRCUyN3VybCglMjUyM2EpJTI3JTJGJTNFJTNDdGV4dCUyMHglM0QlMjc5NiUyNyUyMHklM0QlMjcxMTAlMjclMjB0ZXh0LWFuY2hvciUzRCUyN21pZGRsZSUyNyUyMGZpbGwlM0QlMjclMjNmZmZmZmYlMjclMjBmb250LXNpemUlM0QlMjc0OCUyNyUyMGZvbnQtZmFtaWx5JTNEJTI3c2Fucy1zZXJpZiUyNyUzRSVFMiU5OCU5NSUzQyUyRnRleHQlM0UlM0MlMkZzdmclM0UiLAogICAgICAic2l6ZXMiOiAiMTkyeDE5MiIsCiAgICAgICJ0eXBlIjogImltYWdlL3N2Zyt4bWwiCiAgICB9LAogICAgewogICAgICAic3JjIjogImRhdGE6aW1hZ2Uvc3ZnK3htbCwlM0NzdmclMjB4bWxucyUzRCUyN2h0dHAlM0ElMkYlMkZ3d3cudzMub3JnJTJGMjAwMCUyRnN2ZyUyNyUyMHdpZHRoJTNEJTI3NTEyJTI3JTIwaGVpZ2h0JTNEJTI3NTEyJTI3JTIwdmlld0JveCUzRCUyNzAlMjAwJTIwNTEyJTIwNTEyJTI3JTNFJTNDZGVmcyUzRSUzQ2xpbmVhckdyYWRpZW50JTIwaWQlM0QlMjdhJTI3JTIweDElM0QlMjcwJTI1JTI3JTIweTElM0QlMjcwJTI1JTI3JTIweDIlM0QlMjcxMDAlMjUlMjclMjB5MiUzRCUyNzEwMCUyNSUyNyUzRSUzQ3N0b3AlMjBzdG9wLWNvbG9yJTNEJTI3JTIzMjU2M2ViJTI3JTJGJTNFJTNDc3RvcCUyMG9mZnNldCUzRCUyNzEwMCUyNSUyNyUyMHN0b3AtY29sb3IlM0QlMjclMjMxZDRlZDglMjclMkYlM0UlM0MlMkZsaW5lYXJHcmFkaWVudCUzRSUzQyUyRmRlZnMlM0UlM0NyZWN0JTIwd2lkdGglM0QlMjc1MTIlMjclMjBoZWlnaHQlM0QlMjc1MTIlMjclMjByeCUzRCUyNzY0JTI3JTIwZmlsbCUzRCUyN3VybCglMjUyM2EpJTI3JTJGJTNFJTNDdGV4dCUyMHglM0QlMjcyNTYlMjclMjB5JTNEJTI3MzAwJTI3JTIwdGV4dC1hbmNob3IlM0QlMjdtaWRkbGUlMjclMjBmaWxsJTNEJTI3JTIzZmZmZmZmJTI3JTIwZm9udC1zaXplJTNEJTI3MTI4JTI3JTIwZm9udC1mYW1pbHklM0QlMjdzYW5zLXNlcmlmJTI3JTNFJUUyJTk4JTk1JTNDJTJGdGV4dCUzRSUzQyUyRnN2ZyUzRSIsCiAgICAgICJzaXplcyI6ICI1MTJ4NTEyIiwKICAgICAgInR5cGUiOiAiaW1hZ2Uvc3ZnK3htbCIKICAgIH0KICBdLAogICJjYXRlZ29yaWVzIjogWyJmb29kIiwgImxpZmVzdHlsZSIsICJwcm9kdWN0aXZpdHkiXQp9">
+    
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180' viewBox='0 0 180 180'%3E%3Cdefs%3E%3ClinearGradient id='a' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop stop-color='%232563eb'/%3E%3Cstop offset='100%25' stop-color='%231d4ed8'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='180' height='180' rx='24' fill='url(%23a)'/%3E%3Ctext x='90' y='100' text-anchor='middle' fill='%23ffffff' font-size='48' font-family='sans-serif'%3E☕%3C/text%3E%3C/svg%3E">
+    
+    <!-- Theme colors -->
+    <meta name="theme-color" content="#2563eb">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Roast Tracker">
+    
+    <style>
+        /* user-friendly PWA elements CSS variables */
+        :root {
+            --color-primary: #2563eb;
+            --color-primary-hover: #1d4ed8;
+            --color-primary-light: #dbeafe;
+            --color-success: #059669;
+            --color-success-light: #d1fae5;
+            --color-warning: #d97706;
+            --color-warning-light: #fef3c7;
+            --color-danger: #dc2626;
+            --color-info: #0891b2;
+            --color-info-light: #cffafe;
+            --color-text-primary: #111827;
+            --color-text-secondary: #6b7280;
+            --color-background: #ffffff;
+            --color-surface: #f9fafb;
+            --color-border: #e5e7eb;
+            
+            --spacing-xs: 4px;
+            --spacing-sm: 8px;
+            --spacing-md: 16px;
+            --spacing-lg: 24px;
+            --spacing-xl: 32px;
+            --spacing-2xl: 48px;
+            --spacing-3xl: 64px;
+            
+            --touch-target-sm: 44px;
+            --touch-target-md: 60px;
+            --touch-target-lg: 80px;
+            
+            --text-xs: 0.75rem;
+            --text-sm: 0.875rem;
+            --text-base: 1rem;
+            --text-lg: 1.125rem;
+            --text-xl: 1.25rem;
+            --text-2xl: 1.5rem;
+            --text-3xl: 1.875rem;
+            --text-4xl: 2.25rem;
+            
+            --border-radius: 8px;
+            --border-radius-lg: 12px;
+            --border-radius-xl: 16px;
+            
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            
+            --z-toast: 1000;
+            --z-modal: 100;
+            --z-install-prompt: 200;
+        }
+        
+        @media (prefers-contrast: high) {
+            :root {
+                --color-text-primary: #000000;
+                --color-background: #ffffff;
+                --color-primary: #0000ff;
+                --color-border: #000000;
+                --color-surface: #f0f0f0;
+            }
+        }
+        
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+        
+        /* Base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            font-size: var(--text-base);
+            line-height: 1.6;
+            color: var(--color-text-primary);
+            background-color: var(--color-background);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
+        }
+        
+        .app-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        
+        /* Top status bar */
+        .status-bar {
+            background: linear-gradient(135deg, var(--color-primary), var(--color-primary-hover));
+            color: white;
+            padding: var(--spacing-sm) var(--spacing-md);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: var(--text-sm);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .status-info {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+        }
+        
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+        }
+        
+        .status-icon {
+            font-size: var(--text-base);
+        }
+        
+        .connection-status {
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: var(--border-radius);
+            font-size: var(--text-xs);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .connection-status.online {
+            background-color: var(--color-success);
+        }
+        
+        .connection-status.offline {
+            background-color: var(--color-warning);
+            animation: pulse-warning 2s infinite;
+        }
+        
+        .connection-status.sync-pending {
+            background-color: var(--color-info);
+            animation: pulse-info 2s infinite;
+        }
+        
+        @keyframes pulse-warning {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        @keyframes pulse-info {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+        
+        /* Main content */
+        .main-content {
+            flex: 1;
+            padding: var(--spacing-lg);
+            max-width: 768px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        
+        .demo-section {
+            margin-bottom: var(--spacing-3xl);
+        }
+        
+        .section-title {
+            font-size: var(--text-2xl);
+            font-weight: 700;
+            color: var(--color-text-primary);
+            margin-bottom: var(--spacing-lg);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+        }
+        
+        .section-icon {
+            font-size: var(--text-3xl);
+        }
+        
+        .section-description {
+            font-size: var(--text-lg);
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-xl);
+        }
+        
+        /* Install prompt */
+        .install-prompt {
+            position: fixed;
+            bottom: var(--spacing-lg);
+            left: var(--spacing-lg);
+            right: var(--spacing-lg);
+            background-color: var(--color-background);
+            border: 2px solid var(--color-primary);
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-xl);
+            padding: var(--spacing-lg);
+            z-index: var(--z-install-prompt);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s ease;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        
+        .install-prompt.visible {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .install-prompt-header {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        .install-prompt-icon {
+            font-size: var(--text-3xl);
+            flex-shrink: 0;
+            margin-top: var(--spacing-xs);
+        }
+        
+        .install-prompt-content {
+            flex: 1;
+        }
+        
+        .install-prompt-title {
+            font-size: var(--text-xl);
+            font-weight: 700;
+            color: var(--color-text-primary);
+            margin-bottom: var(--spacing-sm);
+        }
+        
+        .install-prompt-description {
+            font-size: var(--text-base);
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-sm);
+        }
+        
+        .install-prompt-benefits {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--spacing-xs);
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        .benefit-tag {
+            font-size: var(--text-xs);
+            background-color: var(--color-primary-light);
+            color: var(--color-primary);
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: 12px;
+            font-weight: 500;
+        }
+        
+        .install-prompt-actions {
+            display: flex;
+            gap: var(--spacing-md);
+        }
+        
+        .install-prompt-close {
+            position: absolute;
+            top: var(--spacing-md);
+            right: var(--spacing-md);
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: none;
+            color: var(--color-text-secondary);
+            font-size: var(--text-lg);
+            cursor: pointer;
+            border-radius: var(--border-radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.15s ease;
+        }
+        
+        .install-prompt-close:hover {
+            background-color: var(--color-surface);
+            color: var(--color-text-primary);
+        }
+        
+        .install-prompt-close:focus {
+            outline: 2px solid var(--color-primary);
+            outline-offset: 2px;
+        }
+        
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-sm);
+            padding: var(--spacing-md) var(--spacing-lg);
+            min-height: var(--touch-target-md);
+            border: 2px solid transparent;
+            border-radius: var(--border-radius);
+            font-size: var(--text-base);
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            position: relative;
+            outline: none;
+            user-select: none;
+        }
+        
+        .btn:focus {
+            outline: 3px solid var(--color-primary);
+            outline-offset: 2px;
+        }
+        
+        .btn:active {
+            transform: scale(0.98);
+        }
+        
+        .btn-primary {
+            background-color: var(--color-primary);
+            color: white;
+            border-color: var(--color-primary);
+        }
+        
+        .btn-primary:hover:not(:disabled) {
+            background-color: var(--color-primary-hover);
+            border-color: var(--color-primary-hover);
+        }
+        
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--color-text-secondary);
+            border-color: var(--color-border);
+        }
+        
+        .btn-secondary:hover:not(:disabled) {
+            background-color: var(--color-surface);
+            color: var(--color-text-primary);
+            border-color: var(--color-text-secondary);
+        }
+        
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+        
+        /* Feature cards */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--spacing-lg);
+            margin-bottom: var(--spacing-xl);
+        }
+        
+        .feature-card {
+            background-color: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-xl);
+            text-align: center;
+            transition: all 0.15s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--color-primary);
+        }
+        
+        .feature-icon {
+            font-size: var(--text-4xl);
+            margin-bottom: var(--spacing-lg);
+            display: block;
+        }
+        
+        .feature-title {
+            font-size: var(--text-xl);
+            font-weight: 600;
+            color: var(--color-text-primary);
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .feature-description {
+            font-size: var(--text-base);
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        /* Toast notifications */
+        .toast-container {
+            position: fixed;
+            top: var(--spacing-lg);
+            right: var(--spacing-lg);
+            z-index: var(--z-toast);
+            max-width: 400px;
+            width: 100%;
+        }
+        
+        .toast {
+            background-color: var(--color-background);
+            border: 1px solid var(--color-border);
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-lg);
+            padding: var(--spacing-lg);
+            margin-bottom: var(--spacing-md);
+            transform: translateX(100%);
+            opacity: 0;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: flex-start;
+            gap: var(--spacing-md);
+        }
+        
+        .toast.visible {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        
+        .toast.success {
+            border-color: var(--color-success);
+            background-color: var(--color-success-light);
+        }
+        
+        .toast.warning {
+            border-color: var(--color-warning);
+            background-color: var(--color-warning-light);
+        }
+        
+        .toast.info {
+            border-color: var(--color-info);
+            background-color: var(--color-info-light);
+        }
+        
+        .toast-icon {
+            font-size: var(--text-xl);
+            flex-shrink: 0;
+            margin-top: var(--spacing-xs);
+        }
+        
+        .toast-content {
+            flex: 1;
+        }
+        
+        .toast-title {
+            font-size: var(--text-base);
+            font-weight: 600;
+            color: var(--color-text-primary);
+            margin-bottom: var(--spacing-xs);
+        }
+        
+        .toast-message {
+            font-size: var(--text-sm);
+            color: var(--color-text-secondary);
+        }
+        
+        .toast-close {
+            width: 24px;
+            height: 24px;
+            border: none;
+            background: none;
+            color: var(--color-text-secondary);
+            font-size: var(--text-sm);
+            cursor: pointer;
+            border-radius: var(--border-radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.15s ease;
+            flex-shrink: 0;
+        }
+        
+        .toast-close:hover {
+            background-color: rgba(0, 0, 0, 0.1);
+            color: var(--color-text-primary);
+        }
+        
+        /* Offline indicator */
+        .offline-banner {
+            background-color: var(--color-warning);
+            color: white;
+            padding: var(--spacing-md);
+            text-align: center;
+            font-size: var(--text-sm);
+            font-weight: 600;
+            position: sticky;
+            top: var(--spacing-2xl);
+            z-index: 40;
+            transform: translateY(-100%);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+        
+        .offline-banner.visible {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        /* Sync indicator */
+        .sync-indicator {
+            position: fixed;
+            bottom: var(--spacing-lg);
+            right: var(--spacing-lg);
+            width: var(--touch-target-md);
+            height: var(--touch-target-md);
+            background-color: var(--color-info);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: var(--text-lg);
+            box-shadow: var(--shadow-md);
+            z-index: var(--z-modal);
+            cursor: pointer;
+            transition: all 0.15s ease;
+            transform: scale(0);
+            opacity: 0;
+        }
+        
+        .sync-indicator.visible {
+            transform: scale(1);
+            opacity: 1;
+        }
+        
+        .sync-indicator.syncing {
+            animation: spin 1s linear infinite;
+        }
+        
+        .sync-indicator:hover {
+            transform: scale(1.1);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Responsive design */
+        @media (max-width: 480px) {
+            .main-content {
+                padding: var(--spacing-md);
+            }
+            
+            .install-prompt {
+                left: var(--spacing-md);
+                right: var(--spacing-md);
+            }
+            
+            .toast-container {
+                left: var(--spacing-md);
+                right: var(--spacing-md);
+                top: var(--spacing-md);
+            }
+            
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .install-prompt-actions {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+        
+        /* Accessibility helpers */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+        
+        /* Skip links */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 6px;
+            background: var(--color-primary);
+            color: white;
+            padding: 8px;
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            font-size: var(--text-sm);
+            z-index: var(--z-toast);
+        }
+        
+        .skip-link:focus {
+            top: 6px;
+        }
+        
+        /* Demo controls */
+        .demo-controls {
+            background-color: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-lg);
+            margin-bottom: var(--spacing-xl);
+        }
+        
+        .demo-controls-title {
+            font-size: var(--text-lg);
+            font-weight: 600;
+            color: var(--color-text-primary);
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .demo-button-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--spacing-md);
+        }
+    </style>
+</head>
+<body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    
+    <div class="app-container" id="appContainer">
+        <!-- Status bar -->
+        <div class="status-bar">
+            <div class="status-info">
+                <div class="status-item">
+                    <span class="status-icon" aria-hidden="true">📱</span>
+                    <span>PWA Mode</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-icon" aria-hidden="true">🔋</span>
+                    <span id="batteryLevel">--</span>
+                </div>
+            </div>
+            <div class="connection-status online" id="connectionStatus">Online</div>
+        </div>
+        
+        <!-- Offline banner -->
+        <div class="offline-banner" id="offlineBanner">
+            📶 You're offline. Your roast data will sync when you're back online.
+        </div>
+        
+        <!-- Main content -->
+        <main class="main-content" id="main-content">
+            <div class="demo-section">
+                <h1 class="section-title">
+                    <span class="section-icon" aria-hidden="true">📱</span>
+                    PWA Features Demo
+                </h1>
+                <p class="section-description">
+                    Experience the Progressive Web App features of the user-friendly Coffee Roast Tracker. 
+                    This prototype demonstrates installation prompts, offline support, and app-like functionality.
+                </p>
+                
+                <!-- Demo controls -->
+                <div class="demo-controls">
+                    <h2 class="demo-controls-title">Try These Features:</h2>
+                    <div class="demo-button-grid">
+                        <button class="btn btn-primary" onclick="pwaApp.showInstallPrompt()">
+                            📥 Show Install Prompt
+                        </button>
+                        <button class="btn btn-secondary" onclick="pwaApp.toggleConnection()">
+                            📶 Toggle Online/Offline
+                        </button>
+                        <button class="btn btn-secondary" onclick="pwaApp.simulateSync()">
+                            🔄 Simulate Data Sync
+                        </button>
+                        <button class="btn btn-secondary" onclick="pwaApp.showPushNotification()">
+                            🔔 Show Push Notification
+                        </button>
+                        <button class="btn btn-secondary" onclick="pwaApp.simulateBackground()">
+                            🌙 Simulate Background Mode
+                        </button>
+                        <button class="btn btn-secondary" onclick="pwaApp.showUpdateAvailable()">
+                            ⬆️ Show App Update
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- PWA Features -->
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <span class="feature-icon" aria-hidden="true">📥</span>
+                        <h3 class="feature-title">App Installation</h3>
+                        <p class="feature-description">
+                            Install directly to your home screen for app-like experience with offline support and faster loading.
+                        </p>
+                        <button class="btn btn-primary" onclick="pwaApp.showInstallPrompt()">
+                            Install App
+                        </button>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <span class="feature-icon" aria-hidden="true">📶</span>
+                        <h3 class="feature-title">Offline Support</h3>
+                        <p class="feature-description">
+                            Continue roasting even without internet. Your data syncs automatically when you're back online.
+                        </p>
+                        <button class="btn btn-secondary" onclick="pwaApp.toggleConnection()">
+                            Test Offline Mode
+                        </button>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <span class="feature-icon" aria-hidden="true">🔔</span>
+                        <h3 class="feature-title">Push Notifications</h3>
+                        <p class="feature-description">
+                            Get timely roast phase notifications and reminders, even when the app is in the background.
+                        </p>
+                        <button class="btn btn-secondary" onclick="pwaApp.requestNotifications()">
+                            Enable Notifications
+                        </button>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <span class="feature-icon" aria-hidden="true">🔄</span>
+                        <h3 class="feature-title">Background Sync</h3>
+                        <p class="feature-description">
+                            Your roast data automatically syncs in the background, ensuring you never lose progress.
+                        </p>
+                        <button class="btn btn-secondary" onclick="pwaApp.simulateSync()">
+                            Sync Data Now
+                        </button>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <span class="feature-icon" aria-hidden="true">⬆️</span>
+                        <h3 class="feature-title">Auto Updates</h3>
+                        <p class="feature-description">
+                            Get the latest features and improvements automatically, with gentle prompts to refresh.
+                        </p>
+                        <button class="btn btn-secondary" onclick="pwaApp.showUpdateAvailable()">
+                            Check for Updates
+                        </button>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <span class="feature-icon" aria-hidden="true">🚀</span>
+                        <h3 class="feature-title">Native Performance</h3>
+                        <p class="feature-description">
+                            Lightning-fast startup and smooth interactions that rival native mobile apps.
+                        </p>
+                        <button class="btn btn-secondary" onclick="pwaApp.showPerformanceStats()">
+                            View Performance
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <!-- Install prompt -->
+        <div class="install-prompt" id="installPrompt" role="dialog" aria-labelledby="install-prompt-title" aria-modal="true">
+            <button class="install-prompt-close" onclick="pwaApp.hideInstallPrompt()" aria-label="Close install prompt">✕</button>
+            
+            <div class="install-prompt-header">
+                <div class="install-prompt-icon" aria-hidden="true">☕</div>
+                <div class="install-prompt-content">
+                    <h2 class="install-prompt-title" id="install-prompt-title">Install Coffee Roast Tracker</h2>
+                    <p class="install-prompt-description">
+                        Get the full app experience with offline roasting support and faster performance.
+                    </p>
+                    
+                    <div class="install-prompt-benefits">
+                        <span class="benefit-tag">Offline roasting</span>
+                        <span class="benefit-tag">Push notifications</span>
+                        <span class="benefit-tag">Home screen access</span>
+                        <span class="benefit-tag">Faster loading</span>
+                        <span class="benefit-tag">Background sync</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="install-prompt-actions">
+                <button class="btn btn-primary" onclick="pwaApp.installApp()">
+                    Install Now
+                </button>
+                <button class="btn btn-secondary" onclick="pwaApp.hideInstallPrompt()">
+                    Maybe Later
+                </button>
+            </div>
+        </div>
+        
+        <!-- Sync indicator -->
+        <div class="sync-indicator" id="syncIndicator" title="Background sync in progress" onclick="pwaApp.showSyncStatus()">
+            <span aria-hidden="true">🔄</span>
+            <span class="sr-only">Syncing data</span>
+        </div>
+    </div>
+    
+    <!-- Toast container -->
+    <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+    <!-- Screen reader announcements -->
+    <div id="announcements" aria-live="polite" aria-atomic="true" class="sr-only"></div>
+
+    <script>
+        /**
+         * User-Friendly PWA Elements Prototype
+         * 
+         * Features:
+         * - Installation prompts with clear benefits
+         * - Offline support with visual indicators
+         * - Background sync with progress feedback
+         * - Push notifications for roast timing
+         * - App update prompts with gentle UX
+         * - Performance monitoring and feedback
+         */
+        
+        class UserFriendlyPWAElements {
+            constructor() {
+                this.state = {
+                    isOnline: navigator.onLine,
+                    isInstalled: this.checkIfInstalled(),
+                    notificationsEnabled: false,
+                    syncPending: false,
+                    updateAvailable: false,
+                    batteryLevel: null
+                };
+                
+                this.installPromptEvent = null;
+                this.initializeElements();
+                this.bindEventListeners();
+                this.setupPWAFeatures();
+                this.updateUI();
+                this.announceInitialState();
+            }
+            
+            initializeElements() {
+                this.elements = {
+                    connectionStatus: document.getElementById('connectionStatus'),
+                    offlineBanner: document.getElementById('offlineBanner'),
+                    installPrompt: document.getElementById('installPrompt'),
+                    syncIndicator: document.getElementById('syncIndicator'),
+                    toastContainer: document.getElementById('toastContainer'),
+                    batteryLevel: document.getElementById('batteryLevel'),
+                    announcements: document.getElementById('announcements')
+                };
+            }
+            
+            bindEventListeners() {
+                // Online/offline events
+                window.addEventListener('online', () => {
+                    this.state.isOnline = true;
+                    this.updateConnectionStatus();
+                    this.showToast('success', 'Back Online', 'Connection restored. Syncing data...', 3000);
+                    this.syncPendingData();
+                });
+                
+                window.addEventListener('offline', () => {
+                    this.state.isOnline = false;
+                    this.updateConnectionStatus();
+                    this.showToast('warning', 'Offline Mode', 'Working offline. Data will sync when online.', 5000);
+                });
+                
+                // Install prompt event
+                window.addEventListener('beforeinstallprompt', (e) => {
+                    e.preventDefault();
+                    this.installPromptEvent = e;
+                    console.log('Install prompt available');
+                });
+                
+                // App installed event
+                window.addEventListener('appinstalled', () => {
+                    this.state.isInstalled = true;
+                    this.showToast('success', 'App Installed!', 'Coffee Roast Tracker is now available on your home screen.', 5000);
+                    this.hideInstallPrompt();
+                });
+                
+                // Service worker updates
+                if ('serviceWorker' in navigator) {
+                    navigator.serviceWorker.addEventListener('message', (event) => {
+                        if (event.data && event.data.type === 'SKIP_WAITING') {
+                            this.showUpdatePrompt();
+                        }
+                    });
+                }
+                
+                // Page visibility changes
+                document.addEventListener('visibilitychange', () => {
+                    if (document.visibilityState === 'visible') {
+                        this.handleAppForeground();
+                    } else {
+                        this.handleAppBackground();
+                    }
+                });
+                
+                // Keyboard shortcuts
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape') {
+                        this.hideInstallPrompt();
+                        this.closeAllToasts();
+                    }
+                });
+            }
+            
+            setupPWAFeatures() {
+                // Register service worker (simulated)
+                this.registerServiceWorker();
+                
+                // Setup battery monitoring
+                this.setupBatteryMonitoring();
+                
+                // Check for install prompt eligibility
+                this.checkInstallEligibility();
+                
+                // Setup push notifications
+                this.setupPushNotifications();
+                
+                // Simulate periodic sync
+                this.setupPeriodicSync();
+            }
+            
+            registerServiceWorker() {
+                // Simulate service worker registration
+                console.log('Service worker would be registered here for offline support');
+                
+                // Simulate caching strategy
+                setTimeout(() => {
+                    this.showToast('info', 'Offline Ready', 'App resources cached for offline use.', 3000);
+                }, 2000);
+            }
+            
+            setupBatteryMonitoring() {
+                if ('getBattery' in navigator) {
+                    navigator.getBattery().then((battery) => {
+                        this.updateBatteryLevel(battery.level);
+                        
+                        battery.addEventListener('levelchange', () => {
+                            this.updateBatteryLevel(battery.level);
+                        });
+                        
+                        battery.addEventListener('chargingchange', () => {
+                            if (battery.charging && battery.level < 0.2) {
+                                this.showToast('success', 'Charging', 'Battery is now charging.', 2000);
+                            }
+                        });
+                    });
+                } else {
+                    // Fallback for browsers without Battery API
+                    this.elements.batteryLevel.textContent = 'N/A';
+                }
+            }
+            
+            setupPushNotifications() {
+                if ('Notification' in window) {
+                    this.state.notificationsEnabled = Notification.permission === 'granted';
+                }
+            }
+            
+            setupPeriodicSync() {
+                // Simulate periodic background sync
+                setInterval(() => {
+                    if (this.state.isOnline && this.state.syncPending) {
+                        this.performBackgroundSync();
+                    }
+                }, 30000); // Check every 30 seconds
+            }
+            
+            checkIfInstalled() {
+                // Check if app is installed (various methods)
+                if (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) {
+                    return true;
+                }
+                
+                if (window.navigator.standalone === true) {
+                    return true;
+                }
+                
+                return false;
+            }
+            
+            checkInstallEligibility() {
+                // Show install prompt after user has used the app
+                if (!this.state.isInstalled) {
+                    setTimeout(() => {
+                        // Simulate install prompt conditions
+                        this.showInstallPromptAfterDelay();
+                    }, 10000); // Show after 10 seconds for demo
+                }
+            }
+            
+            showInstallPromptAfterDelay() {
+                if (!this.state.isInstalled && !document.hidden) {
+                    this.showToast('info', 'Install Available', 'Install the app for the best roasting experience!', 5000);
+                }
+            }
+            
+            // Public methods for UI interactions
+            showInstallPrompt() {
+                this.elements.installPrompt.classList.add('visible');
+                
+                // Focus first button
+                setTimeout(() => {
+                    const firstButton = this.elements.installPrompt.querySelector('.btn');
+                    if (firstButton) {
+                        firstButton.focus();
+                    }
+                }, 100);
+                
+                this.announce('App install prompt opened');
+                
+                // Prevent body scroll
+                document.body.style.overflow = 'hidden';
+            }
+            
+            hideInstallPrompt() {
+                this.elements.installPrompt.classList.remove('visible');
+                this.announce('Install prompt closed');
+                
+                // Restore body scroll
+                document.body.style.overflow = '';
+            }
+            
+            async installApp() {
+                if (this.installPromptEvent) {
+                    try {
+                        const result = await this.installPromptEvent.prompt();
+                        
+                        if (result.outcome === 'accepted') {
+                            this.showToast('success', 'Installing...', 'App is being installed to your device.', 3000);
+                        } else {
+                            this.showToast('info', 'Install Cancelled', 'You can install the app anytime from your browser menu.', 3000);
+                        }
+                        
+                        this.installPromptEvent = null;
+                        this.hideInstallPrompt();
+                    } catch (error) {
+                        console.error('Install failed:', error);
+                        this.showToast('warning', 'Install Error', 'Could not install app. Try using browser menu.', 5000);
+                    }
+                } else {
+                    // Fallback for browsers without install prompt
+                    this.showToast('info', 'Manual Install', 'Use your browser\'s "Add to Home Screen" option to install.', 5000);
+                    this.hideInstallPrompt();
+                }
+            }
+            
+            toggleConnection() {
+                this.state.isOnline = !this.state.isOnline;
+                this.updateConnectionStatus();
+                
+                if (this.state.isOnline) {
+                    this.showToast('success', 'Back Online', 'Connection restored. Syncing data...', 3000);
+                    this.syncPendingData();
+                } else {
+                    this.showToast('warning', 'Offline Mode', 'Working offline. Data will sync when online.', 3000);
+                    this.state.syncPending = true;
+                }
+            }
+            
+            simulateSync() {
+                if (!this.state.isOnline) {
+                    this.showToast('warning', 'Offline', 'Cannot sync while offline. Data will sync when online.', 3000);
+                    this.state.syncPending = true;
+                    return;
+                }
+                
+                this.showSyncIndicator();
+                this.showToast('info', 'Syncing...', 'Uploading your roast data to the cloud.', 2000);
+                
+                // Simulate sync process
+                setTimeout(() => {
+                    this.hideSyncIndicator();
+                    this.showToast('success', 'Sync Complete', 'All your data is backed up and synchronized.', 3000);
+                    this.state.syncPending = false;
+                }, 3000);
+            }
+            
+            async requestNotifications() {
+                if (!('Notification' in window)) {
+                    this.showToast('warning', 'Not Supported', 'Push notifications are not supported in this browser.', 5000);
+                    return;
+                }
+                
+                try {
+                    const permission = await Notification.requestPermission();
+                    
+                    if (permission === 'granted') {
+                        this.state.notificationsEnabled = true;
+                        this.showToast('success', 'Notifications Enabled', 'You\'ll receive roast timing alerts and updates.', 3000);
+                        
+                        // Show sample notification
+                        setTimeout(() => {
+                            this.showPushNotification();
+                        }, 2000);
+                    } else {
+                        this.showToast('warning', 'Notifications Disabled', 'Enable in browser settings to receive roast alerts.', 5000);
+                    }
+                } catch (error) {
+                    console.error('Notification permission error:', error);
+                    this.showToast('warning', 'Error', 'Could not enable notifications.', 3000);
+                }
+            }
+            
+            showPushNotification() {
+                if (!this.state.notificationsEnabled || !('Notification' in window)) {
+                    this.showToast('info', 'Demo Notification', 'This would be a push notification about your roast progress.', 4000);
+                    return;
+                }
+                
+                const notification = new Notification('☕ First Crack Started!', {
+                    body: 'Your Ethiopian Yirgacheffe has reached first crack. Time to pay attention!',
+                    icon: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64"%3E%3Crect width="64" height="64" rx="8" fill="%232563eb"/%3E%3Ctext x="32" y="40" text-anchor="middle" fill="white" font-size="24"%3E☕%3C/text%3E%3C/svg%3E',
+                    badge: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64"%3E%3Crect width="64" height="64" rx="8" fill="%232563eb"/%3E%3Ctext x="32" y="40" text-anchor="middle" fill="white" font-size="24"%3E☕%3C/text%3E%3C/svg%3E',
+                    vibrate: [200, 100, 200],
+                    actions: [
+                        { action: 'view', title: 'View Roast', icon: '/icons/view.png' },
+                        { action: 'dismiss', title: 'Dismiss', icon: '/icons/close.png' }
+                    ],
+                    data: { roastId: '12345', phase: 'firstCrack' }
+                });
+                
+                notification.onclick = () => {
+                    window.focus();
+                    notification.close();
+                };
+                
+                // Auto-close after 10 seconds
+                setTimeout(() => notification.close(), 10000);
+            }
+            
+            simulateBackground() {
+                this.showToast('info', 'Background Mode', 'App continues to track your roast even when in background.', 4000);
+                
+                // Simulate background sync
+                setTimeout(() => {
+                    if (this.state.notificationsEnabled) {
+                        this.showPushNotification();
+                    } else {
+                        this.showToast('info', 'Background Activity', 'Roast progress saved. Enable notifications for alerts.', 3000);
+                    }
+                }, 3000);
+            }
+            
+            showUpdateAvailable() {
+                this.state.updateAvailable = true;
+                
+                const toast = this.createToast('info', 'Update Available', 'A new version is ready. Refresh to get the latest features.', 0);
+                
+                // Add update action button
+                const actionButton = document.createElement('button');
+                actionButton.className = 'btn btn-primary';
+                actionButton.style.marginTop = 'var(--spacing-md)';
+                actionButton.textContent = 'Update Now';
+                actionButton.onclick = () => {
+                    this.applyUpdate();
+                    this.closeToast(toast);
+                };
+                
+                toast.querySelector('.toast-content').appendChild(actionButton);
+                this.elements.toastContainer.appendChild(toast);
+                
+                setTimeout(() => toast.classList.add('visible'), 100);
+            }
+            
+            applyUpdate() {
+                this.showToast('info', 'Updating...', 'Installing the latest version...', 2000);
+                
+                setTimeout(() => {
+                    this.showToast('success', 'Update Complete!', 'You\'re now using the latest version with usability improvements.', 4000);
+                    this.state.updateAvailable = false;
+                }, 2000);
+            }
+            
+            showPerformanceStats() {
+                const stats = {
+                    loadTime: '0.8s',
+                    cacheHitRate: '94%',
+                    offlineCapability: 'Full',
+                    backgroundSync: 'Active'
+                };
+                
+                const message = `Load Time: ${stats.loadTime} • Cache Hit: ${stats.cacheHitRate} • Offline: ${stats.offlineCapability}`;
+                this.showToast('info', 'Performance Stats', message, 6000);
+            }
+            
+            // Helper methods
+            updateConnectionStatus() {
+                const status = this.elements.connectionStatus;
+                
+                if (this.state.isOnline) {
+                    status.className = 'connection-status online';
+                    status.textContent = 'Online';
+                    this.elements.offlineBanner.classList.remove('visible');
+                } else {
+                    status.className = 'connection-status offline';
+                    status.textContent = 'Offline';
+                    this.elements.offlineBanner.classList.add('visible');
+                }
+                
+                if (this.state.syncPending && this.state.isOnline) {
+                    status.className = 'connection-status sync-pending';
+                    status.textContent = 'Syncing';
+                }
+            }
+            
+            syncPendingData() {
+                if (this.state.syncPending && this.state.isOnline) {
+                    this.simulateSync();
+                }
+            }
+            
+            showSyncIndicator() {
+                this.elements.syncIndicator.classList.add('visible', 'syncing');
+            }
+            
+            hideSyncIndicator() {
+                this.elements.syncIndicator.classList.remove('visible', 'syncing');
+            }
+            
+            showSyncStatus() {
+                if (this.state.syncPending) {
+                    this.showToast('info', 'Sync Pending', 'Data will sync when you\'re back online.', 3000);
+                } else {
+                    this.showToast('success', 'Up to Date', 'All your roast data is synchronized.', 2000);
+                }
+            }
+            
+            updateBatteryLevel(level) {
+                if (level !== null) {
+                    this.state.batteryLevel = level;
+                    const percentage = Math.round(level * 100);
+                    this.elements.batteryLevel.textContent = `${percentage}%`;
+                    
+                    // Show low battery warning
+                    if (percentage < 20 && percentage > 15) {
+                        this.showToast('warning', 'Low Battery', 'Consider plugging in during your roast session.', 4000);
+                    }
+                }
+            }
+            
+            handleAppForeground() {
+                // App came to foreground
+                console.log('App in foreground');
+                
+                // Check for pending syncs
+                if (this.state.syncPending && this.state.isOnline) {
+                    this.syncPendingData();
+                }
+            }
+            
+            handleAppBackground() {
+                // App went to background
+                console.log('App in background');
+                
+                // Could trigger background sync registration here
+            }
+            
+            // Toast system
+            showToast(type, title, message, duration = 5000) {
+                const toast = this.createToast(type, title, message, duration);
+                this.elements.toastContainer.appendChild(toast);
+                
+                // Animate in
+                setTimeout(() => toast.classList.add('visible'), 100);
+                
+                // Auto-remove
+                if (duration > 0) {
+                    setTimeout(() => this.closeToast(toast), duration);
+                }
+                
+                return toast;
+            }
+            
+            createToast(type, title, message, duration) {
+                const toast = document.createElement('div');
+                toast.className = `toast ${type}`;
+                
+                const icons = {
+                    success: '✅',
+                    warning: '⚠️',
+                    info: 'ℹ️',
+                    error: '❌'
+                };
+                
+                toast.innerHTML = `
+                    <div class="toast-icon" aria-hidden="true">${icons[type] || 'ℹ️'}</div>
+                    <div class="toast-content">
+                        <div class="toast-title">${title}</div>
+                        <div class="toast-message">${message}</div>
+                    </div>
+                    <button class="toast-close" onclick="pwaApp.closeToast(this.parentElement)" aria-label="Close notification">✕</button>
+                `;
+                
+                return toast;
+            }
+            
+            closeToast(toast) {
+                toast.classList.remove('visible');
+                setTimeout(() => {
+                    if (toast.parentElement) {
+                        toast.parentElement.removeChild(toast);
+                    }
+                }, 300);
+            }
+            
+            closeAllToasts() {
+                const toasts = this.elements.toastContainer.querySelectorAll('.toast');
+                toasts.forEach(toast => this.closeToast(toast));
+            }
+            
+            updateUI() {
+                this.updateConnectionStatus();
+                
+                // Update install prompt visibility
+                if (this.state.isInstalled) {
+                    this.hideInstallPrompt();
+                }
+                
+                // Update sync indicator
+                if (this.state.syncPending) {
+                    this.showSyncIndicator();
+                } else {
+                    this.hideSyncIndicator();
+                }
+            }
+            
+            announce(message) {
+                this.elements.announcements.textContent = '';
+                setTimeout(() => {
+                    this.elements.announcements.textContent = message;
+                }, 100);
+                
+                setTimeout(() => {
+                    this.elements.announcements.textContent = '';
+                }, 5000);
+            }
+            
+            announceInitialState() {
+                const status = this.state.isOnline ? 'online' : 'offline';
+                const installStatus = this.state.isInstalled ? 'installed as app' : 'running in browser';
+                
+                this.announce(`PWA features loaded. Currently ${status} and ${installStatus}. Use the demo buttons to explore PWA capabilities.`);
+            }
+        }
+        
+        // Initialize PWA elements when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            // Apply system preferences
+            const preferReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            const preferHighContrast = window.matchMedia('(prefers-contrast: high)').matches;
+            
+            if (preferReducedMotion) {
+                document.body.classList.add('reduce-motion');
+            }
+            
+            if (preferHighContrast) {
+                document.body.classList.add('high-contrast');
+            }
+            
+            // Initialize the PWA app
+            window.pwaApp = new UserFriendlyPWAElements();
+        });
+    </script>
+</body>
+</html>

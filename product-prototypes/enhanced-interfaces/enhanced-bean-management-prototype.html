@@ -1,0 +1,2288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced User-Friendly Bean Management - Coffee Roast Tracker</title>
+    <style>
+        /* Enhanced user-friendly CSS variables */
+        :root {
+            --color-primary: #2563eb;
+            --color-primary-hover: #1d4ed8;
+            --color-primary-light: #dbeafe;
+            --color-success: #059669;
+            --color-success-light: #d1fae5;
+            --color-warning: #d97706;
+            --color-warning-light: #fef3c7;
+            --color-danger: #dc2626;
+            --color-info: #0891b2;
+            --color-info-light: #cffafe;
+            --color-text-primary: #111827;
+            --color-text-secondary: #6b7280;
+            --color-text-muted: #9ca3af;
+            --color-background: #ffffff;
+            --color-surface: #f9fafb;
+            --color-surface-elevated: #ffffff;
+            --color-border: #e5e7eb;
+            --color-border-focus: #3b82f6;
+            --color-selected: #dbeafe;
+            --color-selected-border: #3b82f6;
+            --color-hover: #f3f4f6;
+            
+            --spacing-xs: 4px;
+            --spacing-sm: 8px;
+            --spacing-md: 16px;
+            --spacing-lg: 24px;
+            --spacing-xl: 32px;
+            --spacing-2xl: 48px;
+            --spacing-3xl: 64px;
+            
+            --touch-target-sm: 44px;
+            --touch-target-md: 60px;
+            --touch-target-lg: 80px;
+            --touch-target-xl: 100px;
+            
+            --text-xs: 0.75rem;
+            --text-sm: 0.875rem;
+            --text-base: 1rem;
+            --text-lg: 1.125rem;
+            --text-xl: 1.25rem;
+            --text-2xl: 1.5rem;
+            --text-3xl: 1.875rem;
+            --text-4xl: 2.25rem;
+            
+            --radius-sm: 4px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            --radius-xl: 16px;
+            --radius-2xl: 24px;
+            
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        
+        @media (prefers-contrast: high) {
+            :root {
+                --color-text-primary: #000000;
+                --color-background: #ffffff;
+                --color-primary: #0000ff;
+                --color-selected: #ffff00;
+                --color-border: #000000;
+                --color-surface: #f8f8f8;
+            }
+        }
+        
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+        
+        /* Base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            font-size: var(--text-base);
+            line-height: 1.6;
+            color: var(--color-text-primary);
+            background-color: var(--color-background);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: var(--spacing-lg);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background: linear-gradient(135deg, var(--color-background) 0%, var(--color-surface) 100%);
+        }
+        
+        /* Enhanced header with user-friendly design */
+        .header {
+            padding: var(--spacing-xl) 0;
+            border-bottom: 3px solid var(--color-border);
+            margin-bottom: var(--spacing-2xl);
+            background: var(--color-surface-elevated);
+            border-radius: var(--radius-xl);
+            padding: var(--spacing-xl);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .header-main {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        .header-content {
+            flex: 1;
+        }
+        
+        .header-title {
+            font-size: var(--text-3xl);
+            font-weight: 800;
+            color: var(--color-text-primary);
+            margin-bottom: var(--spacing-sm);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+        }
+        
+        .header-subtitle {
+            font-size: var(--text-lg);
+            color: var(--color-text-secondary);
+            font-weight: 500;
+        }
+        
+        .header-stats {
+            display: flex;
+            gap: var(--spacing-lg);
+            margin-top: var(--spacing-lg);
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: var(--spacing-md);
+            background: var(--color-surface);
+            border-radius: var(--radius-lg);
+            border: 2px solid var(--color-border);
+            min-width: 100px;
+        }
+        
+        .stat-value {
+            font-size: var(--text-2xl);
+            font-weight: 700;
+            color: var(--color-primary);
+            display: block;
+        }
+        
+        .stat-label {
+            font-size: var(--text-sm);
+            color: var(--color-text-secondary);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .header-actions {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-md);
+            align-items: flex-end;
+        }
+        
+        /* Progress indicator for multi-step process */
+        .progress-indicator {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: var(--spacing-lg);
+            padding: var(--spacing-lg);
+            background: var(--color-surface);
+            border-radius: var(--radius-lg);
+            border: 2px solid var(--color-border);
+            margin-bottom: var(--spacing-xl);
+        }
+        
+        .progress-step {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            padding: var(--spacing-md);
+            border-radius: var(--radius-md);
+            font-size: var(--text-sm);
+            font-weight: 600;
+            transition: all 0.15s ease;
+        }
+        
+        .progress-step.active {
+            background: var(--color-primary);
+            color: white;
+            box-shadow: var(--shadow-md);
+        }
+        
+        .progress-step.completed {
+            background: var(--color-success);
+            color: white;
+        }
+        
+        .progress-step.upcoming {
+            color: var(--color-text-secondary);
+            background: transparent;
+        }
+        
+        .progress-icon {
+            font-size: var(--text-lg);
+        }
+        
+        /* Enhanced mode selector for complexity levels */
+        .mode-selector {
+            display: flex;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-2xl);
+            padding: var(--spacing-sm);
+            background: var(--color-surface);
+            border-radius: var(--radius-xl);
+            border: 3px solid var(--color-border);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .mode-button {
+            flex: 1;
+            padding: var(--spacing-lg) var(--spacing-xl);
+            border: 3px solid transparent;
+            border-radius: var(--radius-lg);
+            background: transparent;
+            color: var(--color-text-secondary);
+            font-size: var(--text-base);
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            text-align: center;
+            min-height: var(--touch-target-lg);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+        
+        .mode-button:hover {
+            background: var(--color-hover);
+            color: var(--color-text-primary);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .mode-button.active {
+            background: linear-gradient(135deg, var(--color-primary), var(--color-primary-hover));
+            color: white;
+            border-color: var(--color-primary);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .mode-button:focus {
+            outline: 4px solid var(--color-border-focus);
+            outline-offset: 2px;
+        }
+        
+        .mode-icon {
+            font-size: var(--text-2xl);
+        }
+        
+        .mode-title {
+            font-size: var(--text-lg);
+            font-weight: 800;
+            margin-bottom: var(--spacing-xs);
+        }
+        
+        .mode-description {
+            font-size: var(--text-xs);
+            opacity: 0.9;
+            line-height: 1.3;
+        }
+        
+        /* Enhanced search and filter section */
+        .controls-section {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-lg);
+            margin-bottom: var(--spacing-2xl);
+        }
+        
+        .search-section {
+            position: relative;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: var(--spacing-lg) var(--spacing-2xl) var(--spacing-lg) var(--spacing-3xl);
+            font-size: var(--text-xl);
+            border: 3px solid var(--color-border);
+            border-radius: var(--radius-xl);
+            background: var(--color-surface-elevated);
+            color: var(--color-text-primary);
+            min-height: var(--touch-target-lg);
+            box-shadow: var(--shadow-md);
+            transition: all 0.15s ease;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: var(--color-border-focus);
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .search-input::placeholder {
+            color: var(--color-text-secondary);
+        }
+        
+        .search-icon {
+            position: absolute;
+            left: var(--spacing-lg);
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: var(--text-xl);
+            color: var(--color-text-secondary);
+            pointer-events: none;
+        }
+        
+        .search-clear {
+            position: absolute;
+            right: var(--spacing-lg);
+            top: 50%;
+            transform: translateY(-50%);
+            width: var(--touch-target-sm);
+            height: var(--touch-target-sm);
+            border: none;
+            background: var(--color-text-secondary);
+            color: white;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: var(--text-sm);
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .search-clear.visible {
+            display: flex;
+        }
+        
+        .search-clear:hover {
+            background: var(--color-text-primary);
+        }
+        
+        /* Quick filters */
+        .quick-filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--spacing-sm);
+            margin-top: var(--spacing-lg);
+        }
+        
+        .filter-chip {
+            padding: var(--spacing-sm) var(--spacing-lg);
+            background: var(--color-surface);
+            border: 2px solid var(--color-border);
+            border-radius: var(--radius-2xl);
+            font-size: var(--text-sm);
+            font-weight: 600;
+            color: var(--color-text-secondary);
+            cursor: pointer;
+            transition: all 0.15s ease;
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+        }
+        
+        .filter-chip:hover {
+            background: var(--color-hover);
+            border-color: var(--color-primary);
+            transform: translateY(-1px);
+        }
+        
+        .filter-chip.active {
+            background: var(--color-primary-light);
+            border-color: var(--color-primary);
+            color: var(--color-primary);
+        }
+        
+        /* Recently used beans section with enhanced visual design */
+        .recent-section {
+            margin-bottom: var(--spacing-2xl);
+        }
+        
+        .section-title {
+            font-size: var(--text-2xl);
+            font-weight: 700;
+            color: var(--color-text-primary);
+            margin-bottom: var(--spacing-lg);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+        }
+        
+        .section-icon {
+            font-size: var(--text-3xl);
+        }
+        
+        .section-subtitle {
+            font-size: var(--text-base);
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-xl);
+        }
+        
+        .recent-beans {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--spacing-lg);
+        }
+        
+        .recent-bean {
+            padding: var(--spacing-xl);
+            border: 3px solid var(--color-border);
+            border-radius: var(--radius-xl);
+            background: var(--color-surface-elevated);
+            cursor: pointer;
+            transition: all 0.15s ease;
+            box-shadow: var(--shadow-md);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .recent-bean:hover {
+            border-color: var(--color-primary);
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-xl);
+        }
+        
+        .recent-bean:focus {
+            outline: 4px solid var(--color-border-focus);
+            outline-offset: 2px;
+        }
+        
+        .recent-bean.selected {
+            border-color: var(--color-selected-border);
+            background: var(--color-selected);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.25);
+        }
+        
+        .recent-bean.selected::after {
+            content: '✓';
+            position: absolute;
+            top: var(--spacing-lg);
+            right: var(--spacing-lg);
+            width: 40px;
+            height: 40px;
+            background: var(--color-success);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: var(--text-xl);
+            animation: checkmark-bounce 0.5s ease;
+        }
+        
+        @keyframes checkmark-bounce {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+        
+        .bean-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        .bean-name {
+            font-size: var(--text-xl);
+            font-weight: 800;
+            color: var(--color-text-primary);
+            margin-bottom: var(--spacing-xs);
+        }
+        
+        .bean-origin {
+            font-size: var(--text-base);
+            color: var(--color-text-secondary);
+            font-weight: 500;
+        }
+        
+        .bean-date-badge {
+            font-size: var(--text-xs);
+            background: var(--color-info-light);
+            color: var(--color-info);
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: var(--radius-2xl);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .bean-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-md);
+        }
+        
+        .bean-detail {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-xs);
+        }
+        
+        .bean-detail-label {
+            color: var(--color-text-secondary);
+            font-weight: 600;
+            font-size: var(--text-sm);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .bean-detail-value {
+            color: var(--color-text-primary);
+            font-weight: 700;
+            font-size: var(--text-base);
+        }
+        
+        .bean-rating {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+            margin-top: var(--spacing-md);
+        }
+        
+        .rating-stars {
+            font-size: var(--text-lg);
+        }
+        
+        .rating-text {
+            font-size: var(--text-sm);
+            color: var(--color-text-secondary);
+            font-weight: 600;
+        }
+        
+        /* All beans grid with enhanced layout */
+        .all-beans-section {
+            margin-bottom: var(--spacing-2xl);
+        }
+        
+        .view-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        .view-toggle {
+            display: flex;
+            gap: var(--spacing-sm);
+            background: var(--color-surface);
+            padding: var(--spacing-sm);
+            border-radius: var(--radius-lg);
+            border: 2px solid var(--color-border);
+        }
+        
+        .view-option {
+            padding: var(--spacing-md);
+            border: 2px solid transparent;
+            border-radius: var(--radius-md);
+            background: transparent;
+            color: var(--color-text-secondary);
+            cursor: pointer;
+            font-size: var(--text-lg);
+            transition: all 0.15s ease;
+            min-width: var(--touch-target-sm);
+            min-height: var(--touch-target-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .view-option.active {
+            background: var(--color-primary);
+            color: white;
+            border-color: var(--color-primary);
+        }
+        
+        .view-option:hover:not(.active) {
+            background: var(--color-hover);
+            color: var(--color-text-primary);
+        }
+        
+        .sort-controls {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+        }
+        
+        .sort-label {
+            font-size: var(--text-sm);
+            color: var(--color-text-secondary);
+            font-weight: 600;
+        }
+        
+        .sort-select {
+            padding: var(--spacing-sm) var(--spacing-lg);
+            border: 2px solid var(--color-border);
+            border-radius: var(--radius-md);
+            background: var(--color-surface-elevated);
+            color: var(--color-text-primary);
+            font-size: var(--text-base);
+            cursor: pointer;
+        }
+        
+        .sort-select:focus {
+            outline: 2px solid var(--color-border-focus);
+            outline-offset: 2px;
+            border-color: var(--color-border-focus);
+        }
+        
+        /* Bean grid with different view modes */
+        .bean-grid {
+            display: grid;
+            gap: var(--spacing-lg);
+            margin-bottom: var(--spacing-xl);
+        }
+        
+        .bean-grid.grid-view {
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        }
+        
+        .bean-grid.list-view {
+            grid-template-columns: 1fr;
+        }
+        
+        .bean-grid.compact-view {
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        }
+        
+        .bean-card {
+            border: 3px solid var(--color-border);
+            border-radius: var(--radius-xl);
+            padding: var(--spacing-xl);
+            background: var(--color-surface-elevated);
+            cursor: pointer;
+            transition: all 0.15s ease;
+            min-height: var(--touch-target-xl);
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-lg);
+            position: relative;
+            box-shadow: var(--shadow-md);
+        }
+        
+        .bean-card:hover {
+            border-color: var(--color-primary);
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-xl);
+        }
+        
+        .bean-card:focus {
+            outline: 4px solid var(--color-border-focus);
+            outline-offset: 2px;
+        }
+        
+        .bean-card.selected {
+            border-color: var(--color-selected-border);
+            background: var(--color-selected);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.25);
+        }
+        
+        .bean-card.selected::after {
+            content: '✓';
+            position: absolute;
+            top: var(--spacing-lg);
+            right: var(--spacing-lg);
+            width: 32px;
+            height: 32px;
+            background: var(--color-success);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: var(--text-lg);
+            animation: checkmark-bounce 0.5s ease;
+        }
+        
+        .bean-card.list-view {
+            flex-direction: row;
+            align-items: center;
+            gap: var(--spacing-2xl);
+            padding: var(--spacing-lg) var(--spacing-xl);
+        }
+        
+        .bean-card.compact-view {
+            padding: var(--spacing-lg);
+            gap: var(--spacing-md);
+        }
+        
+        .bean-card.compact-view .bean-name {
+            font-size: var(--text-lg);
+        }
+        
+        /* Bean image placeholder */
+        .bean-image {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #8b4513, #d2691e);
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: var(--text-2xl);
+            flex-shrink: 0;
+            box-shadow: var(--shadow-md);
+        }
+        
+        .bean-card.list-view .bean-image {
+            width: 60px;
+            height: 60px;
+            font-size: var(--text-xl);
+        }
+        
+        .bean-card.compact-view .bean-image {
+            width: 50px;
+            height: 50px;
+            font-size: var(--text-lg);
+            align-self: flex-start;
+        }
+        
+        /* Enhanced action buttons */
+        .action-section {
+            margin-top: auto;
+            padding-top: var(--spacing-2xl);
+            border-top: 3px solid var(--color-border);
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-lg);
+            background: var(--color-surface-elevated);
+            border-radius: var(--radius-xl);
+            padding: var(--spacing-2xl);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .primary-actions {
+            display: flex;
+            gap: var(--spacing-lg);
+        }
+        
+        .secondary-actions {
+            display: flex;
+            justify-content: center;
+            gap: var(--spacing-lg);
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-md);
+            padding: var(--spacing-lg) var(--spacing-2xl);
+            min-height: var(--touch-target-lg);
+            border: 3px solid transparent;
+            border-radius: var(--radius-xl);
+            font-size: var(--text-lg);
+            font-weight: 700;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            position: relative;
+            outline: none;
+            user-select: none;
+            text-align: center;
+        }
+        
+        .btn:focus {
+            outline: 4px solid var(--color-border-focus);
+            outline-offset: 3px;
+        }
+        
+        .btn:active {
+            transform: scale(0.96);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--color-primary), var(--color-primary-hover));
+            color: white;
+            border-color: var(--color-primary);
+            box-shadow: var(--shadow-lg);
+            flex: 1;
+        }
+        
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-xl);
+        }
+        
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+        
+        .btn-secondary {
+            background: var(--color-surface);
+            color: var(--color-text-primary);
+            border-color: var(--color-border);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .btn-secondary:hover:not(:disabled) {
+            background: var(--color-hover);
+            border-color: var(--color-text-secondary);
+            transform: translateY(-1px);
+        }
+        
+        .btn-icon {
+            font-size: var(--text-xl);
+        }
+        
+        /* Empty state with enhanced design */
+        .empty-state {
+            text-align: center;
+            padding: var(--spacing-3xl);
+            color: var(--color-text-secondary);
+            background: var(--color-surface);
+            border-radius: var(--radius-xl);
+            border: 2px dashed var(--color-border);
+        }
+        
+        .empty-state-icon {
+            font-size: 4rem;
+            margin-bottom: var(--spacing-xl);
+            opacity: 0.5;
+        }
+        
+        .empty-state-title {
+            font-size: var(--text-2xl);
+            font-weight: 700;
+            margin-bottom: var(--spacing-md);
+            color: var(--color-text-primary);
+        }
+        
+        .empty-state-description {
+            font-size: var(--text-lg);
+            margin-bottom: var(--spacing-xl);
+            line-height: 1.6;
+        }
+        
+        /* Loading state */
+        .loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: var(--spacing-3xl);
+            text-align: center;
+        }
+        
+        .loading-spinner {
+            width: 48px;
+            height: 48px;
+            border: 4px solid var(--color-border);
+            border-top: 4px solid var(--color-primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .loading-text {
+            font-size: var(--text-lg);
+            color: var(--color-text-secondary);
+            font-weight: 600;
+        }
+        
+        /* Bulk actions bar */
+        .bulk-actions {
+            position: sticky;
+            bottom: var(--spacing-lg);
+            background: var(--color-primary);
+            color: white;
+            padding: var(--spacing-lg) var(--spacing-xl);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-xl);
+            display: none;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 10;
+            margin-top: var(--spacing-lg);
+        }
+        
+        .bulk-actions.visible {
+            display: flex;
+        }
+        
+        .bulk-info {
+            font-weight: 600;
+        }
+        
+        .bulk-buttons {
+            display: flex;
+            gap: var(--spacing-md);
+        }
+        
+        .bulk-btn {
+            padding: var(--spacing-sm) var(--spacing-lg);
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: var(--radius-md);
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        
+        .bulk-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+        
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .container {
+                padding: var(--spacing-md);
+            }
+            
+            .mode-selector {
+                flex-direction: column;
+                gap: var(--spacing-md);
+            }
+            
+            .header-main {
+                flex-direction: column;
+                gap: var(--spacing-lg);
+            }
+            
+            .header-stats {
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            
+            .bean-grid.grid-view {
+                grid-template-columns: 1fr;
+            }
+            
+            .bean-grid.compact-view {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            }
+            
+            .view-controls {
+                flex-direction: column;
+                gap: var(--spacing-md);
+                align-items: stretch;
+            }
+            
+            .primary-actions {
+                flex-direction: column;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .recent-beans {
+                grid-template-columns: 1fr;
+            }
+            
+            .bean-card.list-view {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .bean-details {
+                grid-template-columns: 1fr;
+            }
+            
+            .quick-filters {
+                justify-content: center;
+            }
+        }
+        
+        /* Accessibility helpers */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+        
+        /* High contrast focus indicators */
+        @media (prefers-contrast: high) {
+            .btn:focus,
+            .bean-card:focus,
+            .mode-button:focus {
+                outline: 4px solid;
+                outline-offset: 4px;
+            }
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--color-surface);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--color-text-secondary);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--color-text-primary);
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="beanManagementApp">
+        <!-- Enhanced Header -->
+        <header class="header">
+            <div class="header-main">
+                <div class="header-content">
+                    <h1 class="header-title">
+                        <span class="section-icon" aria-hidden="true">☕</span>
+                        Coffee Bean Management
+                    </h1>
+                    <p class="header-subtitle">Select and manage your coffee beans with user-optimized interface</p>
+                </div>
+                <div class="header-actions">
+                    <button 
+                        class="btn btn-secondary"
+                        onclick="openQuickAdd()"
+                        aria-label="Quick add new beans"
+                        title="Quick Add (Ctrl+A)"
+                    >
+                        <span class="btn-icon" aria-hidden="true">➕</span>
+                        Quick Add
+                    </button>
+                </div>
+            </div>
+            
+            <div class="header-stats">
+                <div class="stat-item">
+                    <span class="stat-value" id="totalBeans">24</span>
+                    <span class="stat-label">Total Beans</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="recentlyUsed">6</span>
+                    <span class="stat-label">Recently Used</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="favorites">8</span>
+                    <span class="stat-label">Favorites</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="lowStock">3</span>
+                    <span class="stat-label">Low Stock</span>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Progress indicator -->
+        <div class="progress-indicator" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="3" aria-label="Step 1 of 3">
+            <div class="progress-step active">
+                <span class="progress-icon" aria-hidden="true">☕</span>
+                <span>Select Beans</span>
+            </div>
+            <div class="progress-step upcoming">
+                <span class="progress-icon" aria-hidden="true">🎛️</span>
+                <span>Choose Profile</span>
+            </div>
+            <div class="progress-step upcoming">
+                <span class="progress-icon" aria-hidden="true">🔥</span>
+                <span>Start Roast</span>
+            </div>
+        </div>
+        
+        <!-- Enhanced complexity mode selector -->
+        <div class="mode-selector" role="tablist" aria-label="Interface complexity level">
+            <button 
+                class="mode-button active" 
+                id="simpleMode" 
+                role="tab" 
+                aria-selected="true" 
+                aria-controls="beanContent"
+                type="button"
+                onclick="setComplexityMode('simple')"
+            >
+                <span class="mode-icon" aria-hidden="true">🟢</span>
+                <div class="mode-title">Simple</div>
+                <div class="mode-description">Recent beans only<br>Minimal interface</div>
+            </button>
+            <button 
+                class="mode-button" 
+                id="standardMode" 
+                role="tab" 
+                aria-selected="false" 
+                aria-controls="beanContent"
+                type="button"
+                onclick="setComplexityMode('standard')"
+            >
+                <span class="mode-icon" aria-hidden="true">🟡</span>
+                <div class="mode-title">Standard</div>
+                <div class="mode-description">All beans + search<br>Balanced features</div>
+            </button>
+            <button 
+                class="mode-button" 
+                id="advancedMode" 
+                role="tab" 
+                aria-selected="false" 
+                aria-controls="beanContent"
+                type="button"
+                onclick="setComplexityMode('advanced')"
+            >
+                <span class="mode-icon" aria-hidden="true">🔴</span>
+                <div class="mode-title">Advanced</div>
+                <div class="mode-description">Full features + filters<br>Complete management</div>
+            </button>
+        </div>
+        
+        <!-- Controls section -->
+        <div class="controls-section" id="controlsSection">
+            <!-- Enhanced search section -->
+            <div class="search-section" id="searchSection" style="display: none;">
+                <span class="search-icon" aria-hidden="true">🔍</span>
+                <input 
+                    type="text" 
+                    id="beanSearch" 
+                    class="search-input" 
+                    placeholder="Search by name, origin, processing method, or notes..." 
+                    autocomplete="off"
+                    aria-describedby="searchHelp"
+                    oninput="handleSearch(this.value)"
+                >
+                <button class="search-clear" id="searchClear" onclick="clearSearch()" aria-label="Clear search">✕</button>
+                <div id="searchHelp" class="sr-only">Type to filter your bean inventory. Results update in real-time.</div>
+                
+                <!-- Quick filters -->
+                <div class="quick-filters" id="quickFilters" style="display: none;">
+                    <button class="filter-chip" data-filter="recent" onclick="toggleFilter(this, 'recent')">
+                        <span aria-hidden="true">🕐</span> Recent
+                    </button>
+                    <button class="filter-chip" data-filter="favorites" onclick="toggleFilter(this, 'favorites')">
+                        <span aria-hidden="true">⭐</span> Favorites
+                    </button>
+                    <button class="filter-chip" data-filter="lowStock" onclick="toggleFilter(this, 'lowStock')">
+                        <span aria-hidden="true">⚠️</span> Low Stock
+                    </button>
+                    <button class="filter-chip" data-filter="washed" onclick="toggleFilter(this, 'washed')">
+                        <span aria-hidden="true">💧</span> Washed
+                    </button>
+                    <button class="filter-chip" data-filter="natural" onclick="toggleFilter(this, 'natural')">
+                        <span aria-hidden="true">☀️</span> Natural
+                    </button>
+                    <button class="filter-chip" data-filter="honey" onclick="toggleFilter(this, 'honey')">
+                        <span aria-hidden="true">🍯</span> Honey
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Bean content area -->
+        <main id="beanContent" role="main">
+            <!-- Recently used beans (Simple mode default) -->
+            <section class="recent-section" id="recentSection">
+                <h2 class="section-title">
+                    <span class="section-icon" aria-hidden="true">🕐</span>
+                    Recently Used Beans
+                </h2>
+                <p class="section-subtitle">Quick access to your most recently roasted beans</p>
+                <div class="recent-beans" id="recentBeansGrid">
+                    <!-- Beans will be populated by JavaScript -->
+                </div>
+            </section>
+            
+            <!-- All beans section (Hidden in simple mode) -->
+            <section class="all-beans-section" id="allBeansSection" style="display: none;">
+                <div class="view-controls">
+                    <h2 class="section-title">
+                        <span class="section-icon" aria-hidden="true">☕</span>
+                        All Coffee Beans
+                    </h2>
+                    
+                    <div class="sort-controls">
+                        <label class="sort-label" for="sortSelect">Sort by:</label>
+                        <select class="sort-select" id="sortSelect" onchange="handleSort(this.value)">
+                            <option value="recent">Recently Used</option>
+                            <option value="name">Name A-Z</option>
+                            <option value="origin">Origin</option>
+                            <option value="rating">Rating</option>
+                            <option value="roastDate">Roast Date</option>
+                            <option value="weight">Weight</option>
+                        </select>
+                    </div>
+                    
+                    <div class="view-toggle" id="viewToggle">
+                        <button class="view-option active" data-view="grid" onclick="setViewMode('grid')" aria-label="Grid view" title="Grid View (Alt+1)">
+                            <span aria-hidden="true">⊞</span>
+                        </button>
+                        <button class="view-option" data-view="list" onclick="setViewMode('list')" aria-label="List view" title="List View (Alt+2)">
+                            <span aria-hidden="true">☰</span>
+                        </button>
+                        <button class="view-option" data-view="compact" onclick="setViewMode('compact')" aria-label="Compact view" title="Compact View (Alt+3)">
+                            <span aria-hidden="true">⊡</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="bean-grid grid-view" id="allBeansGrid">
+                    <!-- Beans will be populated by JavaScript -->
+                </div>
+            </section>
+            
+            <!-- Empty state -->
+            <div class="empty-state" id="emptyState" style="display: none;">
+                <div class="empty-state-icon" aria-hidden="true">📦</div>
+                <h3 class="empty-state-title">No beans found</h3>
+                <p class="empty-state-description">
+                    Try adjusting your search criteria or add new beans to your inventory.
+                </p>
+                <button class="btn btn-primary" onclick="openAddBeansDialog()">
+                    <span class="btn-icon" aria-hidden="true">➕</span>
+                    Add New Beans
+                </button>
+            </div>
+            
+            <!-- Loading state -->
+            <div class="loading" id="loadingState" style="display: none;">
+                <div class="loading-spinner" aria-hidden="true"></div>
+                <p class="loading-text">Loading your coffee beans...</p>
+            </div>
+        </main>
+        
+        <!-- Bulk actions bar -->
+        <div class="bulk-actions" id="bulkActions">
+            <div class="bulk-info">
+                <span id="selectedCount">0</span> beans selected
+            </div>
+            <div class="bulk-buttons">
+                <button class="bulk-btn" onclick="bulkAddToFavorites()">Add to Favorites</button>
+                <button class="bulk-btn" onclick="bulkExportData()">Export Data</button>
+                <button class="bulk-btn" onclick="clearSelection()">Clear Selection</button>
+            </div>
+        </div>
+        
+        <!-- Enhanced action buttons -->
+        <div class="action-section">
+            <div class="primary-actions">
+                <button 
+                    class="btn btn-primary" 
+                    id="continueButton" 
+                    disabled
+                    onclick="handleContinue()"
+                    aria-describedby="continueHelp"
+                    type="button"
+                >
+                    <span class="btn-icon" aria-hidden="true">▶️</span>
+                    Continue to Roast Profile
+                </button>
+            </div>
+            <div id="continueHelp" class="sr-only">Select a bean to enable the continue button</div>
+            
+            <div class="secondary-actions">
+                <button 
+                    class="btn btn-secondary" 
+                    onclick="openAddBeansDialog()"
+                    type="button"
+                    title="Add New Beans (Ctrl+N)"
+                >
+                    <span class="btn-icon" aria-hidden="true">➕</span>
+                    Add New Beans
+                </button>
+                
+                <button 
+                    class="btn btn-secondary" 
+                    onclick="openImportDialog()"
+                    type="button"
+                    title="Import Bean Data (Ctrl+I)"
+                >
+                    <span class="btn-icon" aria-hidden="true">📥</span>
+                    Import Data
+                </button>
+                
+                <button 
+                    class="btn btn-secondary" 
+                    onclick="openBulkManagement()"
+                    type="button"
+                    title="Bulk Management (Ctrl+B)"
+                >
+                    <span class="btn-icon" aria-hidden="true">📋</span>
+                    Bulk Manage
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Screen reader announcements -->
+    <div id="announcements" aria-live="polite" aria-atomic="true" class="sr-only"></div>
+
+    <script>
+        /**
+         * Enhanced User-Friendly Bean Selection Interface
+         * 
+         * Enhanced features:
+         * - Progressive complexity modes with smooth transitions
+         * - Advanced search with real-time filtering
+         * - Multiple view modes (grid, list, compact)
+         * - Bulk selection and operations
+         * - Enhanced keyboard navigation
+         * - Visual confirmation for all actions
+         * - Improved accessibility with ARIA support
+         * - Auto-save functionality
+         * - Smart defaults and suggestions
+         */
+        
+        class EnhancedUserFriendlyBeanManagement {
+            constructor() {
+                this.state = {
+                    mode: 'simple',
+                    selectedBeans: new Set(),
+                    beans: this.generateSampleBeans(),
+                    filteredBeans: [],
+                    searchTerm: '',
+                    activeFilters: new Set(),
+                    viewMode: 'grid',
+                    sortBy: 'recent',
+                    isLoading: false,
+                    bulkSelectionMode: false
+                };
+                
+                this.searchTimeout = null;
+                this.autoSaveInterval = null;
+                
+                this.initializeElements();
+                this.bindEventListeners();
+                this.setupKeyboardShortcuts();
+                this.setupAutoSave();
+                this.updateUI();
+                this.announceInitialState();
+            }
+            
+            initializeElements() {
+                this.elements = {
+                    simpleMode: document.getElementById('simpleMode'),
+                    standardMode: document.getElementById('standardMode'),
+                    advancedMode: document.getElementById('advancedMode'),
+                    recentSection: document.getElementById('recentSection'),
+                    searchSection: document.getElementById('searchSection'),
+                    allBeansSection: document.getElementById('allBeansSection'),
+                    controlsSection: document.getElementById('controlsSection'),
+                    recentBeansGrid: document.getElementById('recentBeansGrid'),
+                    allBeansGrid: document.getElementById('allBeansGrid'),
+                    beanSearch: document.getElementById('beanSearch'),
+                    searchClear: document.getElementById('searchClear'),
+                    quickFilters: document.getElementById('quickFilters'),
+                    continueButton: document.getElementById('continueButton'),
+                    emptyState: document.getElementById('emptyState'),
+                    loadingState: document.getElementById('loadingState'),
+                    viewToggle: document.getElementById('viewToggle'),
+                    sortSelect: document.getElementById('sortSelect'),
+                    bulkActions: document.getElementById('bulkActions'),
+                    selectedCount: document.getElementById('selectedCount'),
+                    totalBeans: document.getElementById('totalBeans'),
+                    recentlyUsed: document.getElementById('recentlyUsed'),
+                    favorites: document.getElementById('favorites'),
+                    lowStock: document.getElementById('lowStock'),
+                    announcements: document.getElementById('announcements')
+                };
+            }
+            
+            generateSampleBeans() {
+                return [
+                    {
+                        id: 1,
+                        name: 'Ethiopia Yirgacheffe',
+                        origin: 'Ethiopia',
+                        region: 'Yirgacheffe',
+                        processing: 'Washed',
+                        roastDate: '2024-08-22',
+                        weight: '450g',
+                        originalWeight: '500g',
+                        notes: 'Bright, floral, citrus',
+                        lastUsed: '2024-08-22',
+                        rating: 5,
+                        isRecent: true,
+                        isFavorite: true,
+                        isLowStock: false,
+                        price: 18.99,
+                        roastLevel: 'Light',
+                        cupping: { acidity: 8, body: 6, sweetness: 7 },
+                        imageUrl: '/api/placeholder/80/80'
+                    },
+                    {
+                        id: 2,
+                        name: 'Guatemala Huehuetenango',
+                        origin: 'Guatemala',
+                        region: 'Huehuetenango',
+                        processing: 'Washed',
+                        roastDate: '2024-08-15',
+                        weight: '340g',
+                        originalWeight: '500g',
+                        notes: 'Chocolate, caramel, nutty',
+                        lastUsed: '2024-08-17',
+                        rating: 4,
+                        isRecent: true,
+                        isFavorite: false,
+                        isLowStock: true,
+                        price: 16.50,
+                        roastLevel: 'Medium',
+                        cupping: { acidity: 6, body: 8, sweetness: 8 }
+                    },
+                    {
+                        id: 3,
+                        name: 'Colombia Supremo',
+                        origin: 'Colombia',
+                        region: 'Nariño',
+                        processing: 'Washed',
+                        roastDate: '2024-08-10',
+                        weight: '500g',
+                        originalWeight: '500g',
+                        notes: 'Balanced, cocoa, orange',
+                        lastUsed: '2024-08-10',
+                        rating: 4,
+                        isRecent: true,
+                        isFavorite: true,
+                        isLowStock: false,
+                        price: 15.75,
+                        roastLevel: 'Medium',
+                        cupping: { acidity: 7, body: 7, sweetness: 7 }
+                    },
+                    {
+                        id: 4,
+                        name: 'Kenya AA',
+                        origin: 'Kenya',
+                        region: 'Nyeri',
+                        processing: 'Washed',
+                        roastDate: '2024-08-05',
+                        weight: '250g',
+                        originalWeight: '500g',
+                        notes: 'Black currant, wine-like, bright',
+                        lastUsed: '2024-08-05',
+                        rating: 5,
+                        isRecent: false,
+                        isFavorite: true,
+                        isLowStock: true,
+                        price: 22.00,
+                        roastLevel: 'Light',
+                        cupping: { acidity: 9, body: 6, sweetness: 6 }
+                    },
+                    {
+                        id: 5,
+                        name: 'Brazil Cerrado',
+                        origin: 'Brazil',
+                        region: 'Cerrado',
+                        processing: 'Natural',
+                        roastDate: '2024-07-28',
+                        weight: '600g',
+                        originalWeight: '500g',
+                        notes: 'Nutty, chocolate, low acidity',
+                        lastUsed: '2024-07-30',
+                        rating: 3,
+                        isRecent: false,
+                        isFavorite: false,
+                        isLowStock: false,
+                        price: 13.25,
+                        roastLevel: 'Dark',
+                        cupping: { acidity: 4, body: 9, sweetness: 6 }
+                    },
+                    {
+                        id: 6,
+                        name: 'Costa Rica Tarrazú',
+                        origin: 'Costa Rica',
+                        region: 'Tarrazú',
+                        processing: 'Honey',
+                        roastDate: '2024-07-20',
+                        weight: '350g',
+                        originalWeight: '500g',
+                        notes: 'Citrus, honey, clean',
+                        lastUsed: '2024-07-25',
+                        rating: 4,
+                        isRecent: false,
+                        isFavorite: true,
+                        isLowStock: false,
+                        price: 19.50,
+                        roastLevel: 'Medium-Light',
+                        cupping: { acidity: 8, body: 6, sweetness: 8 }
+                    },
+                    // Additional beans for demo
+                    {
+                        id: 7,
+                        name: 'Jamaica Blue Mountain',
+                        origin: 'Jamaica',
+                        region: 'Blue Mountain',
+                        processing: 'Washed',
+                        roastDate: '2024-07-15',
+                        weight: '200g',
+                        originalWeight: '250g',
+                        notes: 'Mild, balanced, clean',
+                        lastUsed: '2024-07-18',
+                        rating: 5,
+                        isRecent: false,
+                        isFavorite: true,
+                        isLowStock: true,
+                        price: 45.00,
+                        roastLevel: 'Light',
+                        cupping: { acidity: 6, body: 7, sweetness: 8 }
+                    },
+                    {
+                        id: 8,
+                        name: 'Panama Geisha',
+                        origin: 'Panama',
+                        region: 'Boquete',
+                        processing: 'Washed',
+                        roastDate: '2024-07-12',
+                        weight: '150g',
+                        originalWeight: '250g',
+                        notes: 'Floral, tea-like, complex',
+                        lastUsed: '2024-07-15',
+                        rating: 5,
+                        isRecent: false,
+                        isFavorite: true,
+                        isLowStock: false,
+                        price: 65.00,
+                        roastLevel: 'Light',
+                        cupping: { acidity: 9, body: 5, sweetness: 9 }
+                    }
+                ];
+            }
+            
+            bindEventListeners() {
+                // Mode button event listeners are handled by onclick in HTML
+                
+                // Search input with debouncing
+                this.elements.beanSearch.addEventListener('input', (e) => {
+                    clearTimeout(this.searchTimeout);
+                    this.searchTimeout = setTimeout(() => {
+                        this.handleSearch(e.target.value);
+                    }, 300); // 300ms debounce
+                });
+                
+                // Continue button
+                this.elements.continueButton.addEventListener('click', () => {
+                    this.handleContinue();
+                });
+                
+                // View mode changes
+                this.elements.viewToggle.addEventListener('click', (e) => {
+                    if (e.target.dataset.view) {
+                        this.setViewMode(e.target.dataset.view);
+                    }
+                });
+                
+                // Sort changes
+                this.elements.sortSelect.addEventListener('change', (e) => {
+                    this.handleSort(e.target.value);
+                });
+                
+                // Bulk selection mode toggle
+                document.addEventListener('keydown', (e) => {
+                    if (e.ctrlKey || e.metaKey) {
+                        if (!this.state.bulkSelectionMode) {
+                            this.state.bulkSelectionMode = true;
+                            this.updateBulkUI();
+                        }
+                    }
+                });
+                
+                document.addEventListener('keyup', (e) => {
+                    if (!e.ctrlKey && !e.metaKey) {
+                        if (this.state.bulkSelectionMode && this.state.selectedBeans.size === 0) {
+                            this.state.bulkSelectionMode = false;
+                            this.updateBulkUI();
+                        }
+                    }
+                });
+            }
+            
+            setupKeyboardShortcuts() {
+                document.addEventListener('keydown', (e) => {
+                    // Don't trigger shortcuts when typing in input fields
+                    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+                        return;
+                    }
+                    
+                    if (e.ctrlKey || e.metaKey) {
+                        switch(e.key) {
+                            case 'a':
+                                e.preventDefault();
+                                this.openQuickAdd();
+                                break;
+                            case 'n':
+                                e.preventDefault();
+                                this.openAddBeansDialog();
+                                break;
+                            case 'i':
+                                e.preventDefault();
+                                this.openImportDialog();
+                                break;
+                            case 'b':
+                                e.preventDefault();
+                                this.openBulkManagement();
+                                break;
+                            case 'f':
+                                e.preventDefault();
+                                if (this.state.mode !== 'simple') {
+                                    this.elements.beanSearch.focus();
+                                }
+                                break;
+                        }
+                    }
+                    
+                    if (e.altKey) {
+                        switch(e.key) {
+                            case '1':
+                                e.preventDefault();
+                                this.setViewMode('grid');
+                                break;
+                            case '2':
+                                e.preventDefault();
+                                this.setViewMode('list');
+                                break;
+                            case '3':
+                                e.preventDefault();
+                                this.setViewMode('compact');
+                                break;
+                        }
+                    }
+                    
+                    // Number keys for quick complexity mode switching
+                    if (e.key >= '1' && e.key <= '3' && !e.ctrlKey && !e.metaKey && !e.altKey) {
+                        const modes = ['simple', 'standard', 'advanced'];
+                        const modeIndex = parseInt(e.key) - 1;
+                        if (modes[modeIndex]) {
+                            this.setComplexityMode(modes[modeIndex]);
+                        }
+                    }
+                    
+                    // Escape to clear selection or search
+                    if (e.key === 'Escape') {
+                        if (this.state.selectedBeans.size > 0) {
+                            this.clearSelection();
+                        } else if (this.state.searchTerm) {
+                            this.clearSearch();
+                        }
+                    }
+                });
+            }
+            
+            setupAutoSave() {
+                // Auto-save state every 30 seconds
+                this.autoSaveInterval = setInterval(() => {
+                    this.saveState();
+                }, 30000);
+                
+                // Save on page unload
+                window.addEventListener('beforeunload', () => {
+                    this.saveState();
+                });
+            }
+            
+            setComplexityMode(mode) {
+                this.state.mode = mode;
+                this.updateModeUI();
+                this.updateBeanDisplay();
+                this.announce(`Switched to ${mode} mode`);
+                this.saveState();
+            }
+            
+            updateModeUI() {
+                // Update mode button states
+                const modeButtons = [this.elements.simpleMode, this.elements.standardMode, this.elements.advancedMode];
+                const modes = ['simple', 'standard', 'advanced'];
+                
+                modeButtons.forEach((button, index) => {
+                    const isActive = modes[index] === this.state.mode;
+                    button.classList.toggle('active', isActive);
+                    button.setAttribute('aria-selected', isActive.toString());
+                });
+            }
+            
+            updateBeanDisplay() {
+                // Show/hide sections based on mode
+                switch (this.state.mode) {
+                    case 'simple':
+                        this.elements.recentSection.style.display = 'block';
+                        this.elements.searchSection.style.display = 'none';
+                        this.elements.allBeansSection.style.display = 'none';
+                        this.elements.quickFilters.style.display = 'none';
+                        break;
+                        
+                    case 'standard':
+                        this.elements.recentSection.style.display = 'block';
+                        this.elements.searchSection.style.display = 'block';
+                        this.elements.allBeansSection.style.display = 'block';
+                        this.elements.quickFilters.style.display = 'none';
+                        this.populateBeanGrid(false); // Basic info only
+                        break;
+                        
+                    case 'advanced':
+                        this.elements.recentSection.style.display = 'block';
+                        this.elements.searchSection.style.display = 'block';
+                        this.elements.allBeansSection.style.display = 'block';
+                        this.elements.quickFilters.style.display = 'flex';
+                        this.populateBeanGrid(true); // Full details
+                        break;
+                }
+                
+                this.populateRecentBeans();
+                this.updateStats();
+            }
+            
+            populateRecentBeans() {
+                const recentBeans = this.state.beans
+                    .filter(bean => bean.isRecent)
+                    .sort((a, b) => new Date(b.lastUsed) - new Date(a.lastUsed));
+                
+                this.elements.recentBeansGrid.innerHTML = recentBeans.map(bean => {
+                    const isSelected = this.state.selectedBeans.has(bean.id);
+                    const daysAgo = this.getDaysAgo(bean.lastUsed);
+                    
+                    return `
+                        <div class="recent-bean ${isSelected ? 'selected' : ''}" 
+                             tabindex="0" 
+                             role="button" 
+                             aria-label="Select ${bean.name} from ${bean.origin}, used ${daysAgo}"
+                             data-bean-id="${bean.id}"
+                             onclick="selectBean(${bean.id}, event)">
+                            <div class="bean-header">
+                                <div>
+                                    <div class="bean-name">${bean.name}</div>
+                                    <div class="bean-origin">${bean.origin} - ${bean.region}</div>
+                                </div>
+                                <div class="bean-date-badge">${daysAgo}</div>
+                            </div>
+                            
+                            <div class="bean-details">
+                                <div class="bean-detail">
+                                    <span class="bean-detail-label">Weight</span>
+                                    <span class="bean-detail-value">${bean.weight}</span>
+                                </div>
+                                <div class="bean-detail">
+                                    <span class="bean-detail-label">Processing</span>
+                                    <span class="bean-detail-value">${bean.processing}</span>
+                                </div>
+                            </div>
+                            
+                            <div class="bean-rating">
+                                <div class="rating-stars">${'⭐'.repeat(bean.rating)}</div>
+                                <div class="rating-text">${bean.rating}/5 stars</div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+            
+            populateBeanGrid(showFullDetails = false) {
+                let beans = this.state.searchTerm || this.state.activeFilters.size > 0 
+                    ? this.state.filteredBeans 
+                    : this.state.beans;
+                
+                // Apply sorting
+                beans = this.sortBeans(beans, this.state.sortBy);
+                
+                this.elements.allBeansGrid.className = `bean-grid ${this.state.viewMode}-view`;
+                this.elements.allBeansGrid.innerHTML = beans.map(bean => {
+                    const isSelected = this.state.selectedBeans.has(bean.id);
+                    
+                    return `
+                        <div class="bean-card ${this.state.viewMode}-view ${isSelected ? 'selected' : ''}" 
+                             tabindex="0" 
+                             role="button" 
+                             aria-label="Select ${bean.name} from ${bean.origin}"
+                             data-bean-id="${bean.id}"
+                             onclick="selectBean(${bean.id}, event)">
+                            
+                            <div class="bean-image" aria-hidden="true">☕</div>
+                            
+                            <div class="bean-content">
+                                <div class="bean-header">
+                                    <div>
+                                        <div class="bean-name">${bean.name}</div>
+                                        <div class="bean-origin">${bean.origin} - ${bean.region}</div>
+                                    </div>
+                                    ${bean.isFavorite ? '<span style="font-size: var(--text-lg);">⭐</span>' : ''}
+                                </div>
+                                
+                                <div class="bean-details">
+                                    <div class="bean-detail">
+                                        <span class="bean-detail-label">Weight</span>
+                                        <span class="bean-detail-value">${bean.weight}</span>
+                                    </div>
+                                    <div class="bean-detail">
+                                        <span class="bean-detail-label">Processing</span>
+                                        <span class="bean-detail-value">${bean.processing}</span>
+                                    </div>
+                                    ${showFullDetails ? `
+                                        <div class="bean-detail">
+                                            <span class="bean-detail-label">Roasted</span>
+                                            <span class="bean-detail-value">${this.formatDate(bean.roastDate)}</span>
+                                        </div>
+                                        <div class="bean-detail">
+                                            <span class="bean-detail-label">Price</span>
+                                            <span class="bean-detail-value">$${bean.price}</span>
+                                        </div>
+                                    ` : ''}
+                                </div>
+                                
+                                <div class="bean-rating">
+                                    <div class="rating-stars">${'⭐'.repeat(bean.rating)}</div>
+                                    <div class="rating-text">${bean.rating}/5</div>
+                                </div>
+                                
+                                ${showFullDetails ? `
+                                    <div class="bean-notes" style="margin-top: var(--spacing-md); font-size: var(--text-sm); color: var(--color-text-secondary);">
+                                        "${bean.notes}"
+                                    </div>
+                                ` : ''}
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+                
+                // Show empty state if no beans
+                this.elements.emptyState.style.display = beans.length === 0 ? 'block' : 'none';
+            }
+            
+            handleSearch(searchTerm) {
+                this.state.searchTerm = searchTerm.toLowerCase();
+                
+                // Show/hide clear button
+                this.elements.searchClear.classList.toggle('visible', searchTerm.length > 0);
+                
+                if (this.state.searchTerm) {
+                    this.state.filteredBeans = this.state.beans.filter(bean => 
+                        bean.name.toLowerCase().includes(this.state.searchTerm) ||
+                        bean.origin.toLowerCase().includes(this.state.searchTerm) ||
+                        bean.region.toLowerCase().includes(this.state.searchTerm) ||
+                        bean.processing.toLowerCase().includes(this.state.searchTerm) ||
+                        bean.notes.toLowerCase().includes(this.state.searchTerm) ||
+                        bean.roastLevel.toLowerCase().includes(this.state.searchTerm)
+                    );
+                } else {
+                    this.state.filteredBeans = [];
+                }
+                
+                this.applyFilters();
+                
+                if (this.state.mode !== 'simple') {
+                    this.populateBeanGrid(this.state.mode === 'advanced');
+                }
+                
+                // Announce search results
+                if (this.state.searchTerm) {
+                    const resultCount = this.state.filteredBeans.length;
+                    this.announce(`Search found ${resultCount} bean${resultCount !== 1 ? 's' : ''}`);
+                }
+            }
+            
+            clearSearch() {
+                this.elements.beanSearch.value = '';
+                this.state.searchTerm = '';
+                this.state.filteredBeans = [];
+                this.elements.searchClear.classList.remove('visible');
+                this.applyFilters();
+                this.populateBeanGrid(this.state.mode === 'advanced');
+                this.announce('Search cleared');
+            }
+            
+            toggleFilter(element, filterType) {
+                if (this.state.activeFilters.has(filterType)) {
+                    this.state.activeFilters.delete(filterType);
+                    element.classList.remove('active');
+                } else {
+                    this.state.activeFilters.add(filterType);
+                    element.classList.add('active');
+                }
+                
+                this.applyFilters();
+                this.populateBeanGrid(this.state.mode === 'advanced');
+                
+                const action = this.state.activeFilters.has(filterType) ? 'applied' : 'removed';
+                this.announce(`${filterType} filter ${action}`);
+            }
+            
+            applyFilters() {
+                let beans = this.state.searchTerm ? this.state.filteredBeans : this.state.beans;
+                
+                if (this.state.activeFilters.size > 0) {
+                    beans = beans.filter(bean => {
+                        for (const filter of this.state.activeFilters) {
+                            switch(filter) {
+                                case 'recent':
+                                    if (!bean.isRecent) return false;
+                                    break;
+                                case 'favorites':
+                                    if (!bean.isFavorite) return false;
+                                    break;
+                                case 'lowStock':
+                                    if (!bean.isLowStock) return false;
+                                    break;
+                                case 'washed':
+                                    if (bean.processing.toLowerCase() !== 'washed') return false;
+                                    break;
+                                case 'natural':
+                                    if (bean.processing.toLowerCase() !== 'natural') return false;
+                                    break;
+                                case 'honey':
+                                    if (bean.processing.toLowerCase() !== 'honey') return false;
+                                    break;
+                            }
+                        }
+                        return true;
+                    });
+                }
+                
+                this.state.filteredBeans = beans;
+            }
+            
+            sortBeans(beans, sortBy) {
+                const sortedBeans = [...beans];
+                
+                switch(sortBy) {
+                    case 'recent':
+                        return sortedBeans.sort((a, b) => new Date(b.lastUsed) - new Date(a.lastUsed));
+                    case 'name':
+                        return sortedBeans.sort((a, b) => a.name.localeCompare(b.name));
+                    case 'origin':
+                        return sortedBeans.sort((a, b) => a.origin.localeCompare(b.origin));
+                    case 'rating':
+                        return sortedBeans.sort((a, b) => b.rating - a.rating);
+                    case 'roastDate':
+                        return sortedBeans.sort((a, b) => new Date(b.roastDate) - new Date(a.roastDate));
+                    case 'weight':
+                        return sortedBeans.sort((a, b) => parseInt(b.weight) - parseInt(a.weight));
+                    default:
+                        return sortedBeans;
+                }
+            }
+            
+            selectBean(beanId, event) {
+                if (event && (event.ctrlKey || event.metaKey || this.state.bulkSelectionMode)) {
+                    // Multi-select mode
+                    if (this.state.selectedBeans.has(beanId)) {
+                        this.state.selectedBeans.delete(beanId);
+                    } else {
+                        this.state.selectedBeans.add(beanId);
+                    }
+                    this.state.bulkSelectionMode = true;
+                } else {
+                    // Single select mode
+                    this.state.selectedBeans.clear();
+                    this.state.selectedBeans.add(beanId);
+                    this.state.bulkSelectionMode = false;
+                }
+                
+                const selectedBean = this.state.beans.find(bean => bean.id === beanId);
+                
+                // Update UI to show selection
+                this.updateSelectionUI();
+                
+                // Enable continue button
+                this.elements.continueButton.disabled = this.state.selectedBeans.size === 0;
+                
+                if (this.state.selectedBeans.size === 1 && !this.state.bulkSelectionMode) {
+                    this.elements.continueButton.focus();
+                }
+                
+                // Announce selection
+                if (selectedBean) {
+                    const selectionCount = this.state.selectedBeans.size;
+                    if (selectionCount === 1 && !this.state.bulkSelectionMode) {
+                        this.announce(`Selected ${selectedBean.name}. Press Enter to continue.`);
+                    } else {
+                        this.announce(`${selectionCount} bean${selectionCount !== 1 ? 's' : ''} selected`);
+                    }
+                }
+                
+                this.updateBulkUI();
+                this.saveState();
+            }
+            
+            updateSelectionUI() {
+                // Update all bean cards and recent beans
+                document.querySelectorAll('.bean-card, .recent-bean').forEach(card => {
+                    const cardBeanId = parseInt(card.dataset.beanId);
+                    const isSelected = this.state.selectedBeans.has(cardBeanId);
+                    
+                    card.classList.toggle('selected', isSelected);
+                    card.setAttribute('aria-pressed', isSelected.toString());
+                });
+            }
+            
+            updateBulkUI() {
+                const selectionCount = this.state.selectedBeans.size;
+                this.elements.selectedCount.textContent = selectionCount;
+                this.elements.bulkActions.classList.toggle('visible', selectionCount > 1);
+            }
+            
+            setViewMode(mode) {
+                this.state.viewMode = mode;
+                
+                // Update view toggle buttons
+                this.elements.viewToggle.querySelectorAll('.view-option').forEach(btn => {
+                    btn.classList.toggle('active', btn.dataset.view === mode);
+                });
+                
+                // Update grid display
+                this.populateBeanGrid(this.state.mode === 'advanced');
+                
+                this.announce(`View mode changed to ${mode}`);
+                this.saveState();
+            }
+            
+            handleSort(sortBy) {
+                this.state.sortBy = sortBy;
+                this.populateBeanGrid(this.state.mode === 'advanced');
+                this.announce(`Sorted by ${sortBy}`);
+                this.saveState();
+            }
+            
+            handleContinue() {
+                if (this.state.selectedBeans.size > 0) {
+                    const selectedBeans = Array.from(this.state.selectedBeans)
+                        .map(id => this.state.beans.find(bean => bean.id === id))
+                        .filter(bean => bean);
+                    
+                    if (selectedBeans.length === 1) {
+                        this.announce(`Continuing with ${selectedBeans[0].name}. Loading roast profiles...`);
+                    } else {
+                        this.announce(`Continuing with ${selectedBeans.length} selected beans. Loading roast profiles...`);
+                    }
+                    
+                    // Simulate navigation to next step
+                    setTimeout(() => {
+                        if (selectedBeans.length === 1) {
+                            alert(`Next: Choose roast profile for ${selectedBeans[0].name}`);
+                        } else {
+                            alert(`Next: Choose roast profiles for ${selectedBeans.length} selected beans`);
+                        }
+                    }, 1000);
+                }
+            }
+            
+            clearSelection() {
+                this.state.selectedBeans.clear();
+                this.state.bulkSelectionMode = false;
+                this.updateSelectionUI();
+                this.updateBulkUI();
+                this.elements.continueButton.disabled = true;
+                this.announce('Selection cleared');
+            }
+            
+            // Bulk operations
+            bulkAddToFavorites() {
+                const count = this.state.selectedBeans.size;
+                this.state.selectedBeans.forEach(id => {
+                    const bean = this.state.beans.find(b => b.id === id);
+                    if (bean) bean.isFavorite = true;
+                });
+                
+                this.updateBeanDisplay();
+                this.announce(`Added ${count} beans to favorites`);
+            }
+            
+            bulkExportData() {
+                const selectedBeans = Array.from(this.state.selectedBeans)
+                    .map(id => this.state.beans.find(bean => bean.id === id))
+                    .filter(bean => bean);
+                
+                console.log('Exporting beans:', selectedBeans);
+                this.announce(`Exported data for ${selectedBeans.length} beans`);
+            }
+            
+            // Dialog operations (would open modals in real implementation)
+            openQuickAdd() {
+                this.announce('Quick add dialog would open here');
+                alert('Quick Add Bean form would open here with minimal required fields.');
+            }
+            
+            openAddBeansDialog() {
+                this.announce('Add beans dialog would open here');
+                alert('Comprehensive Add Bean form would open here with all fields.');
+            }
+            
+            openImportDialog() {
+                this.announce('Import dialog would open here');
+                alert('Import data dialog would open here for CSV/JSON import.');
+            }
+            
+            openBulkManagement() {
+                this.announce('Bulk management dialog would open here');
+                alert('Bulk management interface would open here for batch operations.');
+            }
+            
+            // Utility functions
+            updateStats() {
+                this.elements.totalBeans.textContent = this.state.beans.length;
+                this.elements.recentlyUsed.textContent = this.state.beans.filter(b => b.isRecent).length;
+                this.elements.favorites.textContent = this.state.beans.filter(b => b.isFavorite).length;
+                this.elements.lowStock.textContent = this.state.beans.filter(b => b.isLowStock).length;
+            }
+            
+            getDaysAgo(dateString) {
+                const date = new Date(dateString);
+                const now = new Date();
+                const diffTime = Math.abs(now - date);
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                
+                if (diffDays === 0) return 'Today';
+                if (diffDays === 1) return 'Yesterday';
+                if (diffDays < 7) return `${diffDays} days ago`;
+                if (diffDays < 14) return '1 week ago';
+                return `${Math.floor(diffDays / 7)} weeks ago`;
+            }
+            
+            formatDate(dateString) {
+                const date = new Date(dateString);
+                return date.toLocaleDateString('en-US', { 
+                    month: 'short', 
+                    day: 'numeric', 
+                    year: 'numeric' 
+                });
+            }
+            
+            updateUI() {
+                this.updateModeUI();
+                this.updateBeanDisplay();
+            }
+            
+            saveState() {
+                try {
+                    const state = {
+                        mode: this.state.mode,
+                        selectedBeans: Array.from(this.state.selectedBeans),
+                        viewMode: this.state.viewMode,
+                        sortBy: this.state.sortBy,
+                        savedAt: new Date().toISOString()
+                    };
+                    localStorage.setItem('adhd-coffee-tracker-bean-management', JSON.stringify(state));
+                } catch (e) {
+                    console.warn('Failed to save state:', e);
+                }
+            }
+            
+            loadState() {
+                try {
+                    const saved = localStorage.getItem('adhd-coffee-tracker-bean-management');
+                    if (saved) {
+                        const state = JSON.parse(saved);
+                        this.state.mode = state.mode || 'simple';
+                        this.state.selectedBeans = new Set(state.selectedBeans || []);
+                        this.state.viewMode = state.viewMode || 'grid';
+                        this.state.sortBy = state.sortBy || 'recent';
+                    }
+                } catch (e) {
+                    console.warn('Failed to load state:', e);
+                }
+            }
+            
+            announce(message) {
+                this.elements.announcements.textContent = '';
+                setTimeout(() => {
+                    this.elements.announcements.textContent = message;
+                }, 100);
+                
+                setTimeout(() => {
+                    this.elements.announcements.textContent = '';
+                }, 5000);
+            }
+            
+            announceInitialState() {
+                this.announce('Enhanced bean management loaded. Simple mode active. Use number keys 1-3 to switch complexity modes, or Ctrl+F to search.');
+            }
+        }
+        
+        // Global functions for HTML onclick handlers
+        let beanApp;
+        
+        function setComplexityMode(mode) {
+            if (beanApp) beanApp.setComplexityMode(mode);
+        }
+        
+        function selectBean(beanId, event) {
+            if (beanApp) beanApp.selectBean(beanId, event);
+        }
+        
+        function handleSearch(value) {
+            if (beanApp) beanApp.handleSearch(value);
+        }
+        
+        function clearSearch() {
+            if (beanApp) beanApp.clearSearch();
+        }
+        
+        function toggleFilter(element, filterType) {
+            if (beanApp) beanApp.toggleFilter(element, filterType);
+        }
+        
+        function setViewMode(mode) {
+            if (beanApp) beanApp.setViewMode(mode);
+        }
+        
+        function handleSort(sortBy) {
+            if (beanApp) beanApp.handleSort(sortBy);
+        }
+        
+        function openQuickAdd() {
+            if (beanApp) beanApp.openQuickAdd();
+        }
+        
+        function openAddBeansDialog() {
+            if (beanApp) beanApp.openAddBeansDialog();
+        }
+        
+        function openImportDialog() {
+            if (beanApp) beanApp.openImportDialog();
+        }
+        
+        function openBulkManagement() {
+            if (beanApp) beanApp.openBulkManagement();
+        }
+        
+        function bulkAddToFavorites() {
+            if (beanApp) beanApp.bulkAddToFavorites();
+        }
+        
+        function bulkExportData() {
+            if (beanApp) beanApp.bulkExportData();
+        }
+        
+        function clearSelection() {
+            if (beanApp) beanApp.clearSelection();
+        }
+        
+        // Initialize the enhanced bean management interface
+        document.addEventListener('DOMContentLoaded', () => {
+            // Apply system preferences
+            const preferReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            const preferHighContrast = window.matchMedia('(prefers-contrast: high)').matches;
+            
+            if (preferReducedMotion) {
+                document.body.classList.add('reduced-motion');
+            }
+            
+            if (preferHighContrast) {
+                document.body.classList.add('high-contrast');
+            }
+            
+            // Initialize the main application
+            beanApp = new EnhancedUserFriendlyBeanManagement();
+            
+            // Load saved state
+            beanApp.loadState();
+            beanApp.updateUI();
+        });
+    </script>
+</body>
+</html>
