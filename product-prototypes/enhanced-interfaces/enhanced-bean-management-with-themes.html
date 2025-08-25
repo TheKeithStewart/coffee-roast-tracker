@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced Bean Management with Themes - Coffee Roast Tracker</title>
+    <link rel="stylesheet" href="../design-system/design-system-core.css">
+    <link rel="stylesheet" href="../design-system/brand-system.css">
+    <link rel="stylesheet" href="../design-system/component-library.css">
+    <style>
+        .bean-management {
+            min-height: 100vh;
+            background: var(--color-background);
+            padding-top: 80px; /* Account for fixed header */
+            padding-bottom: var(--space-8);
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: var(--color-surface);
+            border-bottom: 2px solid var(--color-border);
+            padding: var(--space-4);
+            z-index: var(--z-sticky);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: var(--space-4);
+        }
+
+        .complexity-selector {
+            display: flex;
+            align-items: center;
+            gap: var(--space-4);
+        }
+
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: var(--space-6) var(--space-4);
+        }
+
+        .search-section {
+            margin-bottom: var(--space-8);
+        }
+
+        .search-container {
+            position: relative;
+            max-width: 480px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding-left: var(--space-12);
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236b7280'%3e%3cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'%3e%3c/path%3e%3c/svg%3e");
+            background-position: left 12px center;
+            background-repeat: no-repeat;
+            background-size: 20px;
+        }
+
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-3);
+            margin-top: var(--space-4);
+        }
+
+        .filter-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-2);
+            padding: var(--space-2) var(--space-4);
+            background-color: var(--color-surface-secondary);
+            color: var(--color-text-secondary);
+            border: 2px solid var(--color-border);
+            border-radius: var(--radius-full);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-medium);
+            cursor: pointer;
+            transition: all var(--duration-200) var(--ease-in-out);
+        }
+
+        .filter-chip:hover,
+        .filter-chip--active {
+            background-color: var(--color-primary-100);
+            color: var(--color-primary-700);
+            border-color: var(--color-primary-300);
+        }
+
+        .bean-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: var(--space-6);
+            margin-top: var(--space-8);
+        }
+
+        .bean-card {
+            background-color: var(--color-surface);
+            border: 2px solid var(--color-border);
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            transition: all var(--duration-300) var(--ease-in-out);
+            cursor: pointer;
+            min-height: var(--touch-target-large);
+        }
+
+        .bean-card:hover {
+            border-color: var(--color-primary-300);
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-4px);
+        }
+
+        .bean-card:focus-within {
+            border-color: var(--color-primary-500);
+            box-shadow: 0 0 0 3px var(--color-primary-200);
+        }
+
+        .bean-card--selected {
+            border-color: var(--color-primary-500);
+            background-color: var(--color-primary-50);
+            box-shadow: 0 0 0 3px var(--color-primary-200);
+        }
+
+        .bean-card__image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, var(--color-accent-200), var(--color-accent-300));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: var(--font-size-6xl);
+            color: var(--color-accent-600);
+            position: relative;
+        }
+
+        .bean-card__content {
+            padding: var(--space-6);
+        }
+
+        .bean-card__header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: var(--space-3);
+        }
+
+        .bean-card__name {
+            font-family: var(--font-display);
+            font-size: var(--font-size-xl);
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-text-primary);
+            margin: 0 0 var(--space-1) 0;
+        }
+
+        .bean-card__origin {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-1);
+            padding: var(--space-1) var(--space-3);
+            background-color: var(--color-accent-100);
+            color: var(--color-accent-700);
+            font-size: var(--font-size-xs);
+            font-weight: var(--font-weight-semibold);
+            text-transform: uppercase;
+            letter-spacing: var(--letter-spacing-wide);
+            border-radius: var(--radius-full);
+        }
+
+        .bean-card__details {
+            margin: var(--space-4) 0;
+        }
+
+        .bean-detail {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-2);
+            font-size: var(--font-size-sm);
+        }
+
+        .bean-detail__label {
+            color: var(--color-text-secondary);
+            font-weight: var(--font-weight-medium);
+        }
+
+        .bean-detail__value {
+            color: var(--color-text-primary);
+            font-weight: var(--font-weight-semibold);
+        }
+
+        .bean-card__actions {
+            display: flex;
+            gap: var(--space-3);
+            margin-top: var(--space-4);
+        }
+
+        .quality-indicator {
+            display: flex;
+            align-items: center;
+            gap: var(--space-1);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-medium);
+        }
+
+        .star {
+            color: var(--color-warning-400);
+            font-size: var(--font-size-base);
+        }
+
+        .star--filled {
+            color: var(--color-warning-500);
+        }
+
+        .add-bean-card {
+            border: 3px dashed var(--color-border-secondary);
+            background: var(--color-surface-secondary);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: var(--space-8);
+            text-align: center;
+            cursor: pointer;
+            transition: all var(--duration-200) var(--ease-in-out);
+            min-height: 360px;
+        }
+
+        .add-bean-card:hover {
+            border-color: var(--color-primary-400);
+            background-color: var(--color-primary-50);
+        }
+
+        .add-bean-card__icon {
+            width: 64px;
+            height: 64px;
+            color: var(--color-text-tertiary);
+            margin-bottom: var(--space-4);
+        }
+
+        .add-bean-card:hover .add-bean-card__icon {
+            color: var(--color-primary-600);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: var(--space-16) var(--space-8);
+            color: var(--color-text-tertiary);
+        }
+
+        .empty-state__icon {
+            width: 96px;
+            height: 96px;
+            margin: 0 auto var(--space-6) auto;
+            opacity: 0.6;
+        }
+
+        .theme-switcher {
+            display: flex;
+            gap: var(--space-2);
+            background: var(--color-surface);
+            padding: var(--space-2);
+            border-radius: var(--radius-xl);
+            border: 2px solid var(--color-border);
+        }
+
+        .theme-btn {
+            width: 28px;
+            height: 28px;
+            border: 2px solid var(--color-border);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all var(--duration-200) var(--ease-in-out);
+        }
+
+        .theme-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .theme-btn--active {
+            border-width: 3px;
+            box-shadow: 0 0 0 2px var(--color-primary-200);
+        }
+
+        .theme-btn--classic { background: linear-gradient(45deg, #c8794a, #f2c179); }
+        .theme-btn--contrast { background: linear-gradient(45deg, #000000, #ffffff); }
+        .theme-btn--focus { background: linear-gradient(45deg, #0ea5e9, #22c55e); }
+        .theme-btn--energizing { background: linear-gradient(45deg, #f97316, #14b8a6); }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: var(--space-4);
+                align-items: stretch;
+            }
+            
+            .complexity-selector {
+                justify-content: center;
+            }
+            
+            .bean-grid {
+                grid-template-columns: 1fr;
+                gap: var(--space-4);
+            }
+            
+            .bean-management {
+                padding-top: 140px;
+            }
+        }
+    </style>
+</head>
+<body data-theme="classic">
+    <!-- Skip to Content Link -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="brand-logo brand-logo--horizontal">
+                <div class="brand-logo__icon brand-logo__icon--md">
+                    <svg class="icon icon--lg" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <path d="M16 10a4 4 0 0 1-8 0"></path>
+                    </svg>
+                </div>
+                <div>
+                    <span class="brand-logo__text brand-logo__text--lg">Coffee Roast Tracker</span>
+                    <div class="brand-logo__tagline">Bean Management</div>
+                </div>
+            </div>
+            
+            <div class="complexity-selector">
+                <label class="typography-body-small">Complexity:</label>
+                <div class="complexity-toggle">
+                    <button class="complexity-toggle__option complexity-toggle__option--active" data-complexity="simple">
+                        Simple
+                    </button>
+                    <button class="complexity-toggle__option" data-complexity="standard">
+                        Standard
+                    </button>
+                    <button class="complexity-toggle__option" data-complexity="advanced">
+                        Advanced
+                    </button>
+                </div>
+            </div>
+            
+            <div class="theme-switcher">
+                <button class="theme-btn theme-btn--classic theme-btn--active" data-theme="classic" aria-label="Classic Coffee Theme"></button>
+                <button class="theme-btn theme-btn--contrast" data-theme="contrast" aria-label="High Contrast Theme"></button>
+                <button class="theme-btn theme-btn--focus" data-theme="focus" aria-label="Cool Focus Theme"></button>
+                <button class="theme-btn theme-btn--energizing" data-theme="energizing" aria-label="Energizing Theme"></button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main id="main-content" class="bean-management">
+        <div class="main-content">
+            <!-- Search Section -->
+            <section class="search-section">
+                <h1 class="typography-h2" style="margin-bottom: var(--space-4);">Your Coffee Beans</h1>
+                
+                <div class="search-container">
+                    <input 
+                        type="search" 
+                        class="form-input search-input" 
+                        placeholder="Search your coffee collection..."
+                        aria-label="Search coffee beans"
+                        id="bean-search"
+                    />
+                </div>
+                
+                <div class="filters" role="group" aria-label="Filter beans">
+                    <button class="filter-chip filter-chip--active" data-filter="all">
+                        <span>All Beans</span>
+                    </button>
+                    <button class="filter-chip" data-filter="origin">
+                        <svg class="icon icon--xs" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                            <circle cx="12" cy="10" r="3"></circle>
+                        </svg>
+                        By Origin
+                    </button>
+                    <button class="filter-chip" data-filter="roast-level">
+                        <svg class="icon icon--xs" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="M18 3a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3H6l-3-3 3-3z"></path>
+                        </svg>
+                        Roast Level
+                    </button>
+                    <button class="filter-chip" data-filter="processing">
+                        <svg class="icon icon--xs" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                        </svg>
+                        Processing
+                    </button>
+                    <button class="filter-chip" data-filter="favorites">
+                        <svg class="icon icon--xs" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"></polygon>
+                        </svg>
+                        Favorites
+                    </button>
+                </div>
+            </section>
+
+            <!-- Bean Grid -->
+            <section class="bean-grid" id="bean-grid">
+                <!-- Add New Bean Card -->
+                <div class="add-bean-card" tabindex="0" role="button" aria-label="Add new coffee bean">
+                    <svg class="add-bean-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="8" x2="12" y2="16"></line>
+                        <line x1="8" y1="12" x2="16" y2="12"></line>
+                    </svg>
+                    <h3 class="typography-h5" style="margin: 0 0 var(--space-2) 0;">Add New Bean</h3>
+                    <p class="typography-body-small">Click to add a new coffee to your collection</p>
+                </div>
+
+                <!-- Ethiopian Yirgacheffe -->
+                <article class="bean-card" tabindex="0" data-bean-id="1">
+                    <div class="bean-card__image">
+                        ☕
+                    </div>
+                    <div class="bean-card__content">
+                        <div class="bean-card__header">
+                            <div>
+                                <h3 class="bean-card__name">Ethiopian Yirgacheffe</h3>
+                                <div class="bean-card__origin">
+                                    <svg class="icon icon--xs" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                        <circle cx="12" cy="10" r="3"></circle>
+                                    </svg>
+                                    Ethiopia
+                                </div>
+                            </div>
+                            <div class="quality-indicator">
+                                <span class="star star--filled">★</span>
+                                <span class="star star--filled">★</span>
+                                <span class="star star--filled">★</span>
+                                <span class="star star--filled">★</span>
+                                <span class="star">★</span>
+                            </div>
+                        </div>
+                        
+                        <div class="bean-card__details">
+                            <div class="bean-detail">
+                                <span class="bean-detail__label">Farm</span>
+                                <span class="bean-detail__value">Yirgacheffe Coop</span>
+                            </div>
+                            <div class="bean-detail">
+                                <span class="bean-detail__label">Process</span>
+                                <span class="bean-detail__value">Washed</span>
+                            </div>
+                            <div class="bean-detail">
+                                <span class="bean-detail__label">Altitude</span>
+                                <span class="bean-detail__value">1,800-2,000m</span>
+                            </div>
+                            <div class="bean-detail">
+                                <span class="bean-detail__label">Roasted</span>
+                                <span class="bean-detail__value">3 times</span>
+                            </div>
+                        </div>
+                        
+                        <div class="bean-card__actions">
+                            <button class="btn btn--primary btn--small">
+                                <svg class="icon icon--sm" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                    <polygon points="5,3 19,12 5,21 5,3"></polygon>
+                                </svg>
+                                Start Roast
+                            </button>
+                            <button class="btn btn--secondary btn--small">
+                                <svg class="icon icon--sm" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                                </svg>
+                                Edit
+                            </button>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Colombian Huila -->
+                <article class="bean-card" tabindex="0" data-bean-id="2">
+                    <div class="bean-card__image">
+                        ☕
+                    </div>
+                    <div class="bean-card__content">
+                        <div class="bean-card__header">
+                            <div>
+                                <h3 class="bean-card__name">Colombian Huila</h3>
+                                <div class="bean-card__origin">
+                                    <svg class="icon icon--xs" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                        <circle cx="12" cy="10" r="3"></circle>
+                                    </svg>
+                                    Colombia
+                                </div>
+                            </div>
+                            <div class="quality-indicator">
+                                <span class="star star--filled">★</span>
+                                <span class="star star--filled">★</span>
+                                <span class="star star--filled">★</span>
+                                <span class="star star--filled">★</span>
+                                <span class="star star--filled">★</span>
+                            </div>
+                        </div>
+                        
+                        <div class="bean-card__details">
+                            <div class="bean-detail">
+                                <span class="bean-detail__label">Farm</span>
+                                <span class="bean-detail__value">La Esperanza</span>
+                            </div>
+                            <div class="bean-detail">
+                                <span class="bean-detail__label">Process</span>
+                                <span class="bean-detail__value">Natural</span>
+                            </div>
+                            <div class="bean-detail">
+                                <span class="bean-detail__label">Altitude</span>
+                                <span class="bean-detail__value">1,600m</span>
+                            </div>
+                            <div class="bean-detail">
+                                <span class="bean-detail__label">Roasted</span>
+                                <span class="bean-detail__value">7 times</span>
+                            </div>
+                        </div>
+                        
+                        <div class="bean-card__actions">
+                            <button class="btn btn--primary btn--small">
+                                <svg class="icon icon--sm" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                    <polygon points="5,3 19,12 5,21 5,3"></polygon>
+                                </svg>
+                                Start Roast
+                            </button>
+                            <button class="btn btn--secondary btn--small">
+                                <svg class="icon icon--sm" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                                </svg>
+                                Edit
+                            </button>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Guatemalan Antigua -->
+                <article class="bean-card" tabindex="0" data-bean-id="3">
+                    <div class="bean-card__image">
+                        ☕
+                    </div>
+                    <div class="bean-card__content">
+                        <div class="bean-card__header">
+                            <div>
+                                <h3 class="bean-card__name">Guatemalan Antigua</h3>
+                                <div class="bean-card__origin">
+                                    <svg class="icon icon--xs" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                        <circle cx="12" cy="10" r="3"></circle>
+                                    </svg>
+                                    Guatemala
+                                </div>
+                            </div>
+                            <div class="quality-indicator">
+                                <span class="star star--filled">★</span>
+                                <span class="star star--filled">★</span>
+                                <span class="star star--filled">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                            </div>
+                        </div>
+                        
+                        <div class="bean-card__details">
+                            <div class="bean-detail">
+                                <span class="bean-detail__label">Farm</span>
+                                <span class="bean-detail__value">Bella Vista</span>
+                            </div>
+                            <div class="bean-detail">
+                                <span class="bean-detail__label">Process</span>
+                                <span class="bean-detail__value">Semi-washed</span>
+                            </div>
+                            <div class="bean-detail">
+                                <span class="bean-detail__label">Altitude</span>
+                                <span class="bean-detail__value">1,500m</span>
+                            </div>
+                            <div class="bean-detail">
+                                <span class="bean-detail__label">Roasted</span>
+                                <span class="bean-detail__value">2 times</span>
+                            </div>
+                        </div>
+                        
+                        <div class="bean-card__actions">
+                            <button class="btn btn--primary btn--small">
+                                <svg class="icon icon--sm" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                    <polygon points="5,3 19,12 5,21 5,3"></polygon>
+                                </svg>
+                                Start Roast
+                            </button>
+                            <button class="btn btn--secondary btn--small">
+                                <svg class="icon icon--sm" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                                </svg>
+                                Edit
+                            </button>
+                        </div>
+                    </div>
+                </article>
+            </section>
+        </div>
+    </main>
+
+    <!-- Accessibility Announcements -->
+    <div aria-live="polite" aria-atomic="true" class="sr-only" id="announcements"></div>
+
+    <script>
+        // Theme switching functionality
+        const themeButtons = document.querySelectorAll('.theme-btn');
+        const body = document.body;
+
+        themeButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const theme = button.dataset.theme;
+                
+                // Update active button
+                themeButtons.forEach(btn => btn.classList.remove('theme-btn--active'));
+                button.classList.add('theme-btn--active');
+                
+                // Apply theme
+                body.dataset.theme = theme;
+                
+                // Announce theme change
+                document.getElementById('announcements').textContent = `Theme changed to ${theme}`;
+                
+                // Store preference
+                localStorage.setItem('coffee-tracker-theme', theme);
+            });
+        });
+
+        // Load saved theme
+        const savedTheme = localStorage.getItem('coffee-tracker-theme') || 'classic';
+        body.dataset.theme = savedTheme;
+        themeButtons.forEach(btn => {
+            btn.classList.remove('theme-btn--active');
+            if (btn.dataset.theme === savedTheme) {
+                btn.classList.add('theme-btn--active');
+            }
+        });
+
+        // Complexity toggle functionality
+        const complexityButtons = document.querySelectorAll('.complexity-toggle__option');
+        let currentComplexity = 'simple';
+
+        complexityButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const complexity = button.dataset.complexity;
+                currentComplexity = complexity;
+                
+                // Update active button
+                complexityButtons.forEach(btn => btn.classList.remove('complexity-toggle__option--active'));
+                button.classList.add('complexity-toggle__option--active');
+                
+                // Update UI based on complexity
+                updateComplexityView(complexity);
+                
+                // Announce change
+                document.getElementById('announcements').textContent = `Switched to ${complexity} mode`;
+            });
+        });
+
+        function updateComplexityView(complexity) {
+            const beanCards = document.querySelectorAll('.bean-card');
+            
+            beanCards.forEach(card => {
+                const details = card.querySelector('.bean-card__details');
+                const actions = card.querySelector('.bean-card__actions');
+                
+                if (complexity === 'simple') {
+                    // Show only essential information
+                    const detailElements = details.querySelectorAll('.bean-detail');
+                    detailElements.forEach((detail, index) => {
+                        detail.style.display = index < 2 ? 'flex' : 'none';
+                    });
+                    
+                    // Show only primary action
+                    const actionButtons = actions.querySelectorAll('.btn');
+                    actionButtons.forEach((btn, index) => {
+                        btn.style.display = index === 0 ? 'inline-flex' : 'none';
+                    });
+                    
+                } else if (complexity === 'standard') {
+                    // Show most information
+                    const detailElements = details.querySelectorAll('.bean-detail');
+                    detailElements.forEach(detail => {
+                        detail.style.display = 'flex';
+                    });
+                    
+                    const actionButtons = actions.querySelectorAll('.btn');
+                    actionButtons.forEach(btn => {
+                        btn.style.display = 'inline-flex';
+                    });
+                    
+                } else {
+                    // Advanced: Show everything
+                    const detailElements = details.querySelectorAll('.bean-detail');
+                    detailElements.forEach(detail => {
+                        detail.style.display = 'flex';
+                    });
+                    
+                    const actionButtons = actions.querySelectorAll('.btn');
+                    actionButtons.forEach(btn => {
+                        btn.style.display = 'inline-flex';
+                    });
+                }
+            });
+        }
+
+        // Initialize with simple complexity
+        updateComplexityView('simple');
+
+        // Filter functionality
+        const filterChips = document.querySelectorAll('.filter-chip');
+        let activeFilter = 'all';
+
+        filterChips.forEach(chip => {
+            chip.addEventListener('click', () => {
+                const filter = chip.dataset.filter;
+                activeFilter = filter;
+                
+                // Update active filter
+                filterChips.forEach(c => c.classList.remove('filter-chip--active'));
+                chip.classList.add('filter-chip--active');
+                
+                // Apply filter (simulation)
+                applyFilter(filter);
+                
+                // Announce change
+                document.getElementById('announcements').textContent = `Filtered by ${filter.replace('-', ' ')}`;
+            });
+        });
+
+        function applyFilter(filter) {
+            const beanCards = document.querySelectorAll('.bean-card:not(.add-bean-card)');
+            
+            // Simple filter simulation - in real app would filter based on actual data
+            beanCards.forEach((card, index) => {
+                let shouldShow = true;
+                
+                if (filter === 'origin' && index > 1) shouldShow = false;
+                if (filter === 'favorites' && index !== 1) shouldShow = false;
+                if (filter === 'processing' && index === 2) shouldShow = false;
+                
+                card.style.display = shouldShow ? 'block' : 'none';
+            });
+        }
+
+        // Search functionality
+        const searchInput = document.getElementById('bean-search');
+        searchInput.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            const beanCards = document.querySelectorAll('.bean-card:not(.add-bean-card)');
+            
+            beanCards.forEach(card => {
+                const name = card.querySelector('.bean-card__name').textContent.toLowerCase();
+                const origin = card.querySelector('.bean-card__origin').textContent.toLowerCase();
+                
+                const matches = name.includes(searchTerm) || origin.includes(searchTerm);
+                card.style.display = matches ? 'block' : 'none';
+            });
+        });
+
+        // Bean card selection
+        const beanCards = document.querySelectorAll('.bean-card:not(.add-bean-card)');
+        let selectedBean = null;
+
+        beanCards.forEach(card => {
+            card.addEventListener('click', (e) => {
+                // Don't select if clicking on buttons
+                if (e.target.closest('.btn')) return;
+                
+                // Clear previous selection
+                if (selectedBean) {
+                    selectedBean.classList.remove('bean-card--selected');
+                }
+                
+                // Select new bean
+                card.classList.add('bean-card--selected');
+                selectedBean = card;
+                
+                const beanName = card.querySelector('.bean-card__name').textContent;
+                document.getElementById('announcements').textContent = `Selected ${beanName}`;
+            });
+
+            // Keyboard support
+            card.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    card.click();
+                }
+            });
+        });
+
+        // Add bean functionality
+        const addBeanCard = document.querySelector('.add-bean-card');
+        addBeanCard.addEventListener('click', () => {
+            alert('Add New Bean modal would open here');
+        });
+
+        addBeanCard.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                addBeanCard.click();
+            }
+        });
+
+        // Start roast button functionality
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('.btn--primary')) {
+                const beanCard = e.target.closest('.bean-card');
+                const beanName = beanCard.querySelector('.bean-card__name').textContent;
+                document.getElementById('announcements').textContent = `Starting roast session with ${beanName}`;
+                alert(`Starting roast session with ${beanName}!`);
+            }
+        });
+
+        // Enhanced accessibility
+        document.addEventListener('DOMContentLoaded', () => {
+            // Add ARIA labels for better screen reader support
+            const beanCards = document.querySelectorAll('.bean-card:not(.add-bean-card)');
+            beanCards.forEach((card, index) => {
+                const beanName = card.querySelector('.bean-card__name').textContent;
+                const origin = card.querySelector('.bean-card__origin').textContent;
+                card.setAttribute('aria-label', `${beanName} from ${origin}`);
+                card.setAttribute('role', 'article');
+            });
+        });
+    </script>
+</body>
+</html>

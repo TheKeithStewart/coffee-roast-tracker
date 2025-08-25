@@ -57,6 +57,29 @@ npm run lint
 
 - `@/*` maps to `./` (relative to frontend directory)
 
+## Product Prototypes & Design System
+
+The `product-prototypes/` directory contains comprehensive UI/UX prototypes and design system documentation:
+
+### Prototype Files
+- **Core Interfaces**: Basic functional prototypes for roasting, bean selection, navigation, onboarding, and PWA features
+- **Enhanced Interfaces**: Advanced prototypes with complete feature sets, theme support, and design system showcase
+- **Design System**: CSS foundation with 4 color themes (Classic Coffee, High Contrast, Cool Focus, Energizing)
+- **Documentation**: Complete implementation guides, UX strategy, and Next.js integration instructions
+
+### Key Design Features
+- **User-Friendly Design**: Large touch targets (60px+), high contrast (4.5:1+), generous spacing
+- **Progressive Complexity**: Simple/Standard/Advanced modes for customizable interface complexity
+- **Accessibility**: WCAG 2.1 AA compliant with full keyboard navigation and screen reader support
+- **PWA Ready**: Service worker integration, offline support, installation prompts
+- **Responsive**: Mobile-first design with tablet and desktop breakpoints
+
+### Implementation Reference
+- Use `product-prototypes/INDEX.md` for complete prototype overview and development checklist
+- Follow `documentation/nextjs-integration-guide.md` for TailwindCSS v4 integration
+- Reference `documentation/README.md` for component specifications and usage
+- Apply `documentation/USER-FRIENDLY-UX-DESIGN-STRATEGY.md` for UX decisions
+
 ## Development Notes
 
 - The project is in early stages with default Next.js structure
@@ -98,6 +121,12 @@ This project uses a comprehensive agent-based development workflow that covers t
 │   ├── {issue-number}-designs.md
 │   ├── {issue-number}-implementation-log.md
 │   └── {issue-number}-review-feedback.md
+├── product-prototypes/     # UI/UX prototypes and design system
+│   ├── core-interfaces/    # Basic functional prototypes
+│   ├── enhanced-interfaces/# Advanced prototypes with theming
+│   ├── design-system/      # CSS components and design tokens
+│   ├── documentation/      # Implementation guides and UX strategy
+│   └── INDEX.md           # Complete prototype reference guide
 ├── frontend/               # Next.js application
 └── backend/                # Django application
 ```

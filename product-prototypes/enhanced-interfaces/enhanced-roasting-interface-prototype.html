@@ -1,0 +1,1730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced User-Friendly Roasting Interface - Coffee Roast Tracker</title>
+    <style>
+        /* Enhanced user-friendly CSS variables */
+        :root {
+            --color-primary: #2563eb;
+            --color-primary-hover: #1d4ed8;
+            --color-primary-light: #dbeafe;
+            --color-success: #059669;
+            --color-success-light: #d1fae5;
+            --color-warning: #d97706;
+            --color-warning-light: #fef3c7;
+            --color-danger: #dc2626;
+            --color-danger-hover: #b91c1c;
+            --color-danger-light: #fee2e2;
+            --color-info: #0891b2;
+            --color-info-light: #cffafe;
+            --color-text-primary: #111827;
+            --color-text-secondary: #6b7280;
+            --color-text-inverse: #ffffff;
+            --color-background: #ffffff;
+            --color-surface: #f9fafb;
+            --color-surface-elevated: #ffffff;
+            --color-border: #e5e7eb;
+            --color-focus: #2563eb;
+            --color-confirmation: #16a34a;
+            
+            /* User-friendly spacing */
+            --spacing-xs: 4px;
+            --spacing-sm: 8px;
+            --spacing-md: 16px;
+            --spacing-lg: 24px;
+            --spacing-xl: 32px;
+            --spacing-2xl: 48px;
+            --spacing-3xl: 64px;
+            
+            /* Touch target sizes */
+            --touch-target-sm: 44px;
+            --touch-target-md: 60px;
+            --touch-target-lg: 80px;
+            --touch-target-xl: 100px;
+            
+            /* Typography scale */
+            --text-xs: 0.75rem;
+            --text-sm: 0.875rem;
+            --text-base: 1rem;
+            --text-lg: 1.125rem;
+            --text-xl: 1.25rem;
+            --text-2xl: 1.5rem;
+            --text-3xl: 1.875rem;
+            --text-4xl: 2.25rem;
+            --text-5xl: 3rem;
+            --text-6xl: 3.75rem;
+            --text-7xl: 4.5rem;
+            
+            /* Shadows */
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            
+            /* Border radius */
+            --radius-sm: 4px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            --radius-xl: 16px;
+            --radius-2xl: 24px;
+        }
+        
+        /* High contrast mode support */
+        @media (prefers-contrast: high) {
+            :root {
+                --color-text-primary: #000000;
+                --color-background: #ffffff;
+                --color-primary: #0000ff;
+                --color-danger: #ff0000;
+                --color-success: #008000;
+                --color-warning: #ff6600;
+                --color-border: #000000;
+                --color-surface: #f8f8f8;
+            }
+        }
+        
+        /* Reduced motion support */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+        
+        /* Dark mode support */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --color-text-primary: #f9fafb;
+                --color-text-secondary: #9ca3af;
+                --color-background: #111827;
+                --color-surface: #1f2937;
+                --color-surface-elevated: #374151;
+                --color-border: #374151;
+            }
+        }
+        
+        /* Base reset and typography */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            font-size: var(--text-base);
+            line-height: 1.5;
+            color: var(--color-text-primary);
+            background-color: var(--color-background);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
+        }
+        
+        /* Enhanced user-friendly button styles */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-sm);
+            padding: var(--spacing-md) var(--spacing-lg);
+            min-height: var(--touch-target-md);
+            border: 3px solid transparent;
+            border-radius: var(--radius-lg);
+            font-size: var(--text-lg);
+            font-weight: 700;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            position: relative;
+            outline: none;
+            user-select: none;
+            text-align: center;
+            white-space: nowrap;
+            background-clip: padding-box;
+        }
+        
+        /* Enhanced focus states */
+        .btn:focus {
+            outline: 4px solid var(--color-focus);
+            outline-offset: 3px;
+            box-shadow: 0 0 0 2px var(--color-background);
+        }
+        
+        .btn:active {
+            transform: scale(0.96);
+        }
+        
+        /* Button variants with enhanced visual feedback */
+        .btn-primary {
+            background: linear-gradient(135deg, var(--color-primary), var(--color-primary-hover));
+            color: var(--color-text-inverse);
+            border-color: var(--color-primary);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+            background: linear-gradient(135deg, var(--color-primary-hover), var(--color-primary));
+        }
+        
+        .btn-danger {
+            background: linear-gradient(135deg, var(--color-danger), var(--color-danger-hover));
+            color: var(--color-text-inverse);
+            border-color: var(--color-danger);
+            min-height: var(--touch-target-lg);
+            font-size: var(--text-xl);
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            box-shadow: var(--shadow-xl);
+        }
+        
+        .btn-danger:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 25px 50px -12px rgba(220, 38, 38, 0.5);
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, var(--color-success), #047857);
+            color: var(--color-text-inverse);
+            border-color: var(--color-success);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .btn-success:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .btn-warning {
+            background: linear-gradient(135deg, var(--color-warning), #b45309);
+            color: var(--color-text-inverse);
+            border-color: var(--color-warning);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .btn-large {
+            min-height: var(--touch-target-xl);
+            padding: var(--spacing-xl) var(--spacing-2xl);
+            font-size: var(--text-2xl);
+            border-radius: var(--radius-xl);
+        }
+        
+        /* Visual confirmation states */
+        .btn-confirmed {
+            background: linear-gradient(135deg, var(--color-confirmation), #15803d);
+            animation: confirm-pulse 0.6s ease-out;
+        }
+        
+        @keyframes confirm-pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none !important;
+            box-shadow: none;
+        }
+        
+        /* Container with enhanced visual hierarchy */
+        .roasting-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: var(--spacing-lg);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background: linear-gradient(135deg, var(--color-background) 0%, var(--color-surface) 100%);
+        }
+        
+        /* Enhanced header */
+        .roasting-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--spacing-xl) 0;
+            border-bottom: 3px solid var(--color-border);
+            margin-bottom: var(--spacing-2xl);
+            background: var(--color-surface-elevated);
+            border-radius: var(--radius-xl);
+            padding: var(--spacing-lg) var(--spacing-xl);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .roasting-title {
+            font-size: var(--text-2xl);
+            font-weight: 800;
+            color: var(--color-text-primary);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+        }
+        
+        .status-indicator {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background-color: var(--color-success);
+            animation: pulse-gentle 2s infinite;
+        }
+        
+        @keyframes pulse-gentle {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+        
+        .bean-info {
+            font-size: var(--text-base);
+            color: var(--color-text-secondary);
+            font-weight: 500;
+        }
+        
+        /* Enhanced main display */
+        .roasting-main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-2xl);
+            text-align: center;
+            padding: var(--spacing-3xl) 0;
+        }
+        
+        /* Giant timer display with enhanced visibility */
+        .timer-section {
+            background: var(--color-surface-elevated);
+            border-radius: var(--radius-2xl);
+            padding: var(--spacing-3xl);
+            box-shadow: var(--shadow-xl);
+            border: 4px solid var(--color-primary-light);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .timer-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            animation: shimmer 3s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+        
+        .timer-display {
+            font-size: var(--text-7xl);
+            font-weight: 900;
+            color: var(--color-text-primary);
+            font-variant-numeric: tabular-nums;
+            line-height: 1;
+            margin-bottom: var(--spacing-lg);
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .timer-display.critical {
+            color: var(--color-danger);
+            animation: pulse-critical 1s infinite;
+        }
+        
+        @keyframes pulse-critical {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+        
+        /* Enhanced phase indicator */
+        .phase-indicator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-lg);
+            padding: var(--spacing-lg) var(--spacing-2xl);
+            background: var(--color-surface-elevated);
+            border: 3px solid var(--color-border);
+            border-radius: var(--radius-xl);
+            margin-bottom: var(--spacing-xl);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .phase-progress {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+        }
+        
+        .phase-dot {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: var(--color-text-secondary);
+            transition: all 0.3s ease;
+            border: 3px solid transparent;
+        }
+        
+        .phase-dot.active {
+            background-color: var(--color-primary);
+            border-color: var(--color-primary-light);
+            box-shadow: 0 0 20px rgba(37, 99, 235, 0.5);
+            transform: scale(1.2);
+        }
+        
+        .phase-dot.completed {
+            background-color: var(--color-success);
+            border-color: var(--color-success-light);
+        }
+        
+        .phase-text {
+            font-size: var(--text-xl);
+            font-weight: 700;
+            color: var(--color-text-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        /* Enhanced temperature display */
+        .temp-display {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-xl);
+            padding: var(--spacing-2xl);
+            background: var(--color-surface-elevated);
+            border-radius: var(--radius-xl);
+            border: 3px solid var(--color-border);
+            margin-bottom: var(--spacing-xl);
+            box-shadow: var(--shadow-lg);
+            position: relative;
+        }
+        
+        .temp-section {
+            text-align: center;
+        }
+        
+        .temp-label {
+            font-size: var(--text-sm);
+            color: var(--color-text-secondary);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: var(--spacing-xs);
+        }
+        
+        .temp-value {
+            font-size: var(--text-4xl);
+            font-weight: 800;
+            color: var(--color-text-primary);
+            font-variant-numeric: tabular-nums;
+            transition: color 0.3s ease;
+        }
+        
+        .temp-unit {
+            font-size: var(--text-lg);
+            color: var(--color-text-secondary);
+            font-weight: 600;
+        }
+        
+        .temp-trend {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-xs);
+            margin-top: var(--spacing-xs);
+        }
+        
+        .trend-arrow {
+            font-size: var(--text-lg);
+        }
+        
+        .trend-text {
+            font-size: var(--text-sm);
+            font-weight: 600;
+        }
+        
+        /* Enhanced action buttons area */
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-xl);
+            width: 100%;
+            max-width: 500px;
+            margin-top: var(--spacing-2xl);
+        }
+        
+        /* Emergency stop with enhanced prominence */
+        .emergency-stop {
+            position: relative;
+            background: linear-gradient(135deg, var(--color-danger), var(--color-danger-hover));
+            border: 4px solid #7f1d1d;
+            box-shadow: 0 8px 25px rgba(220, 38, 38, 0.4);
+            animation: emergency-pulse 2s infinite;
+        }
+        
+        @keyframes emergency-pulse {
+            0%, 100% { 
+                box-shadow: 0 8px 25px rgba(220, 38, 38, 0.4);
+            }
+            50% { 
+                box-shadow: 0 8px 35px rgba(220, 38, 38, 0.6);
+            }
+        }
+        
+        .emergency-stop:focus {
+            outline: 4px solid #fca5a5;
+            outline-offset: 4px;
+        }
+        
+        .emergency-stop:hover:not(:disabled) {
+            box-shadow: 0 12px 40px rgba(220, 38, 38, 0.6);
+            transform: translateY(-3px);
+        }
+        
+        .emergency-stop::before {
+            content: '';
+            position: absolute;
+            top: -4px;
+            left: -4px;
+            right: -4px;
+            bottom: -4px;
+            background: conic-gradient(from 0deg, var(--color-danger), var(--color-danger-hover), var(--color-danger));
+            border-radius: var(--radius-xl);
+            z-index: -1;
+            animation: rotate 3s linear infinite;
+        }
+        
+        @keyframes rotate {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Phase controls with visual separation */
+        .phase-controls {
+            display: flex;
+            gap: var(--spacing-lg);
+            width: 100%;
+        }
+        
+        .phase-controls .btn {
+            flex: 1;
+            min-height: var(--touch-target-lg);
+        }
+        
+        /* Quick actions section */
+        .quick-actions {
+            display: flex;
+            justify-content: space-around;
+            gap: var(--spacing-md);
+            width: 100%;
+            margin-top: var(--spacing-lg);
+        }
+        
+        .quick-action-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: var(--spacing-sm);
+            padding: var(--spacing-lg);
+            background: var(--color-surface);
+            border: 2px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            cursor: pointer;
+            transition: all 0.15s ease;
+            min-width: var(--touch-target-lg);
+            min-height: var(--touch-target-lg);
+            text-decoration: none;
+            color: var(--color-text-primary);
+        }
+        
+        .quick-action-btn:hover {
+            background: var(--color-primary-light);
+            border-color: var(--color-primary);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .quick-action-btn:focus {
+            outline: 3px solid var(--color-focus);
+            outline-offset: 2px;
+        }
+        
+        .quick-action-icon {
+            font-size: var(--text-2xl);
+        }
+        
+        .quick-action-label {
+            font-size: var(--text-xs);
+            font-weight: 600;
+            text-align: center;
+        }
+        
+        /* Enhanced status bar */
+        .status-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--spacing-xl);
+            background: var(--color-surface-elevated);
+            border-radius: var(--radius-xl);
+            border-top: 3px solid var(--color-border);
+            margin-top: auto;
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .status-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: var(--spacing-sm);
+            padding: var(--spacing-md);
+            background: var(--color-surface);
+            border-radius: var(--radius-lg);
+            border: 2px solid var(--color-border);
+            min-width: 100px;
+        }
+        
+        .status-label {
+            font-size: var(--text-xs);
+            color: var(--color-text-secondary);
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+        }
+        
+        .status-value {
+            font-size: var(--text-lg);
+            font-weight: 800;
+            color: var(--color-text-primary);
+        }
+        
+        /* Keyboard shortcuts overlay */
+        .shortcuts-overlay {
+            position: fixed;
+            top: var(--spacing-lg);
+            right: var(--spacing-lg);
+            background: var(--color-surface-elevated);
+            border: 2px solid var(--color-primary);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-lg);
+            box-shadow: var(--shadow-xl);
+            z-index: 1000;
+            max-width: 300px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-20px);
+            transition: all 0.3s ease;
+        }
+        
+        .shortcuts-overlay.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        
+        .shortcuts-title {
+            font-size: var(--text-lg);
+            font-weight: 700;
+            color: var(--color-text-primary);
+            margin-bottom: var(--spacing-md);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+        
+        .shortcuts-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-sm);
+        }
+        
+        .shortcut-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--spacing-sm);
+            background: var(--color-surface);
+            border-radius: var(--radius-md);
+        }
+        
+        .shortcut-key {
+            font-family: 'Monaco', 'Menlo', monospace;
+            background: var(--color-text-primary);
+            color: var(--color-text-inverse);
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: var(--radius-sm);
+            font-size: var(--text-xs);
+            font-weight: 700;
+        }
+        
+        .shortcut-action {
+            font-size: var(--text-sm);
+            color: var(--color-text-secondary);
+        }
+        
+        /* Visual confirmation popup */
+        .confirmation-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.8);
+            background: var(--color-success-light);
+            border: 3px solid var(--color-success);
+            border-radius: var(--radius-xl);
+            padding: var(--spacing-2xl);
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            text-align: center;
+            max-width: 400px;
+        }
+        
+        .confirmation-popup.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translate(-50%, -50%) scale(1);
+        }
+        
+        .confirmation-icon {
+            font-size: var(--text-5xl);
+            margin-bottom: var(--spacing-lg);
+            animation: bounce 0.6s ease;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 53%, 80%, 100% { transform: translate3d(0,0,0); }
+            40%, 43% { transform: translate3d(0,-15px,0); }
+            70% { transform: translate3d(0,-7px,0); }
+            90% { transform: translate3d(0,-2px,0); }
+        }
+        
+        .confirmation-text {
+            font-size: var(--text-xl);
+            font-weight: 700;
+            color: var(--color-success);
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .confirmation-detail {
+            font-size: var(--text-base);
+            color: var(--color-text-secondary);
+        }
+        
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .roasting-container {
+                padding: var(--spacing-md);
+            }
+            
+            .timer-display {
+                font-size: var(--text-5xl);
+            }
+            
+            .temp-value {
+                font-size: var(--text-3xl);
+            }
+            
+            .phase-controls {
+                flex-direction: column;
+            }
+            
+            .temp-display {
+                flex-direction: column;
+                gap: var(--spacing-lg);
+            }
+            
+            .quick-actions {
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .timer-section {
+                padding: var(--spacing-xl);
+            }
+            
+            .timer-display {
+                font-size: var(--text-4xl);
+            }
+            
+            .status-bar {
+                flex-direction: column;
+                gap: var(--spacing-md);
+            }
+            
+            .shortcuts-overlay {
+                position: fixed;
+                top: var(--spacing-sm);
+                left: var(--spacing-sm);
+                right: var(--spacing-sm);
+                max-width: none;
+            }
+        }
+        
+        /* Accessibility helpers */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+        
+        /* Focus trap styles */
+        .focus-trap-active .btn:not(.focus-allowed) {
+            opacity: 0.3;
+            pointer-events: none;
+        }
+        
+        /* High contrast focus indicators */
+        @media (prefers-contrast: high) {
+            .btn:focus {
+                outline: 6px solid;
+                outline-offset: 4px;
+            }
+            
+            .emergency-stop:focus {
+                outline: 6px solid #ff0000;
+                outline-offset: 6px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="roasting-container" id="roastingApp">
+        <!-- Header -->
+        <header class="roasting-header">
+            <div>
+                <h1 class="roasting-title">
+                    <span class="status-indicator" aria-label="Active roast in progress"></span>
+                    Active Roast Session
+                </h1>
+                <p class="bean-info" id="beanInfo">Ethiopia Yirgacheffe - Light Roast Profile</p>
+            </div>
+            <button 
+                class="quick-action-btn" 
+                id="shortcutsBtn"
+                onclick="toggleShortcuts()"
+                aria-label="Show keyboard shortcuts"
+                title="Show keyboard shortcuts (F1)"
+            >
+                <span class="quick-action-icon" aria-hidden="true">⌨️</span>
+                <span class="quick-action-label">Shortcuts</span>
+            </button>
+        </header>
+        
+        <!-- Main roasting interface -->
+        <main class="roasting-main" role="main">
+            <!-- Giant timer display -->
+            <div class="timer-section">
+                <div class="timer-display" id="timerDisplay" aria-live="polite" aria-label="Roast timer">
+                    05:43
+                </div>
+                
+                <!-- Enhanced phase indicator -->
+                <div class="phase-indicator" role="status" aria-live="polite">
+                    <div class="phase-progress">
+                        <div class="phase-dot completed" aria-label="Drying phase completed"></div>
+                        <div class="phase-dot active" aria-label="First crack phase active"></div>
+                        <div class="phase-dot" aria-label="Development phase pending"></div>
+                        <div class="phase-dot" aria-label="Completion phase pending"></div>
+                    </div>
+                    <span class="phase-text" id="phaseText">First Crack</span>
+                </div>
+            </div>
+            
+            <!-- Enhanced temperature display -->
+            <div class="temp-display" role="status" aria-live="polite">
+                <div class="temp-section">
+                    <div class="temp-label">Current</div>
+                    <div>
+                        <span class="temp-value" id="tempValue" aria-label="Current temperature">385</span>
+                        <span class="temp-unit">°F</span>
+                    </div>
+                    <div class="temp-trend">
+                        <span class="trend-arrow" id="tempTrend" aria-hidden="true">↗️</span>
+                        <span class="trend-text" id="tempTrendText">Rising</span>
+                    </div>
+                </div>
+                
+                <div class="temp-section">
+                    <div class="temp-label">Target</div>
+                    <div>
+                        <span class="temp-value" id="targetTemp">400</span>
+                        <span class="temp-unit">°F</span>
+                    </div>
+                    <div class="temp-trend">
+                        <span class="trend-text" id="tempDiff">15°F to go</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Enhanced action buttons -->
+            <div class="action-buttons">
+                <!-- Emergency stop - always prominent -->
+                <button 
+                    class="btn btn-danger btn-large emergency-stop focus-allowed" 
+                    id="emergencyStop"
+                    aria-label="Emergency stop - immediately end roast (Ctrl+E)"
+                    title="Emergency Stop (Ctrl+E)"
+                    type="button"
+                >
+                    <span aria-hidden="true">🛑</span>
+                    EMERGENCY STOP
+                </button>
+                
+                <!-- Phase control buttons -->
+                <div class="phase-controls">
+                    <button 
+                        class="btn btn-warning btn-large focus-allowed" 
+                        id="nextPhase"
+                        aria-label="Advance to next roasting phase (Ctrl+N)"
+                        title="Next Phase (Ctrl+N)"
+                        type="button"
+                    >
+                        <span aria-hidden="true">⏭️</span>
+                        Next Phase
+                    </button>
+                    
+                    <button 
+                        class="btn btn-success btn-large focus-allowed" 
+                        id="finishRoast"
+                        aria-label="Complete roast and save results (Ctrl+F)"
+                        title="Finish Roast (Ctrl+F)"
+                        type="button"
+                    >
+                        <span aria-hidden="true">🏁</span>
+                        Finish Roast
+                    </button>
+                </div>
+                
+                <!-- Quick actions -->
+                <div class="quick-actions">
+                    <button 
+                        class="quick-action-btn" 
+                        id="addNote"
+                        onclick="handleAddNote()"
+                        aria-label="Add quick note to roast log (Ctrl+T)"
+                        title="Add Note (Ctrl+T)"
+                    >
+                        <span class="quick-action-icon" aria-hidden="true">📝</span>
+                        <span class="quick-action-label">Add Note</span>
+                    </button>
+                    
+                    <button 
+                        class="quick-action-btn" 
+                        id="adjustTemp"
+                        onclick="handleAdjustTemp()"
+                        aria-label="Adjust target temperature (Ctrl+A)"
+                        title="Adjust Temperature (Ctrl+A)"
+                    >
+                        <span class="quick-action-icon" aria-hidden="true">🌡️</span>
+                        <span class="quick-action-label">Adjust Temp</span>
+                    </button>
+                    
+                    <button 
+                        class="quick-action-btn" 
+                        id="pauseRoast"
+                        onclick="handlePause()"
+                        aria-label="Pause roast timer (Space)"
+                        title="Pause (Space)"
+                    >
+                        <span class="quick-action-icon" aria-hidden="true">⏸️</span>
+                        <span class="quick-action-label">Pause</span>
+                    </button>
+                </div>
+            </div>
+        </main>
+        
+        <!-- Enhanced status bar -->
+        <footer class="status-bar" role="contentinfo">
+            <div class="status-item">
+                <span class="status-label">Batch Size</span>
+                <span class="status-value" id="batchSize">450g</span>
+            </div>
+            <div class="status-item">
+                <span class="status-label">Phase Time</span>
+                <span class="status-value" id="phaseTime">02:15</span>
+            </div>
+            <div class="status-item">
+                <span class="status-label">RoR</span>
+                <span class="status-value" id="rorValue">12°F/min</span>
+            </div>
+            <div class="status-item">
+                <span class="status-label">Power</span>
+                <span class="status-value" id="powerLevel">85%</span>
+            </div>
+        </footer>
+        
+        <!-- Keyboard shortcuts overlay -->
+        <div class="shortcuts-overlay" id="shortcutsOverlay">
+            <div class="shortcuts-title">
+                <span aria-hidden="true">⌨️</span>
+                Keyboard Shortcuts
+            </div>
+            <div class="shortcuts-list">
+                <div class="shortcut-item">
+                    <span class="shortcut-key">Ctrl+E</span>
+                    <span class="shortcut-action">Emergency Stop</span>
+                </div>
+                <div class="shortcut-item">
+                    <span class="shortcut-key">Ctrl+N</span>
+                    <span class="shortcut-action">Next Phase</span>
+                </div>
+                <div class="shortcut-item">
+                    <span class="shortcut-key">Ctrl+F</span>
+                    <span class="shortcut-action">Finish Roast</span>
+                </div>
+                <div class="shortcut-item">
+                    <span class="shortcut-key">Ctrl+T</span>
+                    <span class="shortcut-action">Add Note</span>
+                </div>
+                <div class="shortcut-item">
+                    <span class="shortcut-key">Ctrl+A</span>
+                    <span class="shortcut-action">Adjust Temperature</span>
+                </div>
+                <div class="shortcut-item">
+                    <span class="shortcut-key">Space</span>
+                    <span class="shortcut-action">Pause/Resume</span>
+                </div>
+                <div class="shortcut-item">
+                    <span class="shortcut-key">F1</span>
+                    <span class="shortcut-action">Show Shortcuts</span>
+                </div>
+                <div class="shortcut-item">
+                    <span class="shortcut-key">Esc</span>
+                    <span class="shortcut-action">Cancel/Close</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Visual confirmation popup -->
+        <div class="confirmation-popup" id="confirmationPopup">
+            <div class="confirmation-icon" id="confirmationIcon">✅</div>
+            <div class="confirmation-text" id="confirmationText">Action Confirmed</div>
+            <div class="confirmation-detail" id="confirmationDetail">Your action has been completed successfully.</div>
+        </div>
+    </div>
+
+    <!-- Screen reader announcements -->
+    <div id="announcements" aria-live="assertive" aria-atomic="true" class="sr-only"></div>
+
+    <script>
+        /**
+         * Enhanced User-Friendly Coffee Roast Tracker - Roasting Interface
+         * 
+         * Enhanced features:
+         * - Visual confirmation for all actions
+         * - Enhanced keyboard shortcuts with overlay
+         * - Improved temperature trend indicators
+         * - Better focus management
+         * - Enhanced emergency stop with visual prominence
+         * - Quick actions for common tasks
+         * - Improved accessibility with better ARIA support
+         */
+        
+        class EnhancedUserFriendlyRoastingInterface {
+            constructor() {
+                this.state = {
+                    isRoasting: true,
+                    isPaused: false,
+                    currentPhase: 'firstCrack',
+                    elapsedTime: 343, // seconds
+                    currentTemp: 385,
+                    targetTemp: 400,
+                    batchSize: '450g',
+                    phases: ['drying', 'firstCrack', 'development', 'complete'],
+                    phaseIndex: 1,
+                    phaseStartTime: Date.now() - 135000, // 2:15 ago
+                    temperatureTrend: 'rising',
+                    rateOfRise: 12,
+                    powerLevel: 85,
+                    lastTemp: 383,
+                    shortcutsVisible: false
+                };
+                
+                this.confirmationTimeout = null;
+                this.initializeElements();
+                this.bindEventListeners();
+                this.startRoastingTimer();
+                this.setupFocusManagement();
+                this.announceInitialState();
+            }
+            
+            initializeElements() {
+                // Cache DOM elements for performance
+                this.elements = {
+                    timerDisplay: document.getElementById('timerDisplay'),
+                    phaseText: document.getElementById('phaseText'),
+                    tempValue: document.getElementById('tempValue'),
+                    targetTemp: document.getElementById('targetTemp'),
+                    tempTrend: document.getElementById('tempTrend'),
+                    tempTrendText: document.getElementById('tempTrendText'),
+                    tempDiff: document.getElementById('tempDiff'),
+                    phaseTime: document.getElementById('phaseTime'),
+                    rorValue: document.getElementById('rorValue'),
+                    powerLevel: document.getElementById('powerLevel'),
+                    emergencyStop: document.getElementById('emergencyStop'),
+                    nextPhase: document.getElementById('nextPhase'),
+                    finishRoast: document.getElementById('finishRoast'),
+                    addNote: document.getElementById('addNote'),
+                    adjustTemp: document.getElementById('adjustTemp'),
+                    pauseRoast: document.getElementById('pauseRoast'),
+                    shortcutsOverlay: document.getElementById('shortcutsOverlay'),
+                    confirmationPopup: document.getElementById('confirmationPopup'),
+                    confirmationIcon: document.getElementById('confirmationIcon'),
+                    confirmationText: document.getElementById('confirmationText'),
+                    confirmationDetail: document.getElementById('confirmationDetail'),
+                    announcements: document.getElementById('announcements')
+                };
+            }
+            
+            bindEventListeners() {
+                // Emergency stop - highest priority
+                this.elements.emergencyStop.addEventListener('click', () => {
+                    this.handleEmergencyStop();
+                });
+                
+                // Phase progression
+                this.elements.nextPhase.addEventListener('click', () => {
+                    this.handleNextPhase();
+                });
+                
+                // Finish roast
+                this.elements.finishRoast.addEventListener('click', () => {
+                    this.handleFinishRoast();
+                });
+                
+                // Enhanced keyboard shortcuts
+                document.addEventListener('keydown', (e) => {
+                    this.handleKeyboardShortcuts(e);
+                });
+                
+                // Enhanced visual feedback for button interactions
+                document.querySelectorAll('.btn').forEach(btn => {
+                    btn.addEventListener('mousedown', () => {
+                        this.showButtonFeedback(btn, 'press');
+                    });
+                    
+                    btn.addEventListener('mouseup', () => {
+                        this.showButtonFeedback(btn, 'release');
+                    });
+                    
+                    btn.addEventListener('mouseleave', () => {
+                        this.showButtonFeedback(btn, 'release');
+                    });
+                });
+                
+                // Click outside to close shortcuts
+                document.addEventListener('click', (e) => {
+                    if (this.state.shortcutsVisible && 
+                        !this.elements.shortcutsOverlay.contains(e.target) && 
+                        e.target.id !== 'shortcutsBtn') {
+                        this.toggleShortcuts();
+                    }
+                });
+                
+                // Focus management for modals
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape') {
+                        if (this.state.shortcutsVisible) {
+                            this.toggleShortcuts();
+                        }
+                    }
+                });
+            }
+            
+            handleKeyboardShortcuts(e) {
+                // Global shortcuts
+                if (e.key === 'F1') {
+                    e.preventDefault();
+                    this.toggleShortcuts();
+                    return;
+                }
+                
+                if (e.key === ' ') {
+                    e.preventDefault();
+                    this.handlePause();
+                    return;
+                }
+                
+                // Ctrl/Cmd shortcuts
+                if (e.ctrlKey || e.metaKey) {
+                    switch(e.key) {
+                        case 'e':
+                            e.preventDefault();
+                            this.handleEmergencyStop();
+                            break;
+                        case 'n':
+                            e.preventDefault();
+                            this.handleNextPhase();
+                            break;
+                        case 'f':
+                            e.preventDefault();
+                            this.handleFinishRoast();
+                            break;
+                        case 't':
+                            e.preventDefault();
+                            this.handleAddNote();
+                            break;
+                        case 'a':
+                            e.preventDefault();
+                            this.handleAdjustTemp();
+                            break;
+                    }
+                }
+                
+                // Number keys for quick phase jumping (1-4)
+                if (e.key >= '1' && e.key <= '4' && !e.ctrlKey && !e.metaKey) {
+                    const phaseIndex = parseInt(e.key) - 1;
+                    if (phaseIndex < this.state.phases.length) {
+                        this.jumpToPhase(phaseIndex);
+                    }
+                }
+            }
+            
+            showButtonFeedback(btn, action) {
+                if (action === 'press') {
+                    btn.style.transform = 'scale(0.96)';
+                } else {
+                    btn.style.transform = '';
+                }
+            }
+            
+            startRoastingTimer() {
+                // Update timer every second
+                this.timerInterval = setInterval(() => {
+                    if (this.state.isRoasting && !this.state.isPaused) {
+                        this.state.elapsedTime++;
+                        this.updateTimerDisplay();
+                        this.updatePhaseTime();
+                        this.updateTemperature();
+                        this.updateTemperatureTrend();
+                    }
+                }, 1000);
+            }
+            
+            updateTimerDisplay() {
+                const minutes = Math.floor(this.state.elapsedTime / 60);
+                const seconds = this.state.elapsedTime % 60;
+                const timeString = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                this.elements.timerDisplay.textContent = timeString;
+                
+                // Add critical timing visual cue
+                if (minutes >= 10) {
+                    this.elements.timerDisplay.classList.add('critical');
+                } else {
+                    this.elements.timerDisplay.classList.remove('critical');
+                }
+                
+                // Update page title for background awareness
+                document.title = `${timeString} - Coffee Roast Tracker`;
+            }
+            
+            updatePhaseTime() {
+                const phaseElapsed = Math.floor((Date.now() - this.state.phaseStartTime) / 1000);
+                const minutes = Math.floor(phaseElapsed / 60);
+                const seconds = phaseElapsed % 60;
+                const phaseTimeString = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                this.elements.phaseTime.textContent = phaseTimeString;
+            }
+            
+            updateTemperature() {
+                // Simulate realistic temperature progression with some variation
+                const baseIncrease = this.state.isPaused ? 0 : (Math.random() * 2.5 - 0.5);
+                this.state.lastTemp = this.state.currentTemp;
+                this.state.currentTemp = Math.min(500, Math.max(200, this.state.currentTemp + baseIncrease));
+                this.elements.tempValue.textContent = Math.round(this.state.currentTemp);
+                
+                // Update temperature difference
+                const tempDiff = this.state.targetTemp - this.state.currentTemp;
+                if (tempDiff > 0) {
+                    this.elements.tempDiff.textContent = `${Math.round(tempDiff)}°F to go`;
+                } else {
+                    this.elements.tempDiff.textContent = `${Math.abs(Math.round(tempDiff))}°F over`;
+                }
+                
+                // Enhanced color coding for temperature ranges
+                if (this.state.currentTemp >= this.state.targetTemp + 5) {
+                    this.elements.tempValue.style.color = 'var(--color-danger)';
+                } else if (this.state.currentTemp >= this.state.targetTemp) {
+                    this.elements.tempValue.style.color = 'var(--color-success)';
+                } else if (this.state.currentTemp >= this.state.targetTemp - 10) {
+                    this.elements.tempValue.style.color = 'var(--color-warning)';
+                } else {
+                    this.elements.tempValue.style.color = 'var(--color-text-primary)';
+                }
+                
+                // Update rate of rise (simplified calculation)
+                const tempChange = this.state.currentTemp - this.state.lastTemp;
+                this.state.rateOfRise = Math.max(0, Math.round(tempChange * 60)); // Per minute
+                this.elements.rorValue.textContent = `${this.state.rateOfRise}°F/min`;
+            }
+            
+            updateTemperatureTrend() {
+                const tempChange = this.state.currentTemp - this.state.lastTemp;
+                
+                if (tempChange > 0.5) {
+                    this.state.temperatureTrend = 'rising';
+                    this.elements.tempTrend.textContent = '↗️';
+                    this.elements.tempTrendText.textContent = 'Rising';
+                    this.elements.tempTrendText.style.color = 'var(--color-warning)';
+                } else if (tempChange < -0.5) {
+                    this.state.temperatureTrend = 'falling';
+                    this.elements.tempTrend.textContent = '↘️';
+                    this.elements.tempTrendText.textContent = 'Falling';
+                    this.elements.tempTrendText.style.color = 'var(--color-info)';
+                } else {
+                    this.state.temperatureTrend = 'stable';
+                    this.elements.tempTrend.textContent = '➡️';
+                    this.elements.tempTrendText.textContent = 'Stable';
+                    this.elements.tempTrendText.style.color = 'var(--color-success)';
+                }
+            }
+            
+            handleEmergencyStop() {
+                this.state.isRoasting = false;
+                clearInterval(this.timerInterval);
+                
+                // Enhanced visual feedback
+                this.elements.emergencyStop.style.background = 'var(--color-danger-hover)';
+                this.elements.emergencyStop.textContent = '🛑 STOPPED';
+                this.elements.emergencyStop.disabled = true;
+                this.elements.emergencyStop.classList.add('btn-confirmed');
+                
+                // Disable other controls
+                this.elements.nextPhase.disabled = true;
+                this.elements.finishRoast.disabled = true;
+                this.elements.pauseRoast.disabled = true;
+                
+                // Show visual confirmation
+                this.showConfirmation('🛑', 'Emergency Stop Activated', 'Roast ended immediately. Data saved.');
+                
+                // Clear, immediate announcement
+                this.announce('Emergency stop activated. Roast ended immediately.');
+                
+                // Show completion options after brief delay
+                setTimeout(() => {
+                    this.showEmergencyStopOptions();
+                }, 3000);
+            }
+            
+            handleNextPhase() {
+                if (this.state.phaseIndex < this.state.phases.length - 1) {
+                    this.state.phaseIndex++;
+                    this.state.phaseStartTime = Date.now();
+                    
+                    const newPhase = this.state.phases[this.state.phaseIndex];
+                    const phaseNames = {
+                        'drying': 'Drying Phase',
+                        'firstCrack': 'First Crack',
+                        'development': 'Development',
+                        'complete': 'Complete'
+                    };
+                    
+                    this.elements.phaseText.textContent = phaseNames[newPhase];
+                    this.updatePhaseIndicator();
+                    
+                    // Visual confirmation
+                    this.elements.nextPhase.classList.add('btn-confirmed');
+                    setTimeout(() => {
+                        this.elements.nextPhase.classList.remove('btn-confirmed');
+                    }, 600);
+                    
+                    this.showConfirmation('⏭️', 'Phase Advanced', `Now in ${phaseNames[newPhase]} phase`);
+                    this.announce(`Advanced to ${phaseNames[newPhase]} phase`);
+                    
+                    // Update button states based on phase
+                    if (this.state.phaseIndex === this.state.phases.length - 2) {
+                        this.elements.nextPhase.innerHTML = '<span aria-hidden="true">🏁</span> Final Phase';
+                    } else if (this.state.phaseIndex === this.state.phases.length - 1) {
+                        this.elements.nextPhase.disabled = true;
+                        this.elements.finishRoast.focus();
+                    }
+                }
+            }
+            
+            handleFinishRoast() {
+                this.state.isRoasting = false;
+                clearInterval(this.timerInterval);
+                
+                // Enhanced visual feedback
+                this.elements.finishRoast.style.background = 'var(--color-success)';
+                this.elements.finishRoast.innerHTML = '<span aria-hidden="true">🎉</span> Completed!';
+                this.elements.finishRoast.disabled = true;
+                this.elements.finishRoast.classList.add('btn-confirmed');
+                
+                // Disable other controls
+                this.elements.nextPhase.disabled = true;
+                this.elements.emergencyStop.disabled = true;
+                this.elements.pauseRoast.disabled = true;
+                
+                // Show visual confirmation
+                this.showConfirmation('🎉', 'Roast Complete!', 'Results saved successfully.');
+                this.announce('Roast completed successfully. Results saved.');
+                
+                // Show completion options
+                setTimeout(() => {
+                    this.showCompletionOptions();
+                }, 3000);
+            }
+            
+            handlePause() {
+                this.state.isPaused = !this.state.isPaused;
+                
+                if (this.state.isPaused) {
+                    this.elements.pauseRoast.innerHTML = '<span aria-hidden="true">▶️</span><span class="quick-action-label">Resume</span>';
+                    this.showConfirmation('⏸️', 'Roast Paused', 'Timer and heating paused.');
+                    this.announce('Roast paused. Timer and heating stopped.');
+                } else {
+                    this.elements.pauseRoast.innerHTML = '<span aria-hidden="true">⏸️</span><span class="quick-action-label">Pause</span>';
+                    this.showConfirmation('▶️', 'Roast Resumed', 'Timer and heating resumed.');
+                    this.announce('Roast resumed. Timer and heating restarted.');
+                }
+                
+                // Visual feedback
+                this.elements.pauseRoast.classList.add('btn-confirmed');
+                setTimeout(() => {
+                    this.elements.pauseRoast.classList.remove('btn-confirmed');
+                }, 600);
+            }
+            
+            handleAddNote() {
+                // Enhanced note input with voice-to-text suggestion
+                const noteText = prompt('Add a quick note to your roast:\n\n(💡 Tip: Use voice-to-text for hands-free notes during roasting)\n\nCurrent phase: ' + this.elements.phaseText.textContent + '\nCurrent temp: ' + this.state.currentTemp + '°F');
+                
+                if (noteText && noteText.trim()) {
+                    this.showConfirmation('📝', 'Note Added', 'Added to roast log successfully.');
+                    this.announce('Note added to roast log');
+                    
+                    // Visual feedback
+                    this.elements.addNote.classList.add('btn-confirmed');
+                    setTimeout(() => {
+                        this.elements.addNote.classList.remove('btn-confirmed');
+                    }, 600);
+                }
+            }
+            
+            handleAdjustTemp() {
+                const currentTarget = this.state.targetTemp;
+                const newTarget = prompt(`Adjust target temperature:\n\nCurrent target: ${currentTarget}°F\nCurrent temp: ${Math.round(this.state.currentTemp)}°F\n\nEnter new target temperature:`);
+                
+                if (newTarget && !isNaN(newTarget)) {
+                    const temp = parseInt(newTarget);
+                    if (temp >= 200 && temp <= 500) {
+                        this.state.targetTemp = temp;
+                        this.elements.targetTemp.textContent = temp;
+                        
+                        this.showConfirmation('🌡️', 'Temperature Adjusted', `Target set to ${temp}°F`);
+                        this.announce(`Target temperature adjusted to ${temp} degrees Fahrenheit`);
+                        
+                        // Visual feedback
+                        this.elements.adjustTemp.classList.add('btn-confirmed');
+                        setTimeout(() => {
+                            this.elements.adjustTemp.classList.remove('btn-confirmed');
+                        }, 600);
+                    } else {
+                        alert('Please enter a temperature between 200°F and 500°F');
+                    }
+                }
+            }
+            
+            jumpToPhase(phaseIndex) {
+                if (phaseIndex !== this.state.phaseIndex && phaseIndex < this.state.phases.length) {
+                    this.state.phaseIndex = phaseIndex;
+                    this.state.phaseStartTime = Date.now();
+                    
+                    const phaseNames = {
+                        0: 'Drying Phase',
+                        1: 'First Crack',
+                        2: 'Development',
+                        3: 'Complete'
+                    };
+                    
+                    this.elements.phaseText.textContent = phaseNames[phaseIndex];
+                    this.updatePhaseIndicator();
+                    
+                    this.showConfirmation('🎯', 'Phase Jump', `Jumped to ${phaseNames[phaseIndex]}`);
+                    this.announce(`Jumped to ${phaseNames[phaseIndex]} phase`);
+                }
+            }
+            
+            updatePhaseIndicator() {
+                const dots = document.querySelectorAll('.phase-dot');
+                dots.forEach((dot, index) => {
+                    dot.classList.remove('active', 'completed');
+                    
+                    if (index < this.state.phaseIndex) {
+                        dot.classList.add('completed');
+                        dot.setAttribute('aria-label', `${this.getPhaseNameByIndex(index)} phase completed`);
+                    } else if (index === this.state.phaseIndex) {
+                        dot.classList.add('active');
+                        dot.setAttribute('aria-label', `${this.getPhaseNameByIndex(index)} phase active`);
+                    } else {
+                        dot.setAttribute('aria-label', `${this.getPhaseNameByIndex(index)} phase pending`);
+                    }
+                });
+            }
+            
+            getPhaseNameByIndex(index) {
+                const phaseNames = ['Drying', 'First crack', 'Development', 'Completion'];
+                return phaseNames[index] || 'Unknown';
+            }
+            
+            toggleShortcuts() {
+                this.state.shortcutsVisible = !this.state.shortcutsVisible;
+                this.elements.shortcutsOverlay.classList.toggle('visible', this.state.shortcutsVisible);
+                
+                if (this.state.shortcutsVisible) {
+                    this.announce('Keyboard shortcuts overlay opened');
+                    // Focus first shortcut for screen readers
+                    setTimeout(() => {
+                        this.elements.shortcutsOverlay.focus();
+                    }, 100);
+                } else {
+                    this.announce('Keyboard shortcuts overlay closed');
+                }
+            }
+            
+            showConfirmation(icon, title, detail) {
+                // Clear any existing confirmation timeout
+                if (this.confirmationTimeout) {
+                    clearTimeout(this.confirmationTimeout);
+                }
+                
+                this.elements.confirmationIcon.textContent = icon;
+                this.elements.confirmationText.textContent = title;
+                this.elements.confirmationDetail.textContent = detail;
+                
+                this.elements.confirmationPopup.classList.add('visible');
+                
+                // Auto-hide after 3 seconds
+                this.confirmationTimeout = setTimeout(() => {
+                    this.elements.confirmationPopup.classList.remove('visible');
+                }, 3000);
+            }
+            
+            setupFocusManagement() {
+                // Enhanced focus management for users
+                const criticalActions = [
+                    this.elements.emergencyStop,
+                    this.elements.nextPhase,
+                    this.elements.finishRoast
+                ];
+                
+                // Add visual indication of focusable elements
+                criticalActions.forEach(element => {
+                    element.classList.add('focus-allowed');
+                });
+                
+                // Enhanced keyboard navigation
+                document.addEventListener('keydown', (e) => {
+                    // Focus management during emergencies
+                    if (e.key === 'Escape' && this.state.isRoasting) {
+                        this.elements.emergencyStop.focus();
+                    }
+                    
+                    // Tab navigation enhancement
+                    if (e.key === 'Tab') {
+                        const focusableElements = document.querySelectorAll(
+                            '.focus-allowed, .quick-action-btn:not(:disabled)'
+                        );
+                        
+                        // Ensure proper tab order
+                        if (e.shiftKey) {
+                            // Reverse tab
+                            if (document.activeElement === focusableElements[0]) {
+                                e.preventDefault();
+                                focusableElements[focusableElements.length - 1].focus();
+                            }
+                        } else {
+                            // Forward tab
+                            if (document.activeElement === focusableElements[focusableElements.length - 1]) {
+                                e.preventDefault();
+                                focusableElements[0].focus();
+                            }
+                        }
+                    }
+                });
+            }
+            
+            showEmergencyStopOptions() {
+                // Replace action buttons with emergency stop options
+                const actionButtons = document.querySelector('.action-buttons');
+                actionButtons.innerHTML = `
+                    <div class="phase-controls">
+                        <button class="btn btn-primary btn-large" onclick="window.location.reload()">
+                            <span aria-hidden="true">🔄</span>
+                            Start New Roast
+                        </button>
+                        <button class="btn btn-success btn-large" onclick="alert('📊 Roast analysis would open here')">
+                            <span aria-hidden="true">📊</span>
+                            Analyze Data
+                        </button>
+                    </div>
+                    <div class="quick-actions">
+                        <button class="quick-action-btn" onclick="alert('💾 Data export initiated')">
+                            <span class="quick-action-icon">💾</span>
+                            <span class="quick-action-label">Export Data</span>
+                        </button>
+                        <button class="quick-action-btn" onclick="alert('❓ Help system opened')">
+                            <span class="quick-action-icon">❓</span>
+                            <span class="quick-action-label">Get Help</span>
+                        </button>
+                    </div>
+                `;
+            }
+            
+            showCompletionOptions() {
+                // Replace action buttons with completion options
+                const actionButtons = document.querySelector('.action-buttons');
+                actionButtons.innerHTML = `
+                    <div class="phase-controls">
+                        <button class="btn btn-success btn-large" onclick="showRatingDialog()">
+                            <span aria-hidden="true">⭐</span>
+                            Rate This Roast
+                        </button>
+                        <button class="btn btn-primary btn-large" onclick="window.location.reload()">
+                            <span aria-hidden="true">🔄</span>
+                            Start New Roast
+                        </button>
+                    </div>
+                    <div class="quick-actions">
+                        <button class="quick-action-btn" onclick="alert('📊 Detailed analysis opened')">
+                            <span class="quick-action-icon">📊</span>
+                            <span class="quick-action-label">View Analysis</span>
+                        </button>
+                        <button class="quick-action-btn" onclick="alert('📤 Share options opened')">
+                            <span class="quick-action-icon">📤</span>
+                            <span class="quick-action-label">Share Results</span>
+                        </button>
+                        <button class="quick-action-btn" onclick="alert('💾 Save to favorites')">
+                            <span class="quick-action-icon">💾</span>
+                            <span class="quick-action-label">Save Profile</span>
+                        </button>
+                    </div>
+                `;
+            }
+            
+            announce(message) {
+                // Clear previous announcement
+                this.elements.announcements.textContent = '';
+                
+                // Add new announcement after brief delay for screen readers
+                setTimeout(() => {
+                    this.elements.announcements.textContent = message;
+                }, 100);
+                
+                // Clear announcement after 5 seconds
+                setTimeout(() => {
+                    this.elements.announcements.textContent = '';
+                }, 5000);
+            }
+            
+            announceInitialState() {
+                const phase = this.elements.phaseText.textContent;
+                const time = this.elements.timerDisplay.textContent;
+                const temp = this.elements.tempValue.textContent;
+                
+                setTimeout(() => {
+                    this.announce(`Enhanced roasting interface loaded. Current phase: ${phase}. Time: ${time}. Temperature: ${temp} degrees Fahrenheit. Press F1 for keyboard shortcuts.`);
+                }, 1000);
+            }
+        }
+        
+        // Global functions for HTML onclick handlers
+        function toggleShortcuts() {
+            if (window.roastingApp) {
+                window.roastingApp.toggleShortcuts();
+            }
+        }
+        
+        function handleAddNote() {
+            if (window.roastingApp) {
+                window.roastingApp.handleAddNote();
+            }
+        }
+        
+        function handleAdjustTemp() {
+            if (window.roastingApp) {
+                window.roastingApp.handleAdjustTemp();
+            }
+        }
+        
+        function handlePause() {
+            if (window.roastingApp) {
+                window.roastingApp.handlePause();
+            }
+        }
+        
+        function showRatingDialog() {
+            const rating = prompt('Rate your roast from 1-5 stars:\n\n1 = Poor\n2 = Fair\n3 = Good\n4 = Very Good\n5 = Excellent\n\nEnter rating:');
+            
+            if (rating && rating >= 1 && rating <= 5) {
+                const stars = '⭐'.repeat(parseInt(rating));
+                if (window.roastingApp) {
+                    window.roastingApp.showConfirmation('⭐', 'Rating Saved!', `You rated this roast ${stars}`);
+                    window.roastingApp.announce(`Roast rated ${rating} stars`);
+                }
+            }
+        }
+        
+        // Initialize the enhanced roasting interface when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            // Check for accessibility preferences
+            const preferReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            const preferHighContrast = window.matchMedia('(prefers-contrast: high)').matches;
+            
+            if (preferReducedMotion) {
+                document.body.classList.add('reduced-motion');
+            }
+            
+            if (preferHighContrast) {
+                document.body.classList.add('high-contrast');
+            }
+            
+            // Initialize the main application
+            window.roastingApp = new EnhancedUserFriendlyRoastingInterface();
+            
+            // Add PWA-like features
+            if ('serviceWorker' in navigator) {
+                console.log('PWA features would be initialized here');
+            }
+            
+            // Prevent accidental page refresh during active roasting
+            window.addEventListener('beforeunload', (e) => {
+                if (window.roastingApp && window.roastingApp.state.isRoasting) {
+                    e.preventDefault();
+                    e.returnValue = 'You have an active roast in progress. Are you sure you want to leave?';
+                    return e.returnValue;
+                }
+            });
+        });
+        
+        // Utility function for announcements from outside the class
+        function announceToUser(message) {
+            if (window.roastingApp) {
+                window.roastingApp.announce(message);
+            }
+        }
+    </script>
+</body>
+</html>
