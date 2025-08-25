@@ -1,0 +1,166 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - link "Skip to main content" [ref=e3] [cursor=pointer]:
+      - /url: "#main"
+    - banner [ref=e4]:
+      - generic [ref=e6]:
+        - generic [ref=e7]: ☕
+        - generic [ref=e8]: Coffee Roast Tracker
+    - main [ref=e9]:
+      - generic [ref=e10]:
+        - heading "Design System Integration Test" [level=1] [ref=e11]
+        - paragraph [ref=e12]: This page demonstrates the successful integration of our complete design system with TailwindCSS v4, featuring 4 color themes, accessibility compliance, and performance optimization.
+      - generic [ref=e13]:
+        - heading "Theme System Test" [level=2] [ref=e14]
+        - generic [ref=e15]:
+          - paragraph [ref=e16]: Use this accessible theme switcher to switch between all 4 color themes. Supports keyboard navigation and screen readers.
+          - generic [ref=e17]:
+            - generic [ref=e18]:
+              - 'button "Theme selection, current: Classic Coffee" [expanded] [ref=e19] [cursor=pointer]':
+                - generic [ref=e20] [cursor=pointer]:
+                  - generic [ref=e22] [cursor=pointer]: Classic Coffee
+                  - generic [ref=e23] [cursor=pointer]: ▼
+              - listbox "Color themes" [ref=e24]:
+                - option "Classic Coffee - Warm coffee-inspired browns and tans for a traditional feel" [active] [selected] [ref=e25] [cursor=pointer]:
+                  - generic [ref=e26] [cursor=pointer]:
+                    - generic [ref=e28] [cursor=pointer]:
+                      - generic [ref=e29] [cursor=pointer]: Classic Coffee
+                      - generic [ref=e30] [cursor=pointer]: Warm coffee-inspired browns and tans for a traditional feel
+                    - generic [ref=e31] [cursor=pointer]: ✓
+                - option "High Contrast - Enhanced accessibility with maximum contrast ratios" [ref=e32] [cursor=pointer]:
+                  - generic [ref=e35] [cursor=pointer]:
+                    - generic [ref=e36] [cursor=pointer]: High Contrast
+                    - generic [ref=e37] [cursor=pointer]: Enhanced accessibility with maximum contrast ratios
+                - option "Cool Focus - Calming blues to reduce eye strain and improve concentration" [ref=e38] [cursor=pointer]:
+                  - generic [ref=e41] [cursor=pointer]:
+                    - generic [ref=e42] [cursor=pointer]: Cool Focus
+                    - generic [ref=e43] [cursor=pointer]: Calming blues to reduce eye strain and improve concentration
+                - option "Energizing - Vibrant oranges for high-energy workflows and motivation" [ref=e44] [cursor=pointer]:
+                  - generic [ref=e47] [cursor=pointer]:
+                    - generic [ref=e48] [cursor=pointer]: Energizing
+                    - generic [ref=e49] [cursor=pointer]: Vibrant oranges for high-energy workflows and motivation
+                - option "System Preference - Follow system dark/light mode setting" [ref=e50] [cursor=pointer]:
+                  - generic [ref=e52] [cursor=pointer]:
+                    - generic [ref=e53] [cursor=pointer]: System Preference
+                    - generic [ref=e54] [cursor=pointer]: Follow system dark/light mode setting
+              - generic [ref=e55]: Theme menu opened. 5 options available. Use arrow keys to navigate.
+            - generic [ref=e56]: "Try keyboard navigation: Tab to focus, Enter/Space to open, Arrow keys to navigate"
+      - generic [ref=e57]:
+        - heading "Component Library Test" [level=2] [ref=e58]
+        - generic [ref=e59]:
+          - generic [ref=e60]:
+            - generic [ref=e61]:
+              - heading "Ethiopia Yirgacheffe" [level=3] [ref=e62]
+              - paragraph [ref=e63]: Light Roast
+            - paragraph [ref=e65]: Bright, floral notes with citrus acidity. Perfect for pour-over methods.
+            - generic [ref=e66]:
+              - button "Select" [ref=e67] [cursor=pointer]:
+                - generic [ref=e69] [cursor=pointer]: Select
+              - generic [ref=e70]: In Stock
+          - generic [ref=e71]:
+            - generic [ref=e72]:
+              - heading "Guatemala Antigua" [level=3] [ref=e73]
+              - paragraph [ref=e74]: Medium Roast
+            - paragraph [ref=e76]: Rich chocolate and spice notes with full body and smoky undertones.
+            - generic [ref=e77]:
+              - button "Select" [ref=e78] [cursor=pointer]:
+                - generic [ref=e80] [cursor=pointer]: Select
+              - generic [ref=e81]: In Stock
+          - generic [ref=e82]:
+            - generic [ref=e83]:
+              - heading "Brazil Santos" [level=3] [ref=e84]
+              - paragraph [ref=e85]: Dark Roast
+            - paragraph [ref=e87]: Nutty, caramel flavors with low acidity and heavy body.
+            - generic [ref=e88]:
+              - button "Select" [ref=e89] [cursor=pointer]
+              - generic [ref=e90]: Low Stock
+        - generic [ref=e91]:
+          - heading "Button Variants" [level=3] [ref=e92]
+          - generic [ref=e93]:
+            - button "Primary" [ref=e94] [cursor=pointer]:
+              - generic [ref=e96] [cursor=pointer]: Primary
+            - button "Secondary" [ref=e97] [cursor=pointer]:
+              - generic [ref=e99] [cursor=pointer]: Secondary
+            - button "Success" [ref=e100] [cursor=pointer]:
+              - generic [ref=e102] [cursor=pointer]: Success
+            - button "Emergency Stop" [ref=e103] [cursor=pointer]:
+              - generic [ref=e105] [cursor=pointer]: Emergency Stop
+            - button "Ghost" [ref=e106] [cursor=pointer]:
+              - generic [ref=e108] [cursor=pointer]: Ghost
+            - button "Disabled" [disabled] [ref=e109]:
+              - generic [ref=e111]: Disabled
+          - heading "Button Sizes" [level=4] [ref=e112]
+          - generic [ref=e113]:
+            - button "Small" [ref=e114] [cursor=pointer]:
+              - generic [ref=e116] [cursor=pointer]: Small
+            - button "Medium (Default)" [ref=e117] [cursor=pointer]:
+              - generic [ref=e119] [cursor=pointer]: Medium (Default)
+            - button "Large" [ref=e120] [cursor=pointer]:
+              - generic [ref=e122] [cursor=pointer]: Large
+            - button "Extra Large" [ref=e123] [cursor=pointer]:
+              - generic [ref=e125] [cursor=pointer]: Extra Large
+          - heading "Loading States" [level=4] [ref=e126]
+          - generic [ref=e127]:
+            - button "Loading..." [disabled] [ref=e128]:
+              - generic [ref=e131]: Loading...
+            - button "Processing data..." [disabled] [ref=e132]:
+              - generic [ref=e135]: Processing data...
+            - button "Emergency stop in progress" [disabled] [ref=e136]:
+              - generic [ref=e139]: Emergency stop in progress
+          - heading "Icon Buttons" [level=4] [ref=e140]
+          - generic [ref=e141]:
+            - button "Start Roast" [ref=e142] [cursor=pointer]:
+              - generic [ref=e143] [cursor=pointer]:
+                - generic [ref=e145] [cursor=pointer]: 🔥
+                - generic [ref=e146] [cursor=pointer]: Start Roast
+            - button "Pause" [ref=e147] [cursor=pointer]:
+              - generic [ref=e148] [cursor=pointer]:
+                - generic [ref=e149] [cursor=pointer]: Pause
+                - generic [ref=e151] [cursor=pointer]: ⏸️
+            - button "Emergency stop" [ref=e152] [cursor=pointer]:
+              - generic [ref=e155] [cursor=pointer]: ⏹️
+            - button "View statistics" [ref=e156] [cursor=pointer]:
+              - generic [ref=e159] [cursor=pointer]: 📊
+        - generic [ref=e160]:
+          - generic [ref=e161]: 05:43
+          - generic [ref=e162]: First Crack
+          - generic [ref=e163]: Active Roasting
+        - generic [ref=e165]:
+          - generic [ref=e166]: Roast Progress
+          - generic [ref=e167]: 68%
+        - generic [ref=e170]:
+          - generic [ref=e171]:
+            - generic [ref=e172]: ℹ️
+            - generic [ref=e173]:
+              - generic [ref=e174]: Info Alert
+              - generic [ref=e175]: Design system successfully integrated with theme support.
+          - generic [ref=e176]:
+            - generic [ref=e177]: ✅
+            - generic [ref=e178]:
+              - generic [ref=e179]: Success Alert
+              - generic [ref=e180]: CSS layers working correctly with TailwindCSS v4.
+          - generic [ref=e181]:
+            - generic [ref=e182]: ⚠️
+            - generic [ref=e183]:
+              - generic [ref=e184]: Warning Alert
+              - generic [ref=e185]: Temperature rising quickly - monitor roast closely.
+      - generic [ref=e186]:
+        - heading "Typography Scale" [level=2] [ref=e187]
+        - generic [ref=e188]:
+          - heading "Heading 1 - Main Page Title" [level=1] [ref=e189]
+          - heading "Heading 2 - Section Title" [level=2] [ref=e190]
+          - heading "Heading 3 - Subsection" [level=3] [ref=e191]
+          - heading "Heading 4 - Component Title" [level=4] [ref=e192]
+          - heading "Heading 5 - Small Section" [level=5] [ref=e193]
+          - heading "Heading 6 - Label" [level=6] [ref=e194]
+          - paragraph [ref=e195]: Large body text for important content
+          - paragraph [ref=e196]: Regular body text for standard content
+          - paragraph [ref=e197]: Small text for secondary information
+          - paragraph [ref=e198]: Caption text for metadata
+  - button "Open Next.js Dev Tools" [ref=e205] [cursor=pointer]:
+    - img [ref=e206] [cursor=pointer]
+  - alert [ref=e209]
+```
