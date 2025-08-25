@@ -1,26 +1,202 @@
-@import "tailwindcss";
+/*
+ * Coffee Roast Tracker - Complete Design System Integration
+ * TailwindCSS v4 with CSS Layers and Theme System
+ */
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* Import TailwindCSS preflight (base styles) first */
+@import "tailwindcss/preflight";
+
+/* CSS Layers for proper cascade control */
+@layer design-system-core {
+  /* Import core design system with CSS custom properties */
+  @import "../styles/design-system/design-system-core.css";
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+@layer brand-system {
+  /* Import brand system with typography and brand identity */
+  @import "../styles/design-system/brand-system.css";
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* Import TailwindCSS theme styles */
+@import "tailwindcss/theme";
+
+@layer component-library {
+  /* Import component library with UI patterns */
+  @import "../styles/design-system/component-library.css";
+}
+
+/* Import TailwindCSS utilities last for highest specificity */
+@import "tailwindcss/utilities";
+
+/*
+ * BASE APPLICATION STYLES
+ * Applied after all design system imports
+ */
+
+/* Global font configuration with design system integration */
+html {
+  font-family: var(--font-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* Enable hardware acceleration for smooth theme transitions */
+  transform: translateZ(0);
+  will-change: background-color, color;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-background);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-normal);
+  
+  /* Theme transition for smooth switching */
+  transition: 
+    background-color var(--duration-200) var(--ease-in-out),
+    color var(--duration-200) var(--ease-in-out);
+}
+
+/* Theme switching performance optimization */
+* {
+  /* Enable containment for better rendering performance */
+  contain: layout style paint;
+}
+
+/*
+ * ACCESSIBILITY ENHANCEMENTS
+ */
+
+/* Focus management for keyboard navigation */
+*:focus {
+  outline: none;
+}
+
+*:focus-visible {
+  outline: var(--focus-ring-width) solid var(--color-focus);
+  outline-offset: var(--focus-ring-offset);
+  border-radius: var(--radius-sm);
+}
+
+/* Skip link for keyboard navigation */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 6px;
+  background: var(--color-surface);
+  color: var(--color-text-primary);
+  padding: var(--space-2) var(--space-4);
+  text-decoration: none;
+  border-radius: var(--radius-md);
+  font-weight: var(--font-weight-medium);
+  z-index: var(--z-skipLink);
+  border: 2px solid var(--color-border-strong);
+  
+  &:focus {
+    top: 6px;
+  }
+}
+
+/* Screen reader only content */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/*
+ * PERFORMANCE OPTIMIZATIONS
+ */
+
+/* Critical theme switching optimization */
+html[data-theme] {
+  /* Force repaint for instant theme switching */
+  transform: translateZ(0);
+}
+
+/* Loading states for theme changes */
+.theme-loading {
+  transition: opacity var(--duration-100) var(--ease-in-out);
+  opacity: 0.8;
+}
+
+/*
+ * RESPONSIVE BASE STYLES
+ */
+
+/* Ensure touch targets meet accessibility requirements on all devices */
+@media (max-width: 768px) {
+  /* Enhance touch targets on mobile */
+  button,
+  [role="button"],
+  input[type="button"],
+  input[type="submit"],
+  input[type="reset"] {
+    min-height: var(--touch-target-large);
+  }
+  
+  /* Increase base font size for better readability */
+  html {
+    font-size: 18px;
+  }
+}
+
+/* High contrast mode enhancements */
+@media (prefers-contrast: high) {
+  /* Force high contrast theme variables */
+  :root {
+    --color-text-primary: #000000;
+    --color-background: #ffffff;
+    --color-primary-500: #000000;
+    --color-border: #000000;
+    --color-focus: #000000;
+    --focus-ring-width: 6px;
+  }
+  
+  /* Enhance border visibility */
+  *,
+  *::before,
+  *::after {
+    border-color: var(--color-border) !important;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  /* Disable all animations and transitions */
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  
+  /* Remove transform effects that could cause motion */
+  * {
+    transform: none !important;
+  }
+}
+
+/*
+ * PRINT STYLES
+ */
+@media print {
+  /* Optimize for printing */
+  body {
+    background: white !important;
+    color: black !important;
+  }
+  
+  /* Hide non-essential elements when printing */
+  .theme-switcher,
+  .skip-link,
+  [aria-hidden="true"] {
+    display: none !important;
+  }
 }

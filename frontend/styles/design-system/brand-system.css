@@ -1,0 +1,549 @@
+/* Coffee Roast Tracker - Brand System */
+/* Typography, Iconography, and Brand Identity */
+
+/* ================================ */
+/* TYPOGRAPHY SYSTEM */
+/* ================================ */
+
+/* Import readable fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+/* Typography Utility Classes */
+.text-xs { font-size: var(--font-size-xs); line-height: var(--line-height-normal); }
+.text-sm { font-size: var(--font-size-sm); line-height: var(--line-height-normal); }
+.text-base { font-size: var(--font-size-base); line-height: var(--line-height-normal); }
+.text-lg { font-size: var(--font-size-lg); line-height: var(--line-height-normal); }
+.text-xl { font-size: var(--font-size-xl); line-height: var(--line-height-snug); }
+.text-2xl { font-size: var(--font-size-2xl); line-height: var(--line-height-snug); }
+.text-3xl { font-size: var(--font-size-3xl); line-height: var(--line-height-snug); }
+.text-4xl { font-size: var(--font-size-4xl); line-height: var(--line-height-tight); }
+.text-5xl { font-size: var(--font-size-5xl); line-height: var(--line-height-tight); }
+.text-6xl { font-size: var(--font-size-6xl); line-height: var(--line-height-tight); }
+.text-7xl { font-size: var(--font-size-7xl); line-height: var(--line-height-tight); }
+.text-8xl { font-size: var(--font-size-8xl); line-height: var(--line-height-tight); }
+.text-9xl { font-size: var(--font-size-9xl); line-height: var(--line-height-tight); }
+
+/* Typography Hierarchy Classes */
+.typography-h1 {
+  font-family: var(--font-display);
+  font-size: var(--font-size-4xl);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+  letter-spacing: var(--letter-spacing-tight);
+  color: var(--color-text-primary);
+}
+
+.typography-h2 {
+  font-family: var(--font-display);
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-snug);
+  letter-spacing: var(--letter-spacing-tight);
+  color: var(--color-text-primary);
+}
+
+.typography-h3 {
+  font-family: var(--font-display);
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-snug);
+  color: var(--color-text-primary);
+}
+
+.typography-h4 {
+  font-family: var(--font-display);
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-normal);
+  color: var(--color-text-primary);
+}
+
+.typography-h5 {
+  font-family: var(--font-display);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-normal);
+  color: var(--color-text-primary);
+}
+
+.typography-h6 {
+  font-family: var(--font-display);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-normal);
+  color: var(--color-text-primary);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide);
+}
+
+/* Body Text Styles */
+.typography-body-large {
+  font-family: var(--font-primary);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-normal);
+  line-height: var(--line-height-relaxed);
+  color: var(--color-text-primary);
+}
+
+.typography-body {
+  font-family: var(--font-primary);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-normal);
+  line-height: var(--line-height-normal);
+  color: var(--color-text-primary);
+}
+
+.typography-body-small {
+  font-family: var(--font-primary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-normal);
+  line-height: var(--line-height-normal);
+  color: var(--color-text-secondary);
+}
+
+.typography-caption {
+  font-family: var(--font-primary);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-normal);
+  color: var(--color-text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide);
+}
+
+/* Display Text for Timers and Large Numbers */
+.typography-display-large {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-9xl);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+  letter-spacing: var(--letter-spacing-tight);
+  color: var(--color-text-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.typography-display-medium {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-6xl);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-tight);
+  color: var(--color-text-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.typography-display-small {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-4xl);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-snug);
+  color: var(--color-text-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ================================ */
+/* BRAND LOGO SYSTEM */
+/* ================================ */
+
+/* Logo Container Base Styles */
+.brand-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+/* Logo Variations */
+.brand-logo--horizontal {
+  flex-direction: row;
+}
+
+.brand-logo--stacked {
+  flex-direction: column;
+  text-align: center;
+}
+
+.brand-logo--icon-only .brand-logo__text {
+  display: none;
+}
+
+/* Logo Icon Base */
+.brand-logo__icon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(135deg, var(--color-primary-500), var(--color-primary-600));
+  color: var(--color-text-on-primary);
+}
+
+/* Logo Icon Sizes */
+.brand-logo__icon--xs {
+  width: 24px;
+  height: 24px;
+  border-radius: var(--radius-sm);
+}
+
+.brand-logo__icon--sm {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-md);
+}
+
+.brand-logo__icon--md {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-lg);
+}
+
+.brand-logo__icon--lg {
+  width: 64px;
+  height: 64px;
+  border-radius: var(--radius-xl);
+}
+
+.brand-logo__icon--xl {
+  width: 80px;
+  height: 80px;
+  border-radius: var(--radius-2xl);
+}
+
+/* Logo Text */
+.brand-logo__text {
+  font-family: var(--font-display);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  line-height: 1;
+}
+
+.brand-logo__text--xs { font-size: var(--font-size-sm); }
+.brand-logo__text--sm { font-size: var(--font-size-base); }
+.brand-logo__text--md { font-size: var(--font-size-lg); }
+.brand-logo__text--lg { font-size: var(--font-size-xl); }
+.brand-logo__text--xl { font-size: var(--font-size-2xl); }
+
+/* Brand Tagline */
+.brand-logo__tagline {
+  font-family: var(--font-primary);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide);
+  line-height: 1;
+}
+
+/* ================================ */
+/* ICONOGRAPHY SYSTEM */
+/* ================================ */
+
+/* Icon Base Styles */
+.icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  fill: currentColor;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Icon Sizes */
+.icon--xs { width: 12px; height: 12px; }
+.icon--sm { width: 16px; height: 16px; }
+.icon--md { width: 20px; height: 20px; }
+.icon--lg { width: 24px; height: 24px; }
+.icon--xl { width: 32px; height: 32px; }
+.icon--2xl { width: 48px; height: 48px; }
+.icon--3xl { width: 64px; height: 64px; }
+
+/* Icon Variants */
+.icon--filled {
+  fill: currentColor;
+  stroke: none;
+}
+
+.icon--outlined {
+  fill: none;
+  stroke: currentColor;
+}
+
+/* Coffee-themed Icon Styles */
+.icon--coffee-bean {
+  color: var(--color-accent-600);
+}
+
+.icon--temperature {
+  color: var(--color-warning-500);
+}
+
+.icon--timer {
+  color: var(--color-info-500);
+}
+
+.icon--emergency {
+  color: var(--color-error-500);
+}
+
+.icon--success {
+  color: var(--color-success-500);
+}
+
+/* ================================ */
+/* BRAND PATTERNS AND ILLUSTRATIONS */
+/* ================================ */
+
+/* Coffee Bean Pattern Background */
+.brand-pattern {
+  background-image: 
+    radial-gradient(circle at 20% 20%, var(--color-primary-100) 0%, transparent 20%),
+    radial-gradient(circle at 80% 80%, var(--color-accent-100) 0%, transparent 20%),
+    radial-gradient(circle at 40% 70%, var(--color-secondary-100) 0%, transparent 15%);
+  background-size: 120px 120px, 80px 80px, 60px 60px;
+  background-position: 0 0, 40px 40px, 80px 20px;
+  opacity: 0.5;
+}
+
+/* Empty State Illustrations */
+.brand-illustration {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: var(--space-8);
+  color: var(--color-text-tertiary);
+}
+
+.brand-illustration__icon {
+  width: 96px;
+  height: 96px;
+  margin-bottom: var(--space-4);
+  opacity: 0.6;
+  stroke-width: 1;
+}
+
+.brand-illustration__title {
+  font-family: var(--font-display);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-2);
+}
+
+.brand-illustration__text {
+  font-family: var(--font-primary);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-tertiary);
+  max-width: 320px;
+  line-height: var(--line-height-relaxed);
+}
+
+/* ================================ */
+/* BRAND VOICE AND TONE UTILITIES */
+/* ================================ */
+
+/* User-Friendly Text Styles */
+.text-user-friendly {
+  font-size: var(--font-size-lg);
+  line-height: var(--line-height-relaxed);
+  color: var(--color-text-primary);
+  font-weight: var(--font-weight-normal);
+}
+
+.text-user-emphasis {
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-primary-600);
+}
+
+.text-user-instruction {
+  font-family: var(--font-primary);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+  background-color: var(--color-primary-50);
+  border-left: 4px solid var(--color-primary-500);
+  padding: var(--space-3) var(--space-4);
+  margin: var(--space-4) 0;
+  border-radius: var(--radius-md);
+}
+
+.text-user-warning {
+  font-family: var(--font-primary);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-warning-800);
+  background-color: var(--color-warning-50);
+  border-left: 4px solid var(--color-warning-500);
+  padding: var(--space-3) var(--space-4);
+  margin: var(--space-4) 0;
+  border-radius: var(--radius-md);
+}
+
+.text-user-success {
+  font-family: var(--font-primary);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-success-800);
+  background-color: var(--color-success-50);
+  border-left: 4px solid var(--color-success-500);
+  padding: var(--space-3) var(--space-4);
+  margin: var(--space-4) 0;
+  border-radius: var(--radius-md);
+}
+
+/* ================================ */
+/* ACCESSIBILITY ENHANCEMENTS */
+/* ================================ */
+
+/* High Contrast Text Support */
+@media (prefers-contrast: high) {
+  .typography-h1,
+  .typography-h2,
+  .typography-h3,
+  .typography-h4,
+  .typography-h5,
+  .typography-h6,
+  .typography-body-large,
+  .typography-body {
+    color: #000000;
+    font-weight: var(--font-weight-bold);
+  }
+  
+  .brand-logo__text {
+    color: #000000;
+    font-weight: var(--font-weight-black);
+  }
+  
+  .text-user-instruction,
+  .text-user-warning,
+  .text-user-success {
+    border-width: 3px;
+    font-weight: var(--font-weight-bold);
+  }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  .brand-pattern {
+    background-image: none;
+    background-color: var(--color-primary-50);
+  }
+}
+
+/* ================================ */
+/* SEMANTIC BRAND CLASSES */
+/* ================================ */
+
+/* Coffee Roasting Phases */
+.phase-drying {
+  color: var(--color-warning-600);
+  font-weight: var(--font-weight-semibold);
+}
+
+.phase-first-crack {
+  color: var(--color-accent-600);
+  font-weight: var(--font-weight-semibold);
+}
+
+.phase-development {
+  color: var(--color-primary-600);
+  font-weight: var(--font-weight-semibold);
+}
+
+.phase-second-crack {
+  color: var(--color-secondary-600);
+  font-weight: var(--font-weight-semibold);
+}
+
+.phase-cooling {
+  color: var(--color-info-600);
+  font-weight: var(--font-weight-semibold);
+}
+
+/* Roast Levels */
+.roast-light {
+  color: var(--color-accent-500);
+  background-color: var(--color-accent-50);
+}
+
+.roast-medium {
+  color: var(--color-primary-600);
+  background-color: var(--color-primary-100);
+}
+
+.roast-dark {
+  color: var(--color-accent-800);
+  background-color: var(--color-accent-200);
+}
+
+/* Bean Origin Indicators */
+.origin-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-1) var(--space-2);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide);
+  border-radius: var(--radius-full);
+  background-color: var(--color-surface-secondary);
+  color: var(--color-text-secondary);
+}
+
+/* Temperature Indicators */
+.temp-low {
+  color: var(--color-info-600);
+}
+
+.temp-medium {
+  color: var(--color-warning-600);
+}
+
+.temp-high {
+  color: var(--color-error-600);
+}
+
+/* Quality Indicators */
+.quality-excellent {
+  color: var(--color-success-600);
+}
+
+.quality-good {
+  color: var(--color-primary-600);
+}
+
+.quality-fair {
+  color: var(--color-warning-600);
+}
+
+.quality-poor {
+  color: var(--color-error-600);
+}
+
+/* ================================ */
+/* RESPONSIVE TYPOGRAPHY */
+/* ================================ */
+
+/* Mobile Typography Adjustments */
+@media (max-width: 768px) {
+  .typography-h1 { font-size: var(--font-size-3xl); }
+  .typography-h2 { font-size: var(--font-size-2xl); }
+  .typography-h3 { font-size: var(--font-size-xl); }
+  
+  .typography-display-large { font-size: var(--font-size-6xl); }
+  .typography-display-medium { font-size: var(--font-size-4xl); }
+  .typography-display-small { font-size: var(--font-size-2xl); }
+}
+
+/* Large Screen Typography Enhancements */
+@media (min-width: 1024px) {
+  .typography-h1 { font-size: var(--font-size-5xl); }
+  .typography-h2 { font-size: var(--font-size-4xl); }
+  
+  .typography-display-large { font-size: 10rem; }
+  .typography-display-medium { font-size: var(--font-size-8xl); }
+}
