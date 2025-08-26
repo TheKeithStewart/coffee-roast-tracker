@@ -6,24 +6,15 @@
 /* Import TailwindCSS preflight (base styles) first */
 @import "tailwindcss/preflight";
 
-/* CSS Layers for proper cascade control */
-@layer design-system-core {
-  /* Import core design system with CSS custom properties */
-  @import "../styles/design-system/design-system-core.css";
-}
-
-@layer brand-system {
-  /* Import brand system with typography and brand identity */
-  @import "../styles/design-system/brand-system.css";
-}
+/* Import design system files directly */
+@import "../styles/design-system/design-system-core.css" layer(design-system-core);
+@import "../styles/design-system/brand-system.css" layer(brand-system);
 
 /* Import TailwindCSS theme styles */
 @import "tailwindcss/theme";
 
-@layer component-library {
-  /* Import component library with UI patterns */
-  @import "../styles/design-system/component-library.css";
-}
+/* Import component library */
+@import "../styles/design-system/component-library.css" layer(component-library);
 
 /* Import TailwindCSS utilities last for highest specificity */
 @import "tailwindcss/utilities";
