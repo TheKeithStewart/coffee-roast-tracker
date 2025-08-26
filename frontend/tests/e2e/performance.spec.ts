@@ -116,7 +116,7 @@ test.describe('Performance Testing', () => {
           name: entry.name,
           duration: entry.duration,
           size: (entry as PerformanceResourceTiming).transferSize || 0,
-          type: entry.initiatorType
+          type: entry.initiatorType || 'unknown'
         }))
       })
       
@@ -221,10 +221,13 @@ test.describe('Performance Testing', () => {
         interface WindowWithLayoutShifts extends Window {
           layoutShifts: number[]
         }
-        (window as WindowWithLayoutShifts).layoutShifts = []
+        const win = window as unknown as WindowWithLayoutShifts;
+        win.layoutShifts = []
         new PerformanceObserver((entryList) => {
           for (const entry of entryList.getEntries()) {
-            (window as WindowWithLayoutShifts).layoutShifts.push((entry as LayoutShift).value)
+            if ('value' in entry) {
+              win.layoutShifts.push((entry as any).value)
+            }
           }
         }).observe({ entryTypes: ['layout-shift'] })
       })
@@ -246,7 +249,8 @@ test.describe('Performance Testing', () => {
         interface WindowWithLayoutShifts extends Window {
           layoutShifts: number[]
         }
-        return (window as WindowWithLayoutShifts).layoutShifts.reduce((total: number, shift: number) => total + shift, 0)
+        const win = window as unknown as WindowWithLayoutShifts;
+        return win.layoutShifts.reduce((total: number, shift: number) => total + shift, 0)
       })
       
       console.log(`📐 Cumulative Layout Shift during theme switching: ${totalShift}`)
@@ -339,11 +343,13 @@ test.describe('Performance Testing', () => {
         interface WindowWithCLS extends Window {
           cumulativeLayoutShift: number
         }
-        (window as WindowWithCLS).cumulativeLayoutShift = 0
+        const win = window as unknown as WindowWithCLS;
+        win.cumulativeLayoutShift = 0
         new PerformanceObserver((entryList) => {
           for (const entry of entryList.getEntries()) {
-            if (!(entry as LayoutShift).hadRecentInput) {
-              (window as WindowWithCLS).cumulativeLayoutShift += (entry as LayoutShift).value
+            const layoutShift = entry as any;
+            if (!layoutShift.hadRecentInput) {
+              win.cumulativeLayoutShift += layoutShift.value
             }
           }
         }).observe({ entryTypes: ['layout-shift'] })
@@ -375,7 +381,8 @@ test.describe('Performance Testing', () => {
         interface WindowWithCLS extends Window {
           cumulativeLayoutShift: number
         }
-        return (window as WindowWithCLS).cumulativeLayoutShift
+        const win = window as unknown as WindowWithCLS;
+        return win.cumulativeLayoutShift
       })
       
       console.log(`📐 Cumulative Layout Shift: ${cls}`)

@@ -6,9 +6,10 @@
  */
 
 import { test, expect } from '@playwright/test'
+import type { DeviceConfig, ThemeColors } from '../../types/browser-apis'
 
 // Device configurations for testing
-const DEVICES = [
+const DEVICES: DeviceConfig[] = [
   { name: 'iPhone 12', viewport: { width: 390, height: 844 }, isMobile: true },
   { name: 'iPhone SE', viewport: { width: 375, height: 667 }, isMobile: true },
   { name: 'Pixel 5', viewport: { width: 393, height: 851 }, isMobile: true },
@@ -61,7 +62,7 @@ test.describe('Responsive Behavior', () => {
     })
 
     test('should handle orientation changes on mobile', async ({ page }) => {
-      const mobileDevices = DEVICES.filter(d => d.isMobile)
+      const mobileDevices = DEVICES.filter(d => 'isMobile' in d && d.isMobile)
       
       for (const device of mobileDevices) {
         // Test portrait orientation
@@ -393,7 +394,7 @@ test.describe('Responsive Behavior', () => {
   test.describe('Cross-Device Theme Consistency', () => {
     test('should maintain theme appearance across devices', async ({ page }) => {
       for (const theme of THEMES) {
-        const themeColors: Record<string, string> = {}
+        const themeColors: Record<string, ThemeColors> = {}
         
         for (const device of DEVICES.slice(0, 3)) { // Test subset for performance
           await page.setViewportSize(device.viewport)

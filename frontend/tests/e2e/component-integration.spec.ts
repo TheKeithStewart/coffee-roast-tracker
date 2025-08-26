@@ -262,9 +262,12 @@ test.describe('Component Integration', () => {
       const dropdown = page.getByRole('listbox')
       
       // Focus should be within dropdown area
+      const dropdownHandle = await dropdown.elementHandle()
+      expect(dropdownHandle).not.toBeNull()
+      
       const isInDropdown = await focusedElement.evaluate((el, dropdown) => {
-        return dropdown.contains(el)
-      }, await dropdown.elementHandle())
+        return dropdown && dropdown.contains(el)
+      }, dropdownHandle)
       
       expect(isInDropdown).toBeTruthy()
       
