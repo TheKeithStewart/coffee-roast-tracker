@@ -5,7 +5,7 @@
  * Tests all 4 themes, theme switching, persistence, and system integration.
  */
 
-import { test, expect, type Page } from '@playwright/test'
+import { test, expect } from '@playwright/test'
 
 // Theme definitions matching the implementation
 const THEMES = [
@@ -15,7 +15,7 @@ const THEMES = [
   { id: 'energizing', name: 'Energizing', description: 'vibrant oranges' }
 ] as const
 
-type Theme = typeof THEMES[number]['id']
+// Theme type based on THEMES constant
 
 test.describe('Theme System', () => {
   test.beforeEach(async ({ page }) => {
@@ -65,7 +65,7 @@ test.describe('Theme System', () => {
       await themeSwitcher.click()
       
       // Check that preview colors are visible
-      const dropdown = page.getByRole('listbox')
+      // Dropdown should be expanded
       for (const theme of THEMES) {
         const option = page.getByRole('option', { name: new RegExp(theme.name, 'i') })
         
@@ -335,7 +335,7 @@ test.describe('Theme System', () => {
       
       // Mock localStorage error
       await page.evaluate(() => {
-        const originalSetItem = Storage.prototype.setItem
+        // Mock localStorage to throw error
         Storage.prototype.setItem = () => {
           throw new Error('Quota exceeded')
         }

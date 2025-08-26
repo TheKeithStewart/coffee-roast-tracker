@@ -3,7 +3,7 @@
  */
 
 import React from 'react'
-import { render, screen, act, fireEvent } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 // We'll implement these components next
@@ -308,7 +308,8 @@ describe('Theme Context', () => {
       </ThemeProvider>
     )
 
-    const initialDataRenders = dataRenderCount
+    // Track render count for optimization testing
+    // Initial render count baseline for comparison
     const initialActionsRenders = actionsRenderCount
 
     // Re-render the tree
@@ -322,6 +323,9 @@ describe('Theme Context', () => {
     // Actions consumer should not re-render unnecessarily
     // Data consumer may re-render due to theme changes
     expect(actionsRenderCount - initialActionsRenders).toBeLessThanOrEqual(1)
+    
+    // Data consumer should render at least once
+    expect(dataRenderCount).toBeGreaterThan(0)
   })
 
   test('should measure theme switch performance', async () => {

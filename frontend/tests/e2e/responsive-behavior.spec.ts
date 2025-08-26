@@ -5,7 +5,7 @@
  * screen sizes, and orientations using Playwright device emulation.
  */
 
-import { test, expect, type Page } from '@playwright/test'
+import { test, expect } from '@playwright/test'
 
 // Device configurations for testing
 const DEVICES = [
@@ -20,11 +20,7 @@ const DEVICES = [
 ] as const
 
 // Breakpoint definitions matching the design system
-const BREAKPOINTS = {
-  mobile: { max: 767 },
-  tablet: { min: 768, max: 1023 },
-  desktop: { min: 1024 }
-} as const
+// Used in responsive design validation
 
 const THEMES = [
   { id: 'classic', name: 'Classic Coffee' },
@@ -375,7 +371,7 @@ test.describe('Responsive Behavior', () => {
       // Important content should remain visible and prioritized
       const mainHeading = page.locator('h1').first()
       const themeSwitch = page.getByRole('button', { name: /select color theme/i })
-      const primaryButton = page.getByRole('button', { name: 'Primary' }).first()
+      // Primary button is tested elsewhere
       
       // All should be visible without scrolling (or minimal scrolling)
       await expect(mainHeading).toBeVisible()
@@ -397,7 +393,7 @@ test.describe('Responsive Behavior', () => {
   test.describe('Cross-Device Theme Consistency', () => {
     test('should maintain theme appearance across devices', async ({ page }) => {
       for (const theme of THEMES) {
-        const themeColors: Record<string, any> = {}
+        const themeColors: Record<string, string> = {}
         
         for (const device of DEVICES.slice(0, 3)) { // Test subset for performance
           await page.setViewportSize(device.viewport)

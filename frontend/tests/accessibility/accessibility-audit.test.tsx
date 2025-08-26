@@ -264,8 +264,6 @@ describe('Accessibility Audit', () => {
     
     // The design system should respect reduced motion preferences in CSS
     // This is handled by our CSS custom properties
-    const computedStyle = getComputedStyle(document.documentElement)
-    
     // Verify CSS custom properties are available for motion control
     // The actual reduced motion handling is in CSS media queries
     expect(document.documentElement).toBeDefined()

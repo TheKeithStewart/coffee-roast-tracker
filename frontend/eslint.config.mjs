@@ -17,7 +17,11 @@ const eslintConfig = [
       ".next/**",
       "out/**",
       "build/**",
+      "coverage/**",
       "next-env.d.ts",
+      "jest.config.js",
+      "scripts/**/*.js",
+      "tests/performance/**/*.js",
     ],
   },
 ];

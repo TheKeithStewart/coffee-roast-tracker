@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 
-import { JSDOM } from 'jsdom'
+// CSS integration tests for design system
 
 describe('CSS Integration', () => {
   beforeEach(() => {

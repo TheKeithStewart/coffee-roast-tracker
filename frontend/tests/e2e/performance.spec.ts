@@ -5,7 +5,7 @@
  * bundle sizes, theme switching performance, and Core Web Vitals.
  */
 
-import { test, expect, type Page } from '@playwright/test'
+import { test, expect } from '@playwright/test'
 
 // Performance thresholds from technical requirements
 const PERFORMANCE_THRESHOLDS = {
@@ -37,7 +37,7 @@ test.describe('Performance Testing', () => {
   test.describe('Bundle Size Validation', () => {
     test('should meet JavaScript bundle size targets', async ({ page }) => {
       // Navigate and capture network requests
-      const responses: any[] = []
+      const responses: Array<{url: string, size: number, type: string}> = []
       
       page.on('response', async (response) => {
         if (response.url().includes('.js') && response.status() === 200) {
@@ -73,7 +73,7 @@ test.describe('Performance Testing', () => {
     })
 
     test('should meet CSS bundle size targets', async ({ page }) => {
-      const responses: any[] = []
+      const responses: Array<{url: string, size: number, type: string}> = []
       
       page.on('response', async (response) => {
         if (response.url().includes('.css') && response.status() === 200) {
@@ -106,7 +106,7 @@ test.describe('Performance Testing', () => {
     })
 
     test('should have efficient resource loading', async ({ page }) => {
-      const resourceTimings: any[] = []
+      const resourceTimings: Array<{name: string, duration: number, size: number, type: string}> = []
       
       await page.goto('/')
       
@@ -115,7 +115,7 @@ test.describe('Performance Testing', () => {
         return performance.getEntriesByType('resource').map(entry => ({
           name: entry.name,
           duration: entry.duration,
-          size: (entry as any).transferSize || 0,
+          size: (entry as PerformanceResourceTiming).transferSize || 0,
           type: entry.initiatorType
         }))
       })
@@ -142,7 +142,7 @@ test.describe('Performance Testing', () => {
       
       // Test each theme switching performance
       for (const theme of THEMES) {
-        const start = performance.now()
+        // Theme switching performance test
         
         // Open theme switcher
         const themeSwitcher = page.getByRole('button', { name: /select color theme/i })
@@ -218,10 +218,13 @@ test.describe('Performance Testing', () => {
       
       // Measure layout shifts
       await page.evaluate(() => {
-        (window as any).layoutShifts = []
+        interface WindowWithLayoutShifts extends Window {
+          layoutShifts: number[]
+        }
+        (window as WindowWithLayoutShifts).layoutShifts = []
         new PerformanceObserver((entryList) => {
           for (const entry of entryList.getEntries()) {
-            (window as any).layoutShifts.push(entry.value)
+            (window as WindowWithLayoutShifts).layoutShifts.push((entry as LayoutShift).value)
           }
         }).observe({ entryTypes: ['layout-shift'] })
       })
@@ -240,7 +243,10 @@ test.describe('Performance Testing', () => {
       
       // Check cumulative layout shift
       const totalShift = await page.evaluate(() => {
-        return (window as any).layoutShifts.reduce((total: number, shift: number) => total + shift, 0)
+        interface WindowWithLayoutShifts extends Window {
+          layoutShifts: number[]
+        }
+        return (window as WindowWithLayoutShifts).layoutShifts.reduce((total: number, shift: number) => total + shift, 0)
       })
       
       console.log(`📐 Cumulative Layout Shift during theme switching: ${totalShift}`)
@@ -251,7 +257,7 @@ test.describe('Performance Testing', () => {
 
   test.describe('Core Web Vitals', () => {
     test('should meet First Contentful Paint targets', async ({ page }) => {
-      const startTime = Date.now()
+      // First Contentful Paint measurement
       
       await page.goto('/')
       
@@ -303,7 +309,7 @@ test.describe('Performance Testing', () => {
     })
 
     test('should have good Time to Interactive', async ({ page }) => {
-      const startTime = Date.now()
+      // Time to Interactive measurement
       
       await page.goto('/')
       
@@ -330,11 +336,14 @@ test.describe('Performance Testing', () => {
     test('should minimize Cumulative Layout Shift', async ({ page }) => {
       // Setup layout shift tracking
       await page.evaluate(() => {
-        (window as any).cumulativeLayoutShift = 0
+        interface WindowWithCLS extends Window {
+          cumulativeLayoutShift: number
+        }
+        (window as WindowWithCLS).cumulativeLayoutShift = 0
         new PerformanceObserver((entryList) => {
           for (const entry of entryList.getEntries()) {
-            if (!entry.hadRecentInput) {
-              (window as any).cumulativeLayoutShift += (entry as any).value
+            if (!(entry as LayoutShift).hadRecentInput) {
+              (window as WindowWithCLS).cumulativeLayoutShift += (entry as LayoutShift).value
             }
           }
         }).observe({ entryTypes: ['layout-shift'] })
@@ -362,7 +371,12 @@ test.describe('Performance Testing', () => {
       // Wait a bit for any delayed shifts
       await page.waitForTimeout(1000)
       
-      const cls = await page.evaluate(() => (window as any).cumulativeLayoutShift)
+      const cls = await page.evaluate(() => {
+        interface WindowWithCLS extends Window {
+          cumulativeLayoutShift: number
+        }
+        return (window as WindowWithCLS).cumulativeLayoutShift
+      })
       
       console.log(`📐 Cumulative Layout Shift: ${cls}`)
       
@@ -376,8 +390,13 @@ test.describe('Performance Testing', () => {
       
       // Get initial memory usage
       const initialMemory = await page.evaluate(() => {
+        interface PerformanceWithMemory extends Performance {
+          memory: {
+            usedJSHeapSize: number
+          }
+        }
         if ('memory' in performance) {
-          return (performance as any).memory.usedJSHeapSize
+          return (performance as PerformanceWithMemory).memory.usedJSHeapSize
         }
         return 0
       })
@@ -397,16 +416,24 @@ test.describe('Performance Testing', () => {
       
       // Force garbage collection if available
       await page.evaluate(() => {
+        interface WindowWithGC extends Window {
+          gc?: () => void
+        }
         if ('gc' in window) {
-          (window as any).gc()
+          (window as WindowWithGC).gc?.()
         }
       })
       
       await page.waitForTimeout(100)
       
       const finalMemory = await page.evaluate(() => {
+        interface PerformanceWithMemory extends Performance {
+          memory: {
+            usedJSHeapSize: number
+          }
+        }
         if ('memory' in performance) {
-          return (performance as any).memory.usedJSHeapSize
+          return (performance as PerformanceWithMemory).memory.usedJSHeapSize
         }
         return 0
       })
@@ -480,7 +507,7 @@ test.describe('Performance Testing', () => {
     })
 
     test('should compress resources effectively', async ({ page }) => {
-      const compressedResources: any[] = []
+      const compressedResources: Array<{url: string, encoding: string, size: number}> = []
       
       page.on('response', async (response) => {
         const contentEncoding = response.headers()['content-encoding']
@@ -522,11 +549,11 @@ test.describe('Performance Testing', () => {
     test('should maintain performance across theme switches', async ({ page }) => {
       await page.goto('/')
       
-      const performanceMetrics: any[] = []
+      const performanceMetrics: Array<{theme: string, switchTime: number, timestamp: number}> = []
       
       // Measure performance for each theme
       for (const theme of THEMES) {
-        const start = performance.now()
+        // Performance regression detection
         
         const themeSwitcher = page.getByRole('button', { name: /select color theme/i })
         await themeSwitcher.click()

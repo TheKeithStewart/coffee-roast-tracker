@@ -5,7 +5,7 @@
  * Validates WCAG 2.1 AA compliance across all themes and components.
  */
 
-import { test, expect, type Page } from '@playwright/test'
+import { test, expect } from '@playwright/test'
 import AxeBuilder from '@axe-core/playwright'
 
 // Theme definitions for testing
@@ -438,7 +438,7 @@ test.describe('Design System Accessibility', () => {
       
       // Mock localStorage error
       await page.evaluate(() => {
-        const originalSetItem = Storage.prototype.setItem
+        // Mock localStorage to throw error
         Storage.prototype.setItem = () => {
           throw new Error('Storage quota exceeded')
         }

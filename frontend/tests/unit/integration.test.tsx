@@ -124,7 +124,7 @@ describe('Design System Integration', () => {
   })
 
   test('should maintain accessibility across all themes', async () => {
-    const user = userEvent.setup()
+    // Test accessibility across themes
     
     render(<IntegrationTestApp />)
     

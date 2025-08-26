@@ -296,7 +296,7 @@ describe('BaseButton', () => {
   })
 
   test('should work across all themes', () => {
-    const { rerender } = render(
+    render(
       <ThemeProvider>
         <BaseButton variant="primary">Test Button</BaseButton>
       </ThemeProvider>

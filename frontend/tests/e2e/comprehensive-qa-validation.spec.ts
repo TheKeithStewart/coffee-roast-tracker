@@ -431,7 +431,7 @@ test.describe('Comprehensive QA Validation - Issue #41', () => {
 
   test.describe('⚡ Performance Validation', () => {
     test('should have reasonable bundle size impact', async ({ page }) => {
-      const responses: any[] = []
+      const responses: Array<{url: string, size: number, type: string}> = []
       
       page.on('response', async (response) => {
         if ((response.url().includes('.js') || response.url().includes('.css')) && response.status() === 200) {

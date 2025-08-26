@@ -5,7 +5,7 @@
  * with the design system across all themes and responsive breakpoints.
  */
 
-import { test, expect, type Page } from '@playwright/test'
+import { test, expect } from '@playwright/test'
 
 // Theme definitions
 const THEMES = [
@@ -77,9 +77,9 @@ test.describe('Component Integration', () => {
         await expect(element).toBeVisible()
         await expect(element).toBeDisabled() // Loading buttons should be disabled
         
-        // Should show loading indicator
-        const loadingSpinner = element.locator('.loading-spinner, [data-loading="true"]')
-        // Loading indicator presence depends on implementation
+        // Should show loading indicator (implementation dependent)
+        // Note: Loading indicator presence varies by implementation
+        // This test focuses on disabled state which is the requirement
       }
     })
 
