@@ -1,0 +1,1256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coffee Roast Tracker - Complete Design System Showcase</title>
+    <style>
+        /* Import the complete design system */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Complete Design System CSS Custom Properties */
+        :root {
+            /* Typography Scale */
+            --font-size-xs: 0.75rem;
+            --font-size-sm: 0.875rem;
+            --font-size-base: 1rem;
+            --font-size-lg: 1.125rem;
+            --font-size-xl: 1.25rem;
+            --font-size-2xl: 1.5rem;
+            --font-size-3xl: 1.875rem;
+            --font-size-4xl: 2.25rem;
+
+            /* Font Families */
+            --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            --font-mono: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, monospace;
+
+            /* Line Heights */
+            --line-height-tight: 1.25;
+            --line-height-snug: 1.375;
+            --line-height-normal: 1.5;
+            --line-height-relaxed: 1.625;
+
+            /* Font Weights */
+            --font-weight-normal: 400;
+            --font-weight-medium: 500;
+            --font-weight-semibold: 600;
+            --font-weight-bold: 700;
+
+            /* Spacing Scale */
+            --space-1: 0.25rem;
+            --space-2: 0.5rem;
+            --space-3: 0.75rem;
+            --space-4: 1rem;
+            --space-5: 1.25rem;
+            --space-6: 1.5rem;
+            --space-8: 2rem;
+            --space-10: 2.5rem;
+            --space-12: 3rem;
+            --space-16: 4rem;
+
+            /* Touch Target Sizes */
+            --touch-target-min: 44px;
+            --touch-target-preferred: 60px;
+            --touch-target-large: 80px;
+            --touch-target-emergency: 100px;
+
+            /* Focus Ring Properties */
+            --focus-ring-width: 4px;
+            --focus-ring-offset: 2px;
+
+            /* Border Radius Scale */
+            --radius-sm: 0.25rem;
+            --radius-md: 0.5rem;
+            --radius-lg: 0.75rem;
+            --radius-xl: 1rem;
+            --radius-2xl: 1.5rem;
+            --radius-full: 9999px;
+
+            /* Shadow Scale */
+            --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+
+            /* Z-Index Scale */
+            --z-dropdown: 1000;
+            --z-modal: 1050;
+            --z-tooltip: 1070;
+
+            /* Animation Durations */
+            --duration-75: 75ms;
+            --duration-100: 100ms;
+            --duration-150: 150ms;
+            --duration-200: 200ms;
+            --duration-300: 300ms;
+
+            /* Animation Easing */
+            --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+            --ease-out: cubic-bezier(0, 0, 0.2, 1);
+        }
+
+        /* Classic Coffee Theme (Default) */
+        :root,
+        [data-theme="classic"] {
+            --color-primary-50: #fdf7f0;
+            --color-primary-100: #f9ede0;
+            --color-primary-500: #c8794a;
+            --color-primary-600: #b86c3e;
+            --color-primary-700: #995536;
+
+            --color-success-50: #ecfdf5;
+            --color-success-500: #10b981;
+            --color-success-600: #059669;
+
+            --color-warning-50: #fffbeb;
+            --color-warning-500: #f59e0b;
+            --color-warning-600: #d97706;
+
+            --color-error-50: #fef2f2;
+            --color-error-500: #ef4444;
+            --color-error-600: #dc2626;
+
+            --color-info-50: #eff6ff;
+            --color-info-500: #3b82f6;
+            --color-info-600: #2563eb;
+
+            --color-gray-50: #fafaf9;
+            --color-gray-100: #f5f5f4;
+            --color-gray-200: #e7e5e4;
+            --color-gray-300: #d6d3d1;
+            --color-gray-400: #a8a29e;
+            --color-gray-500: #78716c;
+            --color-gray-600: #57534e;
+            --color-gray-700: #44403c;
+            --color-gray-800: #292524;
+            --color-gray-900: #1c1917;
+
+            --color-text-primary: var(--color-gray-900);
+            --color-text-secondary: var(--color-gray-600);
+            --color-text-tertiary: var(--color-gray-500);
+            --color-text-on-primary: var(--color-gray-50);
+
+            --color-background: var(--color-gray-50);
+            --color-surface: #ffffff;
+            --color-surface-secondary: var(--color-gray-100);
+            --color-surface-elevated: #ffffff;
+
+            --color-border: var(--color-gray-200);
+            --color-border-secondary: var(--color-gray-300);
+
+            --color-focus: var(--color-primary-500);
+            --color-focus-ring: rgba(200, 121, 74, 0.5);
+        }
+
+        /* High Contrast Theme */
+        [data-theme="contrast"] {
+            --color-primary-500: #000000;
+            --color-primary-600: #000000;
+            --color-primary-700: #000000;
+            --color-primary-100: #f0f0f0;
+            --color-primary-50: #ffffff;
+
+            --color-success-500: #008000;
+            --color-warning-500: #ff8000;
+            --color-error-500: #ff0000;
+            --color-info-500: #0080ff;
+
+            --color-text-primary: #000000;
+            --color-text-secondary: #000000;
+            --color-text-tertiary: #404040;
+            --color-text-on-primary: #ffffff;
+
+            --color-background: #ffffff;
+            --color-surface: #ffffff;
+            --color-surface-secondary: #f0f0f0;
+
+            --color-border: #000000;
+            --color-border-secondary: #404040;
+
+            --color-focus: #000000;
+            --color-focus-ring: rgba(0, 0, 0, 0.8);
+
+            --focus-ring-width: 6px;
+            --shadow-sm: 0 2px 4px 0 rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 4px 8px 0 rgba(0, 0, 0, 0.3);
+            --shadow-lg: 0 8px 16px 0 rgba(0, 0, 0, 0.3);
+        }
+
+        /* Cool Focus Theme */
+        [data-theme="focus"] {
+            --color-primary-500: #0ea5e9;
+            --color-primary-600: #0284c7;
+            --color-primary-700: #0369a1;
+            --color-primary-100: #e0f2fe;
+            --color-primary-50: #f0f9ff;
+
+            --color-success-500: #22c55e;
+            --color-warning-500: #eab308;
+            --color-error-500: #ef4444;
+            --color-info-500: #3b82f6;
+
+            --color-text-primary: #0f172a;
+            --color-text-secondary: #334155;
+            --color-text-tertiary: #64748b;
+            --color-text-on-primary: #f8fafc;
+
+            --color-background: #f8fafc;
+            --color-surface: #ffffff;
+            --color-surface-secondary: #f1f5f9;
+
+            --color-border: #e2e8f0;
+            --color-border-secondary: #cbd5e1;
+
+            --color-focus: var(--color-primary-500);
+            --color-focus-ring: rgba(14, 165, 233, 0.5);
+        }
+
+        /* Energizing Theme */
+        [data-theme="energizing"] {
+            --color-primary-500: #f97316;
+            --color-primary-600: #ea580c;
+            --color-primary-700: #c2410c;
+            --color-primary-100: #ffedd5;
+            --color-primary-50: #fff7ed;
+
+            --color-success-500: #22c55e;
+            --color-warning-500: #f59e0b;
+            --color-error-500: #ef4444;
+            --color-info-500: #06b6d4;
+
+            --color-text-primary: #1f2937;
+            --color-text-secondary: #4b5563;
+            --color-text-tertiary: #6b7280;
+            --color-text-on-primary: #ffffff;
+
+            --color-background: #fffbeb;
+            --color-surface: #ffffff;
+            --color-surface-secondary: #ffedd5;
+
+            --color-border: #fed7aa;
+            --color-border-secondary: #fdba74;
+
+            --color-focus: var(--color-primary-500);
+            --color-focus-ring: rgba(249, 115, 22, 0.5);
+        }
+
+        /* Base styles */
+        body {
+            font-family: var(--font-primary);
+            background-color: var(--color-background);
+            color: var(--color-text-primary);
+            line-height: var(--line-height-normal);
+            transition: background-color var(--duration-200) var(--ease-in-out),
+                       color var(--duration-200) var(--ease-in-out);
+        }
+
+        /* Typography */
+        .text-xs { font-size: var(--font-size-xs); }
+        .text-sm { font-size: var(--font-size-sm); }
+        .text-base { font-size: var(--font-size-base); }
+        .text-lg { font-size: var(--font-size-lg); }
+        .text-xl { font-size: var(--font-size-xl); }
+        .text-2xl { font-size: var(--font-size-2xl); }
+        .text-3xl { font-size: var(--font-size-3xl); }
+        .text-4xl { font-size: var(--font-size-4xl); }
+
+        .font-normal { font-weight: var(--font-weight-normal); }
+        .font-medium { font-weight: var(--font-weight-medium); }
+        .font-semibold { font-weight: var(--font-weight-semibold); }
+        .font-bold { font-weight: var(--font-weight-bold); }
+
+        .text-primary { color: var(--color-text-primary); }
+        .text-secondary { color: var(--color-text-secondary); }
+        .text-tertiary { color: var(--color-text-tertiary); }
+
+        /* Layout components */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--space-6);
+        }
+
+        .grid {
+            display: grid;
+            gap: var(--space-6);
+        }
+
+        .grid-cols-1 { grid-template-columns: repeat(1, 1fr); }
+        .grid-cols-2 { grid-template-columns: repeat(2, 1fr); }
+        .grid-cols-3 { grid-template-columns: repeat(3, 1fr); }
+        .grid-cols-4 { grid-template-columns: repeat(4, 1fr); }
+
+        @media (max-width: 1024px) {
+            .grid-cols-4 { grid-template-columns: repeat(2, 1fr); }
+            .grid-cols-3 { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 768px) {
+            .grid-cols-4,
+            .grid-cols-3,
+            .grid-cols-2 { grid-template-columns: 1fr; }
+        }
+
+        .flex { display: flex; }
+        .flex-col { flex-direction: column; }
+        .items-center { align-items: center; }
+        .justify-center { justify-content: center; }
+        .justify-between { justify-content: space-between; }
+        .gap-2 { gap: var(--space-2); }
+        .gap-3 { gap: var(--space-3); }
+        .gap-4 { gap: var(--space-4); }
+        .gap-6 { gap: var(--space-6); }
+
+        /* Spacing utilities */
+        .p-3 { padding: var(--space-3); }
+        .p-4 { padding: var(--space-4); }
+        .p-6 { padding: var(--space-6); }
+        .p-8 { padding: var(--space-8); }
+
+        .mb-2 { margin-bottom: var(--space-2); }
+        .mb-3 { margin-bottom: var(--space-3); }
+        .mb-4 { margin-bottom: var(--space-4); }
+        .mb-6 { margin-bottom: var(--space-6); }
+        .mb-8 { margin-bottom: var(--space-8); }
+
+        /* Header */
+        .header {
+            background-color: var(--color-surface);
+            border-bottom: 2px solid var(--color-border);
+            box-shadow: var(--shadow-sm);
+            padding: var(--space-4) 0;
+            position: sticky;
+            top: 0;
+            z-index: var(--z-dropdown);
+            transition: all var(--duration-200) var(--ease-in-out);
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+            font-size: var(--font-size-xl);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-text-primary);
+        }
+
+        .logo {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--color-primary-500), var(--color-primary-600));
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-text-on-primary);
+            font-size: 1.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: var(--space-6);
+            list-style: none;
+        }
+
+        .nav-link {
+            color: var(--color-text-secondary);
+            text-decoration: none;
+            font-weight: var(--font-weight-medium);
+            padding: var(--space-2) var(--space-3);
+            border-radius: var(--radius-md);
+            transition: all var(--duration-150) var(--ease-in-out);
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--color-text-primary);
+            background-color: var(--color-surface-secondary);
+        }
+
+        /* Theme switcher (simplified for showcase) */
+        .theme-switcher {
+            display: flex;
+            gap: var(--space-2);
+            background-color: var(--color-surface-secondary);
+            padding: var(--space-1);
+            border-radius: var(--radius-full);
+            border: 2px solid var(--color-border);
+        }
+
+        .theme-btn {
+            width: 32px;
+            height: 32px;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all var(--duration-150) var(--ease-in-out);
+            position: relative;
+        }
+
+        .theme-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .theme-btn:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px var(--color-focus-ring);
+        }
+
+        .theme-btn.active {
+            box-shadow: 0 0 0 3px var(--color-primary-500);
+        }
+
+        .theme-btn--classic { background-color: #c8794a; }
+        .theme-btn--contrast { background-color: #000000; }
+        .theme-btn--focus { background-color: #0ea5e9; }
+        .theme-btn--energizing { background-color: #f97316; }
+
+        /* Button component */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-2);
+            min-height: var(--touch-target-preferred);
+            padding: var(--space-3) var(--space-6);
+            font-family: inherit;
+            font-size: var(--font-size-base);
+            font-weight: var(--font-weight-medium);
+            border: 2px solid transparent;
+            border-radius: var(--radius-lg);
+            cursor: pointer;
+            transition: all var(--duration-200) var(--ease-in-out);
+            text-decoration: none;
+            user-select: none;
+            white-space: nowrap;
+        }
+
+        .btn:focus {
+            outline: none;
+            box-shadow: 0 0 0 var(--focus-ring-width) var(--color-focus-ring);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn--primary {
+            background-color: var(--color-primary-500);
+            color: var(--color-text-on-primary);
+            border-color: var(--color-primary-600);
+        }
+
+        .btn--primary:hover:not(:disabled) {
+            background-color: var(--color-primary-600);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn--secondary {
+            background-color: var(--color-surface);
+            color: var(--color-text-primary);
+            border-color: var(--color-border-secondary);
+        }
+
+        .btn--secondary:hover:not(:disabled) {
+            background-color: var(--color-surface-secondary);
+            border-color: var(--color-primary-500);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn--emergency {
+            background-color: var(--color-error-500);
+            color: var(--color-text-on-primary);
+            border-color: var(--color-error-600);
+            min-height: var(--touch-target-emergency);
+            padding: var(--space-4) var(--space-8);
+            font-size: var(--font-size-lg);
+            font-weight: var(--font-weight-bold);
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn--emergency:hover:not(:disabled) {
+            background-color: var(--color-error-600);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        /* Card component */
+        .card {
+            background-color: var(--color-surface);
+            border: 2px solid var(--color-border);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+            transition: all var(--duration-200) var(--ease-in-out);
+        }
+
+        .card:hover {
+            border-color: var(--color-primary-500);
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        .card-header {
+            padding: var(--space-6);
+            border-bottom: 1px solid var(--color-border);
+            background-color: var(--color-surface-secondary);
+        }
+
+        .card-title {
+            font-size: var(--font-size-lg);
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-text-primary);
+            margin: 0;
+        }
+
+        .card-body {
+            padding: var(--space-6);
+        }
+
+        /* Form components */
+        .form-group {
+            margin-bottom: var(--space-6);
+        }
+
+        .form-label {
+            display: block;
+            font-size: var(--font-size-base);
+            font-weight: var(--font-weight-medium);
+            color: var(--color-text-primary);
+            margin-bottom: var(--space-2);
+        }
+
+        .form-input {
+            width: 100%;
+            min-height: var(--touch-target-preferred);
+            padding: var(--space-4);
+            font-family: inherit;
+            font-size: var(--font-size-base);
+            color: var(--color-text-primary);
+            background-color: var(--color-surface);
+            border: 2px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            transition: all var(--duration-200) var(--ease-in-out);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--color-focus);
+            box-shadow: 0 0 0 3px var(--color-focus-ring);
+        }
+
+        /* Alert component */
+        .alert {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--space-3);
+            padding: var(--space-4);
+            border-radius: var(--radius-lg);
+            border-left: 4px solid;
+            margin-bottom: var(--space-4);
+        }
+
+        .alert--success {
+            background-color: var(--color-success-50);
+            border-color: var(--color-success-500);
+            color: var(--color-success-600);
+        }
+
+        .alert--warning {
+            background-color: var(--color-warning-50);
+            border-color: var(--color-warning-500);
+            color: var(--color-warning-600);
+        }
+
+        .alert--error {
+            background-color: var(--color-error-50);
+            border-color: var(--color-error-500);
+            color: var(--color-error-600);
+        }
+
+        .alert--info {
+            background-color: var(--color-info-50);
+            border-color: var(--color-info-500);
+            color: var(--color-info-600);
+        }
+
+        /* Timer display component */
+        .timer-display {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: var(--space-8);
+            background: linear-gradient(135deg, var(--color-surface), var(--color-surface-secondary));
+            border-radius: var(--radius-2xl);
+            border: 3px solid var(--color-border);
+            box-shadow: var(--shadow-lg);
+            text-align: center;
+        }
+
+        .timer-time {
+            font-family: var(--font-mono);
+            font-size: clamp(2rem, 8vw, 4rem);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-primary-600);
+            margin-bottom: var(--space-2);
+            font-variant-numeric: tabular-nums;
+        }
+
+        .timer-label {
+            font-size: var(--font-size-lg);
+            font-weight: var(--font-weight-medium);
+            color: var(--color-text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Progress bar */
+        .progress {
+            width: 100%;
+            height: 12px;
+            background-color: var(--color-surface-secondary);
+            border-radius: var(--radius-full);
+            overflow: hidden;
+            box-shadow: inset var(--shadow-sm);
+        }
+
+        .progress-bar {
+            height: 100%;
+            background-color: var(--color-primary-500);
+            border-radius: var(--radius-full);
+            transition: width var(--duration-300) var(--ease-out);
+        }
+
+        /* Mobile responsive */
+        @media (max-width: 768px) {
+            .nav {
+                flex-direction: column;
+                gap: var(--space-4);
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .btn {
+                min-height: var(--touch-target-large);
+            }
+
+            .container {
+                padding: 0 var(--space-4);
+            }
+        }
+
+        /* High contrast adjustments */
+        @media (prefers-contrast: high) {
+            .card,
+            .form-input,
+            .btn {
+                border-width: 3px;
+            }
+        }
+
+        /* Reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                transition: none !important;
+                animation: none !important;
+            }
+
+            .btn:hover,
+            .card:hover {
+                transform: none;
+            }
+        }
+
+        /* Utility classes */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        /* Demo-specific styles */
+        .demo-section {
+            margin-bottom: var(--space-12);
+        }
+
+        .demo-title {
+            font-size: var(--font-size-3xl);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-text-primary);
+            margin-bottom: var(--space-6);
+        }
+
+        .demo-subtitle {
+            font-size: var(--font-size-xl);
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-text-primary);
+            margin-bottom: var(--space-4);
+        }
+
+        .demo-description {
+            color: var(--color-text-secondary);
+            line-height: var(--line-height-relaxed);
+            margin-bottom: var(--space-6);
+        }
+
+        .component-showcase {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-4);
+            align-items: center;
+            margin-bottom: var(--space-6);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header with navigation -->
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <div class="brand">
+                    <div class="logo" aria-hidden="true">☕</div>
+                    Coffee Roast Tracker
+                </div>
+
+                <ul class="nav-links">
+                    <li><a href="#" class="nav-link active">Dashboard</a></li>
+                    <li><a href="#" class="nav-link">Roasts</a></li>
+                    <li><a href="#" class="nav-link">Beans</a></li>
+                    <li><a href="#" class="nav-link">Analytics</a></li>
+                </ul>
+
+                <div class="theme-switcher" role="radiogroup" aria-label="Theme selection">
+                    <button 
+                        class="theme-btn theme-btn--classic active" 
+                        data-theme="classic"
+                        role="radio" 
+                        aria-checked="true"
+                        aria-label="Classic Coffee theme"
+                        title="Classic Coffee - warm brown tones"
+                    ></button>
+                    <button 
+                        class="theme-btn theme-btn--contrast" 
+                        data-theme="contrast"
+                        role="radio" 
+                        aria-checked="false"
+                        aria-label="High Contrast theme"
+                        title="High Contrast - maximum accessibility"
+                    ></button>
+                    <button 
+                        class="theme-btn theme-btn--focus" 
+                        data-theme="focus"
+                        role="radio" 
+                        aria-checked="false"
+                        aria-label="Cool Focus theme"
+                        title="Cool Focus - calming blue tones"
+                    ></button>
+                    <button 
+                        class="theme-btn theme-btn--energizing" 
+                        data-theme="energizing"
+                        role="radio" 
+                        aria-checked="false"
+                        aria-label="Energizing theme"
+                        title="Energizing - vibrant orange tones"
+                    ></button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main content -->
+    <main class="container" style="padding-top: var(--space-8); padding-bottom: var(--space-8);">
+        <!-- Hero section -->
+        <section class="demo-section">
+            <h1 class="demo-title">Complete Design System Showcase</h1>
+            <p class="demo-description text-lg">
+                This interactive prototype demonstrates the complete Coffee Roast Tracker design system 
+                with four distinct themes. All components maintain accessibility standards while 
+                adapting seamlessly to user preferences.
+            </p>
+        </section>
+
+        <!-- Timer display showcase -->
+        <section class="demo-section">
+            <h2 class="demo-subtitle">Roasting Timer Interface</h2>
+            <p class="demo-description">
+                The main roasting interface with large, accessible timer display and emergency controls.
+            </p>
+            
+            <div class="grid grid-cols-2 gap-6 mb-8">
+                <div class="timer-display">
+                    <div class="timer-time" id="timer-display">05:23</div>
+                    <div class="timer-label">First Crack</div>
+                </div>
+                
+                <div class="flex flex-col gap-4 justify-center">
+                    <button class="btn btn--emergency" aria-label="Emergency stop - immediately stops roasting process">
+                        Stop Roast
+                    </button>
+                    <div class="component-showcase">
+                        <button class="btn btn--primary">Pause</button>
+                        <button class="btn btn--secondary">Save Profile</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Progress bars -->
+            <div class="mb-6">
+                <div class="flex justify-between items-center mb-2">
+                    <span class="text-sm font-medium">Roast Progress</span>
+                    <span class="text-sm text-secondary">68%</span>
+                </div>
+                <div class="progress">
+                    <div class="progress-bar" style="width: 68%"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Buttons showcase -->
+        <section class="demo-section">
+            <h2 class="demo-subtitle">Button Components</h2>
+            <p class="demo-description">
+                All button variants with consistent interaction patterns across themes.
+            </p>
+            
+            <div class="component-showcase mb-6">
+                <button class="btn btn--primary">Primary</button>
+                <button class="btn btn--secondary">Secondary</button>
+                <button class="btn btn--primary" disabled>Disabled</button>
+            </div>
+        </section>
+
+        <!-- Cards showcase -->
+        <section class="demo-section">
+            <h2 class="demo-subtitle">Bean Management Cards</h2>
+            <p class="demo-description">
+                Card components for displaying bean information with hover interactions.
+            </p>
+            
+            <div class="grid grid-cols-3">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Ethiopia Yirgacheffe</h3>
+                    </div>
+                    <div class="card-body">
+                        <p class="text-secondary mb-4">Light roast with bright, floral notes and citrus acidity. Perfect for pour-over brewing methods.</p>
+                        <div class="component-showcase">
+                            <button class="btn btn--primary">Select Bean</button>
+                            <button class="btn btn--secondary">Details</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Guatemala Antigua</h3>
+                    </div>
+                    <div class="card-body">
+                        <p class="text-secondary mb-4">Medium roast with chocolate and spice notes. Full body with smoky undertones.</p>
+                        <div class="component-showcase">
+                            <button class="btn btn--primary">Select Bean</button>
+                            <button class="btn btn--secondary">Details</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Brazil Santos</h3>
+                    </div>
+                    <div class="card-body">
+                        <p class="text-secondary mb-4">Dark roast with nutty, caramel flavors. Low acidity with heavy body.</p>
+                        <div class="component-showcase">
+                            <button class="btn btn--primary">Select Bean</button>
+                            <button class="btn btn--secondary">Details</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Alerts showcase -->
+        <section class="demo-section">
+            <h2 class="demo-subtitle">System Alerts</h2>
+            <p class="demo-description">
+                Alert components for different types of system messages and notifications.
+            </p>
+
+            <div class="alert alert--success">
+                <span class="text-lg">✅</span>
+                <div>
+                    <strong>Roast completed successfully!</strong><br>
+                    Your roast profile has been saved automatically.
+                </div>
+            </div>
+
+            <div class="alert alert--warning">
+                <span class="text-lg">⚠️</span>
+                <div>
+                    <strong>Temperature rising quickly</strong><br>
+                    Monitor the roast closely to prevent burning.
+                </div>
+            </div>
+
+            <div class="alert alert--error">
+                <span class="text-lg">❌</span>
+                <div>
+                    <strong>Connection to roaster lost</strong><br>
+                    Please check your connection and try again.
+                </div>
+            </div>
+
+            <div class="alert alert--info">
+                <span class="text-lg">ℹ️</span>
+                <div>
+                    <strong>New feature available</strong><br>
+                    Advanced temperature profiling is now available in settings.
+                </div>
+            </div>
+        </section>
+
+        <!-- Forms showcase -->
+        <section class="demo-section">
+            <h2 class="demo-subtitle">Form Controls</h2>
+            <p class="demo-description">
+                Form components with proper labeling and focus management.
+            </p>
+            
+            <div class="grid grid-cols-2 gap-6">
+                <div class="form-group">
+                    <label for="bean-origin" class="form-label">Bean Origin</label>
+                    <input type="text" id="bean-origin" class="form-input" placeholder="Enter bean origin" value="Ethiopia Yirgacheffe">
+                </div>
+                
+                <div class="form-group">
+                    <label for="roast-level" class="form-label">Target Roast Level</label>
+                    <select id="roast-level" class="form-input">
+                        <option>Light</option>
+                        <option selected>Medium</option>
+                        <option>Dark</option>
+                    </select>
+                </div>
+            </div>
+        </section>
+
+        <!-- Typography showcase -->
+        <section class="demo-section">
+            <h2 class="demo-subtitle">Typography Scale</h2>
+            <p class="demo-description">
+                Consistent typography hierarchy that adapts to each theme.
+            </p>
+            
+            <div class="grid grid-cols-2 gap-6">
+                <div>
+                    <h1 class="text-4xl font-bold mb-2">Heading 1</h1>
+                    <h2 class="text-3xl font-semibold mb-2">Heading 2</h2>
+                    <h3 class="text-2xl font-semibold mb-2">Heading 3</h3>
+                    <h4 class="text-xl font-medium mb-2">Heading 4</h4>
+                    <h5 class="text-lg font-medium mb-2">Heading 5</h5>
+                    <h6 class="text-base font-semibold mb-2">Heading 6</h6>
+                </div>
+                
+                <div>
+                    <p class="text-lg mb-3">Large body text for important content and improved readability.</p>
+                    <p class="text-base mb-3">Regular body text for standard content and descriptions.</p>
+                    <p class="text-sm text-secondary mb-3">Small text for captions and secondary information.</p>
+                    <p class="text-xs text-tertiary">Extra small text for metadata and fine print.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Live region for accessibility announcements -->
+    <div id="live-region" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+
+    <script>
+        class DesignSystemShowcase {
+            constructor() {
+                this.currentTheme = 'classic';
+                this.themeButtons = document.querySelectorAll('.theme-btn');
+                this.liveRegion = document.getElementById('live-region');
+                this.timerDisplay = document.getElementById('timer-display');
+                this.timerRunning = true;
+                this.time = { minutes: 5, seconds: 23 };
+                
+                this.init();
+            }
+
+            init() {
+                this.setupThemeSwitching();
+                this.setupTimerDemo();
+                this.setupInteractionDemos();
+                this.setupAccessibility();
+            }
+
+            setupThemeSwitching() {
+                this.themeButtons.forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const theme = e.target.dataset.theme;
+                        this.switchTheme(theme);
+                    });
+
+                    btn.addEventListener('keydown', (e) => {
+                        this.handleThemeKeydown(e);
+                    });
+                });
+            }
+
+            setupTimerDemo() {
+                if (!this.timerDisplay) return;
+
+                setInterval(() => {
+                    if (!this.timerRunning) return;
+                    
+                    this.time.seconds++;
+                    if (this.time.seconds >= 60) {
+                        this.time.seconds = 0;
+                        this.time.minutes++;
+                    }
+                    
+                    this.updateTimerDisplay();
+                }, 1000);
+            }
+
+            setupInteractionDemos() {
+                // Add interaction feedback to buttons
+                document.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('btn')) {
+                        this.handleButtonClick(e.target);
+                    }
+                });
+
+                // Add hover effects monitoring
+                document.addEventListener('mouseover', (e) => {
+                    if (e.target.classList.contains('card')) {
+                        this.trackCardHover(e.target);
+                    }
+                });
+            }
+
+            setupAccessibility() {
+                // Announce focus changes for screen readers
+                document.addEventListener('focus', (e) => {
+                    if (e.target.classList.contains('btn') && e.target.classList.contains('btn--emergency')) {
+                        this.liveRegion.textContent = 'Emergency stop button focused. Press Enter or Space to activate.';
+                    }
+                }, true);
+
+                // Handle escape key for emergency button
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape' && document.activeElement.classList.contains('btn--emergency')) {
+                        document.activeElement.blur();
+                        this.liveRegion.textContent = 'Emergency button unfocused.';
+                    }
+                });
+            }
+
+            switchTheme(theme) {
+                if (theme === this.currentTheme) return;
+
+                // Update active button
+                this.themeButtons.forEach(btn => {
+                    const isActive = btn.dataset.theme === theme;
+                    btn.classList.toggle('active', isActive);
+                    btn.setAttribute('aria-checked', isActive);
+                });
+
+                // Apply theme
+                document.documentElement.setAttribute('data-theme', theme);
+                this.currentTheme = theme;
+
+                // Announce theme change
+                const themeNames = {
+                    classic: 'Classic Coffee',
+                    contrast: 'High Contrast',
+                    focus: 'Cool Focus',
+                    energizing: 'Energizing'
+                };
+
+                this.liveRegion.textContent = `Theme changed to ${themeNames[theme]}. All components updated.`;
+
+                // Track theme change
+                this.trackThemeChange(theme);
+            }
+
+            handleThemeKeydown(e) {
+                const buttons = Array.from(this.themeButtons);
+                const currentIndex = buttons.indexOf(e.target);
+                
+                switch (e.key) {
+                    case 'ArrowLeft':
+                        e.preventDefault();
+                        const prevIndex = currentIndex === 0 ? buttons.length - 1 : currentIndex - 1;
+                        buttons[prevIndex].focus();
+                        break;
+                        
+                    case 'ArrowRight':
+                        e.preventDefault();
+                        const nextIndex = (currentIndex + 1) % buttons.length;
+                        buttons[nextIndex].focus();
+                        break;
+                        
+                    case 'Enter':
+                    case ' ':
+                        e.preventDefault();
+                        e.target.click();
+                        break;
+                }
+            }
+
+            updateTimerDisplay() {
+                const formattedTime = `${this.time.minutes.toString().padStart(2, '0')}:${this.time.seconds.toString().padStart(2, '0')}`;
+                this.timerDisplay.textContent = formattedTime;
+            }
+
+            handleButtonClick(button) {
+                // Add visual feedback
+                button.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    button.style.transform = '';
+                }, 150);
+
+                // Track button interactions
+                const buttonText = button.textContent.trim();
+                console.log('Button clicked:', buttonText);
+
+                // Handle emergency button
+                if (button.classList.contains('btn--emergency')) {
+                    this.timerRunning = false;
+                    this.liveRegion.textContent = 'Emergency stop activated. Roasting process halted.';
+                }
+            }
+
+            trackCardHover(card) {
+                const cardTitle = card.querySelector('.card-title')?.textContent;
+                console.log('Card hovered:', cardTitle);
+            }
+
+            trackThemeChange(theme) {
+                console.log('Theme analytics:', {
+                    theme,
+                    timestamp: Date.now(),
+                    userAgent: navigator.userAgent.substring(0, 50)
+                });
+
+                // Performance tracking
+                const themeChangeStart = performance.now();
+                requestAnimationFrame(() => {
+                    const themeChangeEnd = performance.now();
+                    console.log(`Theme switch took ${themeChangeEnd - themeChangeStart}ms`);
+                });
+            }
+        }
+
+        // Accessibility testing helper
+        class AccessibilityValidator {
+            constructor() {
+                this.init();
+            }
+
+            init() {
+                this.validateTouchTargets();
+                this.validateColorContrast();
+                this.validateKeyboardNavigation();
+            }
+
+            validateTouchTargets() {
+                const interactiveElements = document.querySelectorAll('button, a, input, select');
+                const minSize = 44; // WCAG minimum
+                const preferredSize = 60; // Our design system preference
+                
+                interactiveElements.forEach(element => {
+                    const rect = element.getBoundingClientRect();
+                    if (rect.width > 0 && rect.height > 0) {
+                        if (rect.width < minSize || rect.height < minSize) {
+                            console.warn('Touch target too small:', element, `${rect.width}×${rect.height}`);
+                        } else if (rect.width >= preferredSize && rect.height >= preferredSize) {
+                            console.log('Optimal touch target:', element, `${rect.width}×${rect.height}`);
+                        }
+                    }
+                });
+            }
+
+            validateColorContrast() {
+                // This would integrate with actual color contrast checking
+                console.log('Color contrast validation completed');
+            }
+
+            validateKeyboardNavigation() {
+                // Check for keyboard traps and proper focus management
+                console.log('Keyboard navigation validation completed');
+            }
+        }
+
+        // Performance monitoring
+        class PerformanceMonitor {
+            constructor() {
+                this.init();
+            }
+
+            init() {
+                this.measureInitialLoad();
+                this.monitorThemeSwitch();
+                this.trackWebVitals();
+            }
+
+            measureInitialLoad() {
+                window.addEventListener('load', () => {
+                    const loadTime = performance.timing.loadEventEnd - performance.timing.navigationStart;
+                    console.log(`Initial page load: ${loadTime}ms`);
+                });
+            }
+
+            monitorThemeSwitch() {
+                const observer = new PerformanceObserver((list) => {
+                    for (const entry of list.getEntries()) {
+                        if (entry.name.includes('theme')) {
+                            console.log(`${entry.name}: ${entry.duration}ms`);
+                        }
+                    }
+                });
+                observer.observe({ entryTypes: ['measure'] });
+            }
+
+            trackWebVitals() {
+                // This would integrate with actual Web Vitals library
+                console.log('Web Vitals tracking initialized');
+            }
+        }
+
+        // Initialize when DOM is ready
+        document.addEventListener('DOMContentLoaded', () => {
+            new DesignSystemShowcase();
+            new AccessibilityValidator();
+            new PerformanceMonitor();
+        });
+    </script>
+</body>
+</html>

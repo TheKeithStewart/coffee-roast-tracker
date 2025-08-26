@@ -6,7 +6,16 @@
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "test:accessibility": "jest tests/accessibility/",
+    "test:performance": "jest tests/performance/",
+    "test:integration": "jest tests/unit/integration.test.tsx",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "analyze:bundle": "npm run build && node scripts/bundle-analysis.js"
   },
   "dependencies": {
     "@ducanh2912/next-pwa": "^10.2.9",
@@ -24,13 +33,23 @@
     "zod": "^4.1.0"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.10.2",
     "@eslint/eslintrc": "^3",
+    "@playwright/test": "^1.55.0",
     "@tailwindcss/postcss": "^4",
+    "@testing-library/jest-dom": "^6.8.0",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/jest-axe": "^3.5.9",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "15.5.0",
+    "jest": "^30.0.5",
+    "jest-axe": "^10.0.0",
+    "jest-environment-jsdom": "^30.0.5",
+    "jsdom": "^26.1.0",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

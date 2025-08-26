@@ -1,0 +1,618 @@
+/* Coffee Roast Tracker - Enhanced Design System with User-Friendly Design */
+/* Core CSS Custom Properties System with 4 Color Themes */
+
+/* ================================ */
+/* BASE DESIGN TOKENS */
+/* ================================ */
+
+:root {
+  /* Typography Scale - optimized for readability */
+  --font-size-xs: 0.75rem;    /* 12px */
+  --font-size-sm: 0.875rem;   /* 14px */
+  --font-size-base: 1rem;     /* 16px - readable baseline */
+  --font-size-lg: 1.125rem;   /* 18px - preferred */
+  --font-size-xl: 1.25rem;    /* 20px */
+  --font-size-2xl: 1.5rem;    /* 24px */
+  --font-size-3xl: 1.875rem;  /* 30px */
+  --font-size-4xl: 2.25rem;   /* 36px */
+  --font-size-5xl: 3rem;      /* 48px */
+  --font-size-6xl: 3.75rem;   /* 60px */
+  --font-size-7xl: 4.5rem;    /* 72px */
+  --font-size-8xl: 6rem;      /* 96px */
+  --font-size-9xl: 8rem;      /* 128px */
+
+  /* Font Families - user-friendly choices */
+  --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-secondary: 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+  --font-display: 'Inter', system-ui, sans-serif;
+
+  /* Line Heights - Optimized for readability */
+  --line-height-tight: 1.25;
+  --line-height-snug: 1.375;
+  --line-height-normal: 1.5;   /* user-friendly default */
+  --line-height-relaxed: 1.625;
+  --line-height-loose: 2;
+
+  /* Letter Spacing */
+  --letter-spacing-tighter: -0.05em;
+  --letter-spacing-tight: -0.025em;
+  --letter-spacing-normal: 0em;
+  --letter-spacing-wide: 0.025em;
+  --letter-spacing-wider: 0.05em;
+  --letter-spacing-widest: 0.1em;
+
+  /* Font Weights */
+  --font-weight-thin: 100;
+  --font-weight-extralight: 200;
+  --font-weight-light: 300;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 800;
+  --font-weight-black: 900;
+
+  /* Spacing Scale - Generous for users better usability */
+  --space-px: 1px;
+  --space-0: 0px;
+  --space-1: 0.25rem;   /* 4px */
+  --space-2: 0.5rem;    /* 8px */
+  --space-3: 0.75rem;   /* 12px */
+  --space-4: 1rem;      /* 16px - base unit */
+  --space-5: 1.25rem;   /* 20px */
+  --space-6: 1.5rem;    /* 24px - cognitive spacing minimum */
+  --space-8: 2rem;      /* 32px */
+  --space-10: 2.5rem;   /* 40px */
+  --space-12: 3rem;     /* 48px */
+  --space-16: 4rem;     /* 64px */
+  --space-20: 5rem;     /* 80px */
+  --space-24: 6rem;     /* 96px */
+  --space-32: 8rem;     /* 128px */
+  --space-40: 10rem;    /* 160px */
+  --space-48: 12rem;    /* 192px */
+  --space-56: 14rem;    /* 224px */
+  --space-64: 16rem;    /* 256px */
+
+  /* Touch Target Sizes - accessibility optimized */
+  --touch-target-min: 44px;      /* iOS minimum */
+  --touch-target-preferred: 60px; /* user-friendly preferred */
+  --touch-target-large: 80px;     /* Critical actions */
+  --touch-target-emergency: 100px; /* Emergency controls */
+
+  /* Focus Ring Properties */
+  --focus-ring-width: 4px;        /* Highly visible for users */
+  --focus-ring-offset: 2px;
+  --focus-ring-style: solid;
+
+  /* Border Radius Scale */
+  --radius-none: 0px;
+  --radius-sm: 0.25rem;    /* 4px */
+  --radius-base: 0.5rem;   /* 8px */
+  --radius-md: 0.75rem;    /* 12px */
+  --radius-lg: 1rem;       /* 16px */
+  --radius-xl: 1.5rem;     /* 24px */
+  --radius-2xl: 2rem;      /* 32px */
+  --radius-3xl: 3rem;      /* 48px */
+  --radius-full: 9999px;
+
+  /* Shadow Scales - Subtle for users */
+  --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  --shadow-base: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  --shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+
+  /* Z-Index Scale */
+  --z-hide: -1;
+  --z-base: 0;
+  --z-docked: 10;
+  --z-dropdown: 1000;
+  --z-sticky: 1020;
+  --z-banner: 1030;
+  --z-overlay: 1040;
+  --z-modal: 1050;
+  --z-popover: 1060;
+  --z-skipLink: 1070;
+  --z-toast: 1080;
+  --z-tooltip: 1090;
+
+  /* Animation Durations - Fast for users */
+  --duration-75: 75ms;
+  --duration-100: 100ms;
+  --duration-150: 150ms;
+  --duration-200: 200ms;   /* Default fast */
+  --duration-300: 300ms;
+  --duration-500: 500ms;
+  --duration-700: 700ms;
+  --duration-1000: 1000ms;
+
+  /* Animation Easing */
+  --ease-linear: linear;
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ================================ */
+/* THEME 1: CLASSIC COFFEE THEME */
+/* ================================ */
+
+:root,
+[data-theme="classic"] {
+  /* Primary Colors - Warm coffee browns */
+  --color-primary-50: #fdf7f0;
+  --color-primary-100: #f9ede0;
+  --color-primary-200: #f0d6bd;
+  --color-primary-300: #e4b894;
+  --color-primary-400: #d59669;
+  --color-primary-500: #c8794a;    /* Primary brand color */
+  --color-primary-600: #b86c3e;
+  --color-primary-700: #995536;
+  --color-primary-800: #7b4530;
+  --color-primary-900: #643a28;
+  --color-primary-950: #371e17;
+
+  /* Secondary Colors - Cream and beige */
+  --color-secondary-50: #fefdfb;
+  --color-secondary-100: #fef9f2;
+  --color-secondary-200: #fdf1e3;
+  --color-secondary-300: #fbe6cc;
+  --color-secondary-400: #f7d4a8;
+  --color-secondary-500: #f2c179;
+  --color-secondary-600: #ecab4f;
+  --color-secondary-700: #e1932b;
+  --color-secondary-800: #bc7622;
+  --color-secondary-900: #975f1f;
+  --color-secondary-950: #52300c;
+
+  /* Accent Colors - Deep coffee */
+  --color-accent-50: #f6f4f2;
+  --color-accent-100: #ebe7e2;
+  --color-accent-200: #d9d0c6;
+  --color-accent-300: #c2b3a1;
+  --color-accent-400: #a9957f;
+  --color-accent-500: #8b7355;
+  --color-accent-600: #785f48;
+  --color-accent-700: #634d3c;
+  --color-accent-800: #544235;
+  --color-accent-900: #4a3930;
+  --color-accent-950: #271e19;
+
+  /* Semantic Colors */
+  --color-success-50: #ecfdf5;
+  --color-success-100: #d1fae5;
+  --color-success-200: #a7f3d0;
+  --color-success-300: #6ee7b7;
+  --color-success-400: #34d399;
+  --color-success-500: #10b981;   /* Success green */
+  --color-success-600: #059669;
+  --color-success-700: #047857;
+  --color-success-800: #065f46;
+  --color-success-900: #064e3b;
+
+  --color-warning-50: #fffbeb;
+  --color-warning-100: #fef3c7;
+  --color-warning-200: #fde68a;
+  --color-warning-300: #fcd34d;
+  --color-warning-400: #fbbf24;
+  --color-warning-500: #f59e0b;   /* Warning amber */
+  --color-warning-600: #d97706;
+  --color-warning-700: #b45309;
+  --color-warning-800: #92400e;
+  --color-warning-900: #78350f;
+
+  --color-error-50: #fef2f2;
+  --color-error-100: #fee2e2;
+  --color-error-200: #fecaca;
+  --color-error-300: #fca5a5;
+  --color-error-400: #f87171;
+  --color-error-500: #ef4444;     /* Error red */
+  --color-error-600: #dc2626;
+  --color-error-700: #b91c1c;
+  --color-error-800: #991b1b;
+  --color-error-900: #7f1d1d;
+
+  --color-info-50: #eff6ff;
+  --color-info-100: #dbeafe;
+  --color-info-200: #bfdbfe;
+  --color-info-300: #93c5fd;
+  --color-info-400: #60a5fa;
+  --color-info-500: #3b82f6;     /* Info blue */
+  --color-info-600: #2563eb;
+  --color-info-700: #1d4ed8;
+  --color-info-800: #1e40af;
+  --color-info-900: #1e3a8a;
+
+  /* Neutral Colors */
+  --color-gray-50: #fafaf9;
+  --color-gray-100: #f5f5f4;
+  --color-gray-200: #e7e5e4;
+  --color-gray-300: #d6d3d1;
+  --color-gray-400: #a8a29e;
+  --color-gray-500: #78716c;
+  --color-gray-600: #57534e;
+  --color-gray-700: #44403c;
+  --color-gray-800: #292524;
+  --color-gray-900: #1c1917;
+  --color-gray-950: #0c0a09;
+
+  /* Text Colors */
+  --color-text-primary: var(--color-gray-900);
+  --color-text-secondary: var(--color-gray-600);
+  --color-text-tertiary: var(--color-gray-500);
+  --color-text-quaternary: var(--color-gray-400);
+  --color-text-inverse: var(--color-gray-50);
+  --color-text-on-primary: var(--color-gray-50);
+  --color-text-on-secondary: var(--color-gray-900);
+
+  /* Background Colors */
+  --color-background: var(--color-gray-50);
+  --color-background-secondary: var(--color-secondary-50);
+  --color-surface: #ffffff;
+  --color-surface-secondary: var(--color-gray-100);
+  --color-surface-tertiary: var(--color-gray-200);
+  --color-surface-elevated: #ffffff;
+  --color-surface-overlay: rgba(0, 0, 0, 0.5);
+
+  /* Border Colors */
+  --color-border: var(--color-gray-200);
+  --color-border-secondary: var(--color-gray-300);
+  --color-border-tertiary: var(--color-gray-400);
+  --color-border-strong: var(--color-gray-600);
+
+  /* Focus Colors */
+  --color-focus: var(--color-primary-500);
+  --color-focus-ring: rgba(200, 121, 74, 0.5);
+}
+
+/* ================================ */
+/* THEME 2: HIGH CONTRAST THEME */
+/* ================================ */
+
+[data-theme="contrast"] {
+  /* Maximum contrast ratios for accessibility */
+  --color-primary-50: #f0f0f0;
+  --color-primary-100: #e0e0e0;
+  --color-primary-200: #c0c0c0;
+  --color-primary-300: #a0a0a0;
+  --color-primary-400: #808080;
+  --color-primary-500: #000000;    /* Pure black primary */
+  --color-primary-600: #000000;
+  --color-primary-700: #000000;
+  --color-primary-800: #000000;
+  --color-primary-900: #000000;
+  --color-primary-950: #000000;
+
+  --color-secondary-50: #ffffff;
+  --color-secondary-100: #f8f8f8;
+  --color-secondary-200: #f0f0f0;
+  --color-secondary-300: #e8e8e8;
+  --color-secondary-400: #d8d8d8;
+  --color-secondary-500: #ffffff;   /* Pure white secondary */
+  --color-secondary-600: #f8f8f8;
+  --color-secondary-700: #f0f0f0;
+  --color-secondary-800: #e8e8e8;
+  --color-secondary-900: #e0e0e0;
+  --color-secondary-950: #d8d8d8;
+
+  --color-accent-50: #f8f8f8;
+  --color-accent-100: #f0f0f0;
+  --color-accent-200: #e0e0e0;
+  --color-accent-300: #c8c8c8;
+  --color-accent-400: #a0a0a0;
+  --color-accent-500: #404040;     /* Dark gray accent */
+  --color-accent-600: #303030;
+  --color-accent-700: #202020;
+  --color-accent-800: #181818;
+  --color-accent-900: #101010;
+  --color-accent-950: #080808;
+
+  /* High contrast semantic colors */
+  --color-success-500: #008000;    /* Pure green */
+  --color-warning-500: #ff8000;    /* High contrast orange */
+  --color-error-500: #ff0000;      /* Pure red */
+  --color-info-500: #0080ff;       /* Bright blue */
+
+  /* Text with maximum contrast */
+  --color-text-primary: #000000;
+  --color-text-secondary: #000000;
+  --color-text-tertiary: #404040;
+  --color-text-quaternary: #606060;
+  --color-text-inverse: #ffffff;
+  --color-text-on-primary: #ffffff;
+  --color-text-on-secondary: #000000;
+
+  /* High contrast backgrounds */
+  --color-background: #ffffff;
+  --color-background-secondary: #f8f8f8;
+  --color-surface: #ffffff;
+  --color-surface-secondary: #f0f0f0;
+  --color-surface-tertiary: #e8e8e8;
+  --color-surface-elevated: #ffffff;
+  --color-surface-overlay: rgba(0, 0, 0, 0.8);
+
+  /* Strong borders */
+  --color-border: #000000;
+  --color-border-secondary: #404040;
+  --color-border-tertiary: #606060;
+  --color-border-strong: #000000;
+
+  /* High contrast focus */
+  --color-focus: #000000;
+  --color-focus-ring: rgba(0, 0, 0, 0.8);
+
+  /* Enhanced shadows for separation */
+  --shadow-sm: 0 2px 4px 0 rgba(0, 0, 0, 0.3);
+  --shadow-base: 0 4px 8px 0 rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 8px 16px 0 rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 16px 32px 0 rgba(0, 0, 0, 0.3);
+}
+
+/* ================================ */
+/* THEME 3: COOL FOCUS THEME */
+/* ================================ */
+
+[data-theme="focus"] {
+  /* Cool blues and grays for concentration */
+  --color-primary-50: #f0f9ff;
+  --color-primary-100: #e0f2fe;
+  --color-primary-200: #bae6fd;
+  --color-primary-300: #7dd3fc;
+  --color-primary-400: #38bdf8;
+  --color-primary-500: #0ea5e9;    /* Focus blue */
+  --color-primary-600: #0284c7;
+  --color-primary-700: #0369a1;
+  --color-primary-800: #075985;
+  --color-primary-900: #0c4a6e;
+  --color-primary-950: #082f49;
+
+  --color-secondary-50: #f8fafc;
+  --color-secondary-100: #f1f5f9;
+  --color-secondary-200: #e2e8f0;
+  --color-secondary-300: #cbd5e1;
+  --color-secondary-400: #94a3b8;
+  --color-secondary-500: #64748b;   /* Cool gray */
+  --color-secondary-600: #475569;
+  --color-secondary-700: #334155;
+  --color-secondary-800: #1e293b;
+  --color-secondary-900: #0f172a;
+  --color-secondary-950: #020617;
+
+  --color-accent-50: #f0fdf4;
+  --color-accent-100: #dcfce7;
+  --color-accent-200: #bbf7d0;
+  --color-accent-300: #86efac;
+  --color-accent-400: #4ade80;
+  --color-accent-500: #22c55e;     /* Calming green accent */
+  --color-accent-600: #16a34a;
+  --color-accent-700: #15803d;
+  --color-accent-800: #166534;
+  --color-accent-900: #14532d;
+  --color-accent-950: #052e16;
+
+  /* Calming semantic colors */
+  --color-success-500: #22c55e;
+  --color-warning-500: #eab308;
+  --color-error-500: #ef4444;
+  --color-info-500: #3b82f6;
+
+  /* Cool-toned text */
+  --color-text-primary: var(--color-secondary-900);
+  --color-text-secondary: var(--color-secondary-700);
+  --color-text-tertiary: var(--color-secondary-600);
+  --color-text-quaternary: var(--color-secondary-500);
+  --color-text-inverse: var(--color-secondary-50);
+  --color-text-on-primary: var(--color-secondary-50);
+  --color-text-on-secondary: var(--color-secondary-900);
+
+  /* Cool backgrounds */
+  --color-background: var(--color-secondary-50);
+  --color-background-secondary: #ffffff;
+  --color-surface: #ffffff;
+  --color-surface-secondary: var(--color-secondary-100);
+  --color-surface-tertiary: var(--color-secondary-200);
+  --color-surface-elevated: #ffffff;
+  --color-surface-overlay: rgba(15, 23, 42, 0.5);
+
+  /* Cool borders */
+  --color-border: var(--color-secondary-200);
+  --color-border-secondary: var(--color-secondary-300);
+  --color-border-tertiary: var(--color-secondary-400);
+  --color-border-strong: var(--color-secondary-600);
+
+  /* Focus blue */
+  --color-focus: var(--color-primary-500);
+  --color-focus-ring: rgba(14, 165, 233, 0.5);
+}
+
+/* ================================ */
+/* THEME 4: ENERGIZING THEME */
+/* ================================ */
+
+[data-theme="energizing"] {
+  /* Warm, motivating colors without overstimulation */
+  --color-primary-50: #fff7ed;
+  --color-primary-100: #ffedd5;
+  --color-primary-200: #fed7aa;
+  --color-primary-300: #fdba74;
+  --color-primary-400: #fb923c;
+  --color-primary-500: #f97316;    /* Energizing orange */
+  --color-primary-600: #ea580c;
+  --color-primary-700: #c2410c;
+  --color-primary-800: #9a3412;
+  --color-primary-900: #7c2d12;
+  --color-primary-950: #431407;
+
+  --color-secondary-50: #f0fdfa;
+  --color-secondary-100: #ccfbf1;
+  --color-secondary-200: #99f6e4;
+  --color-secondary-300: #5eead4;
+  --color-secondary-400: #2dd4bf;
+  --color-secondary-500: #14b8a6;   /* Balanced teal */
+  --color-secondary-600: #0d9488;
+  --color-secondary-700: #0f766e;
+  --color-secondary-800: #115e59;
+  --color-secondary-900: #134e4a;
+  --color-secondary-950: #042f2e;
+
+  --color-accent-50: #fefce8;
+  --color-accent-100: #fef9c3;
+  --color-accent-200: #fef08a;
+  --color-accent-300: #fde047;
+  --color-accent-400: #facc15;
+  --color-accent-500: #eab308;     /* Warm yellow accent */
+  --color-accent-600: #ca8a04;
+  --color-accent-700: #a16207;
+  --color-accent-800: #854d0e;
+  --color-accent-900: #713f12;
+  --color-accent-950: #422006;
+
+  /* Energizing semantic colors */
+  --color-success-500: #22c55e;
+  --color-warning-500: #f59e0b;
+  --color-error-500: #ef4444;
+  --color-info-500: #06b6d4;
+
+  /* Warm text colors */
+  --color-text-primary: #1f2937;
+  --color-text-secondary: #4b5563;
+  --color-text-tertiary: #6b7280;
+  --color-text-quaternary: #9ca3af;
+  --color-text-inverse: #ffffff;
+  --color-text-on-primary: #ffffff;
+  --color-text-on-secondary: #1f2937;
+
+  /* Energizing backgrounds */
+  --color-background: #fffbeb;
+  --color-background-secondary: var(--color-primary-50);
+  --color-surface: #ffffff;
+  --color-surface-secondary: var(--color-primary-100);
+  --color-surface-tertiary: var(--color-primary-200);
+  --color-surface-elevated: #ffffff;
+  --color-surface-overlay: rgba(31, 41, 55, 0.5);
+
+  /* Warm borders */
+  --color-border: var(--color-primary-200);
+  --color-border-secondary: var(--color-primary-300);
+  --color-border-tertiary: var(--color-primary-400);
+  --color-border-strong: var(--color-primary-600);
+
+  /* Energizing focus */
+  --color-focus: var(--color-primary-500);
+  --color-focus-ring: rgba(249, 115, 22, 0.5);
+}
+
+/* ================================ */
+/* MEDIA QUERY OVERRIDES */
+/* ================================ */
+
+/* High contrast mode system preference */
+@media (prefers-contrast: high) {
+  :root {
+    --color-text-primary: #000000;
+    --color-background: #ffffff;
+    --color-primary-500: #000000;
+    --color-error-500: #ff0000;
+    --color-success-500: #008000;
+    --color-warning-500: #ff6600;
+    --color-border: #000000;
+    --color-surface: #ffffff;
+    --focus-ring-width: 4px;
+  }
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-75: 0ms;
+    --duration-100: 0ms;
+    --duration-150: 0ms;
+    --duration-200: 0ms;
+    --duration-300: 0ms;
+    --duration-500: 0ms;
+    --duration-700: 0ms;
+    --duration-1000: 0ms;
+  }
+  
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-text-primary: var(--color-gray-100);
+    --color-text-secondary: var(--color-gray-300);
+    --color-text-tertiary: var(--color-gray-400);
+    --color-text-quaternary: var(--color-gray-500);
+    --color-text-inverse: var(--color-gray-900);
+    
+    --color-background: var(--color-gray-900);
+    --color-background-secondary: var(--color-gray-800);
+    --color-surface: var(--color-gray-800);
+    --color-surface-secondary: var(--color-gray-700);
+    --color-surface-tertiary: var(--color-gray-600);
+    --color-surface-elevated: var(--color-gray-700);
+    
+    --color-border: var(--color-gray-600);
+    --color-border-secondary: var(--color-gray-500);
+    --color-border-tertiary: var(--color-gray-400);
+    --color-border-strong: var(--color-gray-300);
+  }
+}
+
+/* ================================ */
+/* SEMANTIC TOKEN ALIASES */
+/* ================================ */
+
+:root {
+  /* Primary Actions */
+  --color-cta-primary: var(--color-primary-500);
+  --color-cta-primary-hover: var(--color-primary-600);
+  --color-cta-primary-active: var(--color-primary-700);
+  --color-cta-primary-disabled: var(--color-gray-300);
+
+  /* Secondary Actions */
+  --color-cta-secondary: var(--color-secondary-500);
+  --color-cta-secondary-hover: var(--color-secondary-600);
+  --color-cta-secondary-active: var(--color-secondary-700);
+  --color-cta-secondary-disabled: var(--color-gray-300);
+
+  /* Emergency Actions (Always Red) */
+  --color-emergency: var(--color-error-500);
+  --color-emergency-hover: var(--color-error-600);
+  --color-emergency-active: var(--color-error-700);
+  --color-emergency-bg: var(--color-error-50);
+
+  /* Confirmation Actions */
+  --color-confirmation: var(--color-success-500);
+  --color-confirmation-hover: var(--color-success-600);
+  --color-confirmation-active: var(--color-success-700);
+  --color-confirmation-bg: var(--color-success-50);
+
+  /* Navigation */
+  --color-nav-active: var(--color-primary-100);
+  --color-nav-active-border: var(--color-primary-500);
+  --color-nav-hover: var(--color-gray-100);
+
+  /* Form Elements */
+  --color-input-border: var(--color-border);
+  --color-input-border-focus: var(--color-focus);
+  --color-input-bg: var(--color-surface);
+  --color-input-bg-disabled: var(--color-gray-100);
+
+  /* Status Indicators */
+  --color-status-online: var(--color-success-500);
+  --color-status-offline: var(--color-gray-400);
+  --color-status-busy: var(--color-warning-500);
+  --color-status-away: var(--color-accent-500);
+}
