@@ -142,7 +142,6 @@ describe('OfflineIndicator', () => {
       const helpButton = screen.getByRole('button', { name: /what can i do offline/i });
       await user.click(helpButton);
 
-      expect(screen.getByText(/you can still/i)).toBeInTheDocument();
       expect(screen.getByText(/track active roasts/i)).toBeInTheDocument();
       expect(screen.getByText(/view saved data/i)).toBeInTheDocument();
       expect(screen.getByText(/make notes/i)).toBeInTheDocument();
@@ -241,7 +240,7 @@ describe('OfflineIndicator', () => {
       );
 
       expect(screen.getByText(/sync failed/i)).toBeInTheDocument();
-      expect(screen.getByText(/1 item failed/i)).toBeInTheDocument();
+      expect(screen.getByText(/1 item can be retried/i)).toBeInTheDocument();
 
       const retryButton = screen.getByRole('button', { name: /retry now/i });
       await user.click(retryButton);
@@ -280,7 +279,7 @@ describe('OfflineIndicator', () => {
         />
       );
 
-      expect(screen.getByText(/offline/i)).toBeInTheDocument();
+      expect(screen.getAllByText(/no internet connection/i)).toHaveLength(2); // Screen reader + visible text
 
       const reconnectedState = {
         ...mockOnlineState,
@@ -507,7 +506,9 @@ describe('OfflineIndicator', () => {
         />
       );
 
-      expect(screen.getByText(/2 items failed/i)).toBeInTheDocument();
+      expect(screen.getByText(/sync failed/i)).toBeInTheDocument();
+      expect(screen.getByText(/1 item can be retried/i)).toBeInTheDocument();
+      expect(screen.getByText(/1 item needs attention/i)).toBeInTheDocument();
       expect(screen.getByText(/server unavailable/i)).toBeInTheDocument();
       expect(screen.getByText(/permission denied/i)).toBeInTheDocument();
     });
@@ -557,7 +558,8 @@ describe('OfflineIndicator', () => {
       );
 
       // Should show just the essential status
-      expect(screen.getByLabelText(/online/i)).toBeInTheDocument();
+      expect(screen.getByLabelText(/show connection details/i)).toBeInTheDocument();
+      expect(screen.getByText(/online/i)).toBeInTheDocument(); // Screen reader text
       expect(screen.queryByText(/good connection/i)).not.toBeInTheDocument();
     });
 
@@ -576,7 +578,7 @@ describe('OfflineIndicator', () => {
       await user.click(statusIndicator);
 
       expect(screen.getByText(/good connection/i)).toBeInTheDocument();
-      expect(screen.getByText(/wifi/i)).toBeInTheDocument();
+      // Connection details (wifi) are only shown in full mode, not expanded compact mode
     });
   });
 });

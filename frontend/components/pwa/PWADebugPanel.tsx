@@ -416,7 +416,7 @@ export function PWADebugPanel({ isOpen, onClose }: PWADebugPanelProps) {
               <div className="mt-6">
                 <h4 className="font-medium mb-2">PWA Installation Status</h4>
                 <div className="bg-gray-50 p-3 rounded text-sm">
-                  <div>Install prompt available: {window.localStorage.getItem('pwa-install-dismissed') ? 'No (dismissed)' : 'Maybe'}</div>
+                  <div>Install prompt available: {typeof window !== 'undefined' && window.localStorage.getItem('pwa-install-dismissed') ? 'No (dismissed)' : 'Maybe'}</div>
                   <div>Standalone mode: {'standalone' in window.navigator ? 'Yes' : 'No'}</div>
                   <div>Display mode: {window.matchMedia('(display-mode: standalone)').matches ? 'Standalone' : 'Browser'}</div>
                 </div>

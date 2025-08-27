@@ -95,6 +95,11 @@ const FeatureFlagContext = createContext<FeatureFlagContextType | null>(null);
 
 // Generate consistent user ID for feature flag assignment
 function getUserId(): string {
+  // SSR-safe check for localStorage
+  if (typeof window === 'undefined') {
+    return 'user-ssr-fallback';
+  }
+  
   let userId = localStorage.getItem('feature-flag-user-id');
   if (!userId) {
     userId = 'user-' + Math.random().toString(36).substr(2, 9);

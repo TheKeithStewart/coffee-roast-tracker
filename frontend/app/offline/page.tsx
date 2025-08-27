@@ -5,7 +5,12 @@
  * Fallback page when the application is offline
  */
 
+'use client';
+
 import React from 'react';
+
+// Force dynamic rendering to avoid SSR issues
+export const dynamic = 'force-dynamic';
 
 export default function OfflinePage() {
   return (
@@ -51,7 +56,11 @@ export default function OfflinePage() {
           </div>
           
           <button
-            onClick={() => window.location.reload()}
+            onClick={() => {
+              if (typeof window !== 'undefined') {
+                window.location.reload();
+              }
+            }}
             className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 transition-colors"
           >
             Try Again

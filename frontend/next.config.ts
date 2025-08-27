@@ -3,6 +3,8 @@ import withPWA from "@ducanh2912/next-pwa";
 
 const nextConfig: NextConfig = {
   /* config options here */
+  // Force dynamic rendering to avoid SSR issues with PWA components
+  output: 'standalone',
 };
 
 export default withPWA({

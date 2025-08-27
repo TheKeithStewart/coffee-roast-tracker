@@ -433,6 +433,9 @@ export function useNavigationTracking() {
   const [startTime, setStartTime] = useState<number>(Date.now());
 
   useEffect(() => {
+    // SSR-safe check for window
+    if (typeof window === 'undefined') return;
+    
     const path = window.location.pathname;
     
     if (currentRoute && currentRoute !== path) {
