@@ -1,5 +1,55 @@
 import '@testing-library/jest-dom'
 
+// Mock NextAuth.js
+jest.mock('next-auth/react', () => ({
+  useSession: jest.fn(() => ({
+    data: null,
+    status: 'unauthenticated',
+    update: jest.fn()
+  })),
+  signIn: jest.fn(),
+  signOut: jest.fn(),
+  SessionProvider: ({ children }) => children,
+  getSession: jest.fn()
+}));
+
+// Mock crypto for testing environment
+Object.defineProperty(global, 'crypto', {
+  value: {
+    subtle: {
+      digest: jest.fn().mockResolvedValue(new ArrayBuffer(32))
+    },
+    getRandomValues: jest.fn((arr) => {
+      for (let i = 0; i < arr.length; i++) {
+        arr[i] = Math.floor(Math.random() * 256);
+      }
+      return arr;
+    })
+  }
+});
+
+// Mock BroadcastChannel
+global.BroadcastChannel = class BroadcastChannel {
+  constructor(name) {
+    this.name = name;
+  }
+  
+  postMessage = jest.fn();
+  addEventListener = jest.fn();
+  removeEventListener = jest.fn();
+  close = jest.fn();
+};
+
+// Mock sessionStorage
+Object.defineProperty(window, 'sessionStorage', {
+  value: {
+    getItem: jest.fn(),
+    setItem: jest.fn(),
+    removeItem: jest.fn(),
+    clear: jest.fn()
+  }
+});
+
 // Mock localStorage for tests
 const localStorageData = new Map()
 
