@@ -2,7 +2,10 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/lib/theme-context";
+import { FeatureFlagProvider, FeatureFlagDebugPanel } from "@/lib/FeatureFlags";
+import { PersonalizationProvider } from "@/lib/PersonalizationProvider";
 import { PWADebugTrigger } from "@/components/pwa/PWADebugTrigger";
+import { SmartAutomation } from "@/components/automation/SmartAutomation";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,8 +33,14 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <ThemeProvider>
-          {children}
-          <PWADebugTrigger />
+          <FeatureFlagProvider>
+            <PersonalizationProvider>
+              {children}
+              <SmartAutomation />
+              <PWADebugTrigger />
+              <FeatureFlagDebugPanel />
+            </PersonalizationProvider>
+          </FeatureFlagProvider>
         </ThemeProvider>
       </body>
     </html>
