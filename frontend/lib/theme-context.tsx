@@ -176,10 +176,13 @@ export function ThemeProvider({
     let initialTheme = defaultTheme
     
     try {
-      // Check localStorage first
-      const savedTheme = localStorage.getItem(THEME_STORAGE_KEY)
-      if (savedTheme && isValidTheme(savedTheme)) {
-        initialTheme = savedTheme
+      // SSR-safe check for localStorage
+      if (typeof window !== 'undefined') {
+        // Check localStorage first
+        const savedTheme = localStorage.getItem(THEME_STORAGE_KEY)
+        if (savedTheme && isValidTheme(savedTheme)) {
+          initialTheme = savedTheme
+        }
       }
       // Don't automatically apply system preference unless no saved theme
       // This prevents tests from unexpectedly switching themes
@@ -204,7 +207,7 @@ export function ThemeProvider({
       setSystemPreference(newSystemPreference)
       
       // Only auto-switch if user hasn't set a manual preference
-      if (!localStorage.getItem(THEME_STORAGE_KEY) && newSystemPreference) {
+      if (typeof window !== 'undefined' && !localStorage.getItem(THEME_STORAGE_KEY) && newSystemPreference) {
         setThemeState(newSystemPreference)
         applyThemeToDocument(newSystemPreference)
       }
@@ -234,7 +237,11 @@ export function ThemeProvider({
       try {
         setThemeState(newTheme)
         applyThemeToDocument(newTheme)
-        localStorage.setItem(THEME_STORAGE_KEY, newTheme)
+        
+        // SSR-safe localStorage access
+        if (typeof window !== 'undefined') {
+          localStorage.setItem(THEME_STORAGE_KEY, newTheme)
+        }
         
         // Announce theme change for accessibility
         const announcement = `Theme changed to ${THEMES.find(t => t.id === newTheme)?.name}`
@@ -250,7 +257,10 @@ export function ThemeProvider({
         if (systemTheme) {
           setThemeState(systemTheme)
           applyThemeToDocument(systemTheme)
-          localStorage.removeItem(THEME_STORAGE_KEY)
+          // SSR-safe localStorage access
+          if (typeof window !== 'undefined') {
+            localStorage.removeItem(THEME_STORAGE_KEY)
+          }
           
           const announcement = `Theme reset to system preference: ${THEMES.find(t => t.id === systemTheme)?.name}`
           announceToScreenReader(announcement)
@@ -264,7 +274,10 @@ export function ThemeProvider({
       try {
         setThemeState(defaultTheme)
         applyThemeToDocument(defaultTheme)
-        localStorage.removeItem(THEME_STORAGE_KEY)
+        // SSR-safe localStorage access
+        if (typeof window !== 'undefined') {
+          localStorage.removeItem(THEME_STORAGE_KEY)
+        }
         
         const announcement = `Theme preference cleared. Using ${THEMES.find(t => t.id === defaultTheme)?.name}`
         announceToScreenReader(announcement)

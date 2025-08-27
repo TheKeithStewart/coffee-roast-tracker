@@ -3,6 +3,8 @@ import withPWA from "@ducanh2912/next-pwa";
 
 const nextConfig: NextConfig = {
   /* config options here */
+  // Force dynamic rendering to avoid SSR issues with PWA components
+  output: 'standalone',
 };
 
 export default withPWA({
@@ -10,8 +12,10 @@ export default withPWA({
   cacheOnFrontEndNav: true,
   aggressiveFrontEndNavCaching: true,
   reloadOnOnline: true,
-  // swcMinify is deprecated in newer versions
-  disable: process.env.NODE_ENV === "development",
+  // Enable PWA in development for Issue #63: PWA Development Testing Environment
+  disable: false,
+  // Use custom service worker for unified environment awareness
+  sw: "sw.js",
   workboxOptions: {
     disableDevLogs: true,
     runtimeCaching: [

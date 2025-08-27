@@ -1,5 +1,33 @@
 import '@testing-library/jest-dom'
 
+// Mock HTMLFormElement.requestSubmit for JSDOM compatibility
+Object.defineProperty(HTMLFormElement.prototype, 'requestSubmit', {
+  value: function(submitter) {
+    if (submitter && submitter.form !== this) {
+      throw new DOMException('The specified element is not a descendant of the form element.', 'NotFoundError');
+    }
+    
+    if (submitter && (submitter.type === 'submit' || submitter.type === 'image')) {
+      // Mock form validation
+      if (this.checkValidity && this.checkValidity()) {
+        // Dispatch submit event
+        const submitEvent = new Event('submit', { bubbles: true, cancelable: true });
+        const dispatched = this.dispatchEvent(submitEvent);
+        
+        if (dispatched && this.submit) {
+          this.submit();
+        }
+      }
+    } else {
+      if (this.submit) {
+        this.submit();
+      }
+    }
+  },
+  writable: true,
+  configurable: true
+});
+
 // Mock NextAuth.js
 jest.mock('next-auth/react', () => ({
   useSession: jest.fn(() => ({
@@ -12,6 +40,10 @@ jest.mock('next-auth/react', () => ({
   SessionProvider: ({ children }) => children,
   getSession: jest.fn()
 }));
+
+// Mock TextEncoder/TextDecoder for JSDOM (needed for PKCE)
+global.TextEncoder = require('util').TextEncoder;
+global.TextDecoder = require('util').TextDecoder;
 
 // Mock crypto for testing environment
 Object.defineProperty(global, 'crypto', {

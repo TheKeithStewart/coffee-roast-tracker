@@ -1,0 +1,1592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PWA Development Debug Panel - Coffee Roast Tracker</title>
+    <style>
+        /* Import Epic #12 design system foundation */
+        :root {
+            --font-primary: 'JetBrains Mono', 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', 'Droid Sans Mono', 'Source Code Pro', monospace;
+            --font-ui: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            --font-size-xs: 0.75rem;
+            --font-size-sm: 0.875rem;
+            --font-size-base: 1rem;
+            --font-size-lg: 1.125rem;
+            --font-size-xl: 1.25rem;
+            --font-size-2xl: 1.5rem;
+            --font-weight-normal: 400;
+            --font-weight-medium: 500;
+            --font-weight-semibold: 600;
+            --font-weight-bold: 700;
+            --line-height-normal: 1.5;
+            --line-height-tight: 1.25;
+            
+            --space-1: 0.25rem;
+            --space-2: 0.5rem;
+            --space-3: 0.75rem;
+            --space-4: 1rem;
+            --space-5: 1.25rem;
+            --space-6: 1.5rem;
+            --space-8: 2rem;
+            --space-10: 2.5rem;
+            --space-12: 3rem;
+            
+            --radius-md: 0.5rem;
+            --radius-lg: 0.75rem;
+            --radius-xl: 1rem;
+            
+            /* Developer-friendly color scheme */
+            --color-primary-500: #c8794a;
+            --color-primary-600: #b86c3e;
+            --color-primary-100: #f9ede0;
+            --color-primary-50: #fdf7f0;
+            
+            --color-dev-500: #0ea5e9;
+            --color-dev-600: #0284c7;
+            --color-dev-100: #e0f2fe;
+            --color-dev-50: #f0f9ff;
+            
+            --color-success-500: #10b981;
+            --color-success-600: #059669;
+            --color-success-100: #d1fae5;
+            --color-success-50: #ecfdf5;
+            
+            --color-warning-500: #f59e0b;
+            --color-warning-600: #d97706;
+            --color-warning-100: #fef3c7;
+            --color-warning-50: #fffbeb;
+            
+            --color-error-500: #ef4444;
+            --color-error-600: #dc2626;
+            --color-error-100: #fee2e2;
+            --color-error-50: #fef2f2;
+            
+            --color-info-500: #6366f1;
+            --color-info-600: #4f46e5;
+            --color-info-100: #e0e7ff;
+            --color-info-50: #f0f4ff;
+            
+            --color-text-primary: #1c1917;
+            --color-text-secondary: #57534e;
+            --color-text-tertiary: #78716c;
+            --color-text-inverse: #fafaf9;
+            --color-text-dev: #0ea5e9;
+            
+            --color-surface: #ffffff;
+            --color-surface-secondary: #f5f5f4;
+            --color-surface-dev: #0c1525;
+            --color-surface-dev-secondary: #1e293b;
+            --color-background: #fafaf9;
+            --color-background-dev: #020617;
+            
+            --color-border: #e7e5e4;
+            --color-border-secondary: #d6d3d1;
+            --color-border-dev: #334155;
+            
+            --color-focus: #c8794a;
+            --color-focus-ring: rgba(200, 121, 74, 0.5);
+            
+            --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            
+            --duration-150: 150ms;
+            --duration-200: 200ms;
+            --duration-300: 300ms;
+            --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+            --ease-out: cubic-bezier(0, 0, 0.2, 1);
+            
+            --z-base: 0;
+            --z-docked: 10;
+            --z-sticky: 1020;
+            --z-overlay: 1040;
+            --z-modal: 1050;
+        }
+        
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: var(--font-ui);
+            font-size: var(--font-size-base);
+            line-height: var(--line-height-normal);
+            color: var(--color-text-primary);
+            background-color: var(--color-background);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+        
+        .app {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        
+        /* Development Mode Indicator */
+        .dev-mode-banner {
+            background: linear-gradient(90deg, var(--color-dev-500), var(--color-dev-600));
+            color: white;
+            padding: var(--space-2) var(--space-4);
+            text-align: center;
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-semibold);
+            position: sticky;
+            top: 0;
+            z-index: var(--z-sticky);
+        }
+        
+        /* Header - Same as main app */
+        .header {
+            background-color: var(--color-surface);
+            border-bottom: 2px solid var(--color-border);
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 0;
+            z-index: var(--z-sticky);
+        }
+        
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--space-4) var(--space-6);
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+        }
+        
+        .brand-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--color-primary-500), var(--color-primary-600));
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: var(--font-size-xl);
+            font-weight: var(--font-weight-bold);
+        }
+        
+        .brand-title {
+            font-size: var(--font-size-xl);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-primary-600);
+            margin: 0;
+        }
+        
+        .dev-badge {
+            background: var(--color-dev-500);
+            color: white;
+            padding: var(--space-1) var(--space-3);
+            border-radius: var(--radius-md);
+            font-size: var(--font-size-xs);
+            font-weight: var(--font-weight-bold);
+            margin-left: var(--space-2);
+        }
+        
+        /* Debug Panel Toggle */
+        .debug-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background: var(--color-dev-500);
+            color: white;
+            border: none;
+            border-radius: var(--radius-xl);
+            font-size: var(--font-size-xl);
+            cursor: pointer;
+            box-shadow: var(--shadow-lg);
+            z-index: var(--z-overlay);
+            transition: all var(--duration-200) var(--ease-in-out);
+        }
+        
+        .debug-toggle:hover,
+        .debug-toggle:focus {
+            background: var(--color-dev-600);
+            transform: scale(1.1);
+            outline: none;
+            box-shadow: 0 0 0 4px var(--color-focus-ring);
+        }
+        
+        .debug-toggle.active {
+            background: var(--color-warning-500);
+        }
+        
+        /* Debug Panel */
+        .debug-panel {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 400px;
+            height: 100vh;
+            background: var(--color-surface-dev);
+            color: var(--color-text-inverse);
+            box-shadow: var(--shadow-lg);
+            z-index: var(--z-modal);
+            transition: right var(--duration-300) var(--ease-out);
+            display: flex;
+            flex-direction: column;
+            font-family: var(--font-primary);
+            font-size: var(--font-size-sm);
+        }
+        
+        .debug-panel.open {
+            right: 0;
+        }
+        
+        .debug-header {
+            background: var(--color-surface-dev-secondary);
+            padding: var(--space-4);
+            border-bottom: 2px solid var(--color-border-dev);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .debug-title {
+            font-size: var(--font-size-lg);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-dev-500);
+            margin: 0;
+            font-family: var(--font-ui);
+        }
+        
+        .debug-close {
+            background: transparent;
+            color: var(--color-text-inverse);
+            border: 1px solid var(--color-border-dev);
+            border-radius: var(--radius-md);
+            padding: var(--space-2);
+            cursor: pointer;
+            font-size: var(--font-size-base);
+            transition: all var(--duration-150) var(--ease-out);
+        }
+        
+        .debug-close:hover {
+            background: var(--color-error-500);
+            border-color: var(--color-error-600);
+        }
+        
+        .debug-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: var(--space-4);
+        }
+        
+        /* Debug Sections */
+        .debug-section {
+            margin-bottom: var(--space-8);
+            background: var(--color-surface-dev-secondary);
+            border-radius: var(--radius-lg);
+            padding: var(--space-4);
+            border: 1px solid var(--color-border-dev);
+        }
+        
+        .debug-section-title {
+            font-size: var(--font-size-base);
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-dev-500);
+            margin: 0 0 var(--space-4) 0;
+            font-family: var(--font-ui);
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+        }
+        
+        /* PWA Status */
+        .pwa-status {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-3);
+        }
+        
+        .status-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--space-2) var(--space-3);
+            background: var(--color-surface-dev);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--color-border-dev);
+        }
+        
+        .status-label {
+            color: var(--color-text-secondary);
+            font-size: var(--font-size-sm);
+        }
+        
+        .status-value {
+            color: var(--color-text-inverse);
+            font-weight: var(--font-weight-medium);
+        }
+        
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: var(--radius-full);
+            margin-left: var(--space-2);
+        }
+        
+        .status-indicator.active {
+            background: var(--color-success-500);
+        }
+        
+        .status-indicator.inactive {
+            background: var(--color-error-500);
+        }
+        
+        .status-indicator.warning {
+            background: var(--color-warning-500);
+        }
+        
+        /* Service Worker Controls */
+        .sw-controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-2);
+            margin-top: var(--space-4);
+        }
+        
+        .debug-btn {
+            background: var(--color-dev-500);
+            color: white;
+            border: none;
+            border-radius: var(--radius-md);
+            padding: var(--space-2) var(--space-3);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-medium);
+            cursor: pointer;
+            transition: all var(--duration-150) var(--ease-out);
+            font-family: var(--font-ui);
+        }
+        
+        .debug-btn:hover,
+        .debug-btn:focus {
+            background: var(--color-dev-600);
+            outline: none;
+            box-shadow: 0 0 0 2px var(--color-focus-ring);
+        }
+        
+        .debug-btn.warning {
+            background: var(--color-warning-500);
+        }
+        
+        .debug-btn.warning:hover {
+            background: var(--color-warning-600);
+        }
+        
+        .debug-btn.error {
+            background: var(--color-error-500);
+        }
+        
+        .debug-btn.error:hover {
+            background: var(--color-error-600);
+        }
+        
+        .debug-btn:disabled {
+            background: var(--color-text-tertiary);
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+        
+        /* Installation Testing */
+        .install-test {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-3);
+        }
+        
+        .browser-test {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+            padding: var(--space-3);
+            background: var(--color-surface-dev);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--color-border-dev);
+        }
+        
+        .browser-icon {
+            width: 24px;
+            height: 24px;
+            font-size: var(--font-size-lg);
+        }
+        
+        .browser-info {
+            flex: 1;
+        }
+        
+        .browser-name {
+            font-weight: var(--font-weight-medium);
+            color: var(--color-text-inverse);
+            margin: 0 0 var(--space-1) 0;
+        }
+        
+        .browser-support {
+            font-size: var(--font-size-xs);
+            color: var(--color-text-secondary);
+            margin: 0;
+        }
+        
+        .test-result {
+            padding: var(--space-1) var(--space-2);
+            border-radius: var(--radius-md);
+            font-size: var(--font-size-xs);
+            font-weight: var(--font-weight-medium);
+        }
+        
+        .test-result.pass {
+            background: var(--color-success-500);
+            color: white;
+        }
+        
+        .test-result.fail {
+            background: var(--color-error-500);
+            color: white;
+        }
+        
+        .test-result.pending {
+            background: var(--color-warning-500);
+            color: white;
+        }
+        
+        /* Network Simulation */
+        .network-sim {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-3);
+        }
+        
+        .network-controls {
+            display: flex;
+            gap: var(--space-2);
+        }
+        
+        .network-btn {
+            flex: 1;
+            background: var(--color-surface-dev);
+            color: var(--color-text-inverse);
+            border: 1px solid var(--color-border-dev);
+            border-radius: var(--radius-md);
+            padding: var(--space-2) var(--space-3);
+            font-size: var(--font-size-sm);
+            cursor: pointer;
+            transition: all var(--duration-150) var(--ease-out);
+            font-family: var(--font-ui);
+        }
+        
+        .network-btn:hover,
+        .network-btn:focus {
+            border-color: var(--color-dev-500);
+            outline: none;
+        }
+        
+        .network-btn.active {
+            background: var(--color-dev-500);
+            border-color: var(--color-dev-600);
+        }
+        
+        .network-status {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+            padding: var(--space-3);
+            background: var(--color-surface-dev);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--color-border-dev);
+        }
+        
+        .network-indicator {
+            width: 16px;
+            height: 16px;
+            border-radius: var(--radius-full);
+        }
+        
+        .network-indicator.online {
+            background: var(--color-success-500);
+        }
+        
+        .network-indicator.offline {
+            background: var(--color-error-500);
+        }
+        
+        /* Cache Inspector */
+        .cache-inspector {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-3);
+        }
+        
+        .cache-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--space-2) var(--space-3);
+            background: var(--color-surface-dev);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--color-border-dev);
+            font-size: var(--font-size-xs);
+        }
+        
+        .cache-key {
+            color: var(--color-text-inverse);
+            font-weight: var(--font-weight-medium);
+            flex: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            margin-right: var(--space-2);
+        }
+        
+        .cache-size {
+            color: var(--color-text-secondary);
+            font-size: var(--font-size-xs);
+        }
+        
+        .cache-actions {
+            display: flex;
+            gap: var(--space-2);
+            margin-top: var(--space-3);
+        }
+        
+        /* Performance Metrics */
+        .perf-metrics {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-3);
+        }
+        
+        .perf-metric {
+            padding: var(--space-3);
+            background: var(--color-surface-dev);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--color-border-dev);
+            text-align: center;
+        }
+        
+        .metric-value {
+            font-size: var(--font-size-xl);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-dev-500);
+            margin: 0 0 var(--space-1) 0;
+        }
+        
+        .metric-label {
+            font-size: var(--font-size-xs);
+            color: var(--color-text-secondary);
+            margin: 0;
+        }
+        
+        .metric-trend {
+            font-size: var(--font-size-xs);
+            margin-top: var(--space-1);
+        }
+        
+        .trend-up {
+            color: var(--color-error-500);
+        }
+        
+        .trend-down {
+            color: var(--color-success-500);
+        }
+        
+        /* Console Log */
+        .console-log {
+            background: var(--color-surface-dev);
+            border: 1px solid var(--color-border-dev);
+            border-radius: var(--radius-md);
+            height: 200px;
+            overflow-y: auto;
+            font-family: var(--font-primary);
+            font-size: var(--font-size-xs);
+        }
+        
+        .log-entry {
+            padding: var(--space-2) var(--space-3);
+            border-bottom: 1px solid var(--color-border-dev);
+            display: flex;
+            align-items: flex-start;
+            gap: var(--space-2);
+        }
+        
+        .log-timestamp {
+            color: var(--color-text-secondary);
+            font-size: var(--font-size-xs);
+            white-space: nowrap;
+        }
+        
+        .log-level {
+            padding: var(--space-1) var(--space-2);
+            border-radius: var(--radius-md);
+            font-size: var(--font-size-xs);
+            font-weight: var(--font-weight-medium);
+            white-space: nowrap;
+        }
+        
+        .log-level.info {
+            background: var(--color-info-500);
+            color: white;
+        }
+        
+        .log-level.warn {
+            background: var(--color-warning-500);
+            color: white;
+        }
+        
+        .log-level.error {
+            background: var(--color-error-500);
+            color: white;
+        }
+        
+        .log-message {
+            flex: 1;
+            color: var(--color-text-inverse);
+            word-break: break-word;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .debug-panel {
+                width: 100%;
+                right: -100%;
+            }
+            
+            .debug-panel.open {
+                right: 0;
+            }
+            
+            .perf-metrics {
+                grid-template-columns: 1fr;
+            }
+            
+            .sw-controls {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Hidden utilities */
+        .hidden {
+            display: none !important;
+        }
+        
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <!-- Development Mode Banner -->
+        <div class="dev-mode-banner" id="dev-banner">
+            🚧 Development Mode - PWA Debug Tools Active - Use Ctrl+Shift+P to toggle panel
+        </div>
+        
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="brand">
+                    <div class="brand-icon" aria-hidden="true">☕</div>
+                    <h1 class="brand-title">
+                        Coffee Roast Tracker
+                        <span class="dev-badge">DEV</span>
+                    </h1>
+                </div>
+                
+                <div style="display: flex; align-items: center; gap: var(--space-4);">
+                    <div style="font-size: var(--font-size-sm); color: var(--color-text-secondary);">
+                        <span aria-hidden="true">🔧</span>
+                        PWA Development Environment
+                    </div>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Main Content -->
+        <main style="flex: 1; padding: var(--space-8); max-width: 1200px; margin: 0 auto;">
+            <div style="margin-bottom: var(--space-8);">
+                <h1 style="font-size: var(--font-size-2xl); font-weight: var(--font-weight-bold); margin: 0 0 var(--space-2) 0;">
+                    PWA Development Testing Environment
+                </h1>
+                <p style="color: var(--color-text-secondary); margin: 0;">
+                    Comprehensive PWA development tools for testing installation flows, service workers, and offline functionality.
+                </p>
+            </div>
+            
+            <div style="background: var(--color-surface); border: 2px solid var(--color-border); border-radius: var(--radius-xl); padding: var(--space-6); margin-bottom: var(--space-6);">
+                <h2 style="margin: 0 0 var(--space-4) 0; color: var(--color-dev-500);">Debug Panel Features</h2>
+                <p style="margin: 0 0 var(--space-4) 0; color: var(--color-text-secondary);">
+                    The PWA Debug Panel provides real-time monitoring and testing capabilities for PWA development:
+                </p>
+                <ul style="margin: 0 0 var(--space-6) 0; color: var(--color-text-secondary);">
+                    <li><strong>Service Worker Management:</strong> Monitor status, update, and clear service worker cache</li>
+                    <li><strong>Installation Testing:</strong> Test PWA installation across different browsers</li>
+                    <li><strong>Network Simulation:</strong> Toggle offline mode and test offline functionality</li>
+                    <li><strong>Cache Inspector:</strong> View and manage cached resources</li>
+                    <li><strong>Performance Monitoring:</strong> Real-time PWA performance metrics</li>
+                    <li><strong>Console Integration:</strong> Debug logs specifically for PWA functionality</li>
+                    <li><strong>Navigation Testing:</strong> Verify personalized navigation works offline</li>
+                </ul>
+                
+                <div style="display: flex; gap: var(--space-4); flex-wrap: wrap;">
+                    <button class="debug-btn" onclick="openDebugPanel()" style="background: var(--color-dev-500); color: white; border: none; padding: var(--space-3) var(--space-5); border-radius: var(--radius-md); font-weight: var(--font-weight-semibold);">
+                        <span aria-hidden="true">🔧</span>
+                        Open Debug Panel
+                    </button>
+                    <button class="debug-btn" onclick="runInstallTest()" style="background: var(--color-success-500); color: white; border: none; padding: var(--space-3) var(--space-5); border-radius: var(--radius-md); font-weight: var(--font-weight-semibold);">
+                        <span aria-hidden="true">📱</span>
+                        Test Installation
+                    </button>
+                    <button class="debug-btn" onclick="toggleOfflineMode()" style="background: var(--color-warning-500); color: white; border: none; padding: var(--space-3) var(--space-5); border-radius: var(--radius-md); font-weight: var(--font-weight-semibold);">
+                        <span aria-hidden="true">🌐</span>
+                        Toggle Offline
+                    </button>
+                </div>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--space-6);">
+                <div style="background: var(--color-surface); border: 2px solid var(--color-border); border-radius: var(--radius-xl); padding: var(--space-6);">
+                    <h3 style="margin: 0 0 var(--space-4) 0;">PWA Status</h3>
+                    <div style="display: flex; flex-direction: column; gap: var(--space-3);">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span>Service Worker</span>
+                            <span style="color: var(--color-success-500); font-weight: var(--font-weight-semibold);">✓ Active</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span>Manifest</span>
+                            <span style="color: var(--color-success-500); font-weight: var(--font-weight-semibold);">✓ Valid</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span>Install Prompt</span>
+                            <span style="color: var(--color-success-500); font-weight: var(--font-weight-semibold);">✓ Ready</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span>Offline Support</span>
+                            <span style="color: var(--color-success-500); font-weight: var(--font-weight-semibold);">✓ Enabled</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="background: var(--color-surface); border: 2px solid var(--color-border); border-radius: var(--radius-xl); padding: var(--space-6);">
+                    <h3 style="margin: 0 0 var(--space-4) 0;">Performance Metrics</h3>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4);">
+                        <div style="text-align: center;">
+                            <div style="font-size: var(--font-size-xl); font-weight: var(--font-weight-bold); color: var(--color-success-500);">0.8s</div>
+                            <div style="font-size: var(--font-size-sm); color: var(--color-text-secondary);">Load Time</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: var(--font-size-xl); font-weight: var(--font-weight-bold); color: var(--color-success-500);">2.1MB</div>
+                            <div style="font-size: var(--font-size-sm); color: var(--color-text-secondary);">Cache Size</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: var(--font-size-xl); font-weight: var(--font-weight-bold); color: var(--color-dev-500);">95</div>
+                            <div style="font-size: var(--font-size-sm); color: var(--color-text-secondary);">Lighthouse</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: var(--font-size-xl); font-weight: var(--font-weight-bold); color: var(--color-success-500);">Online</div>
+                            <div style="font-size: var(--font-size-sm); color: var(--color-text-secondary);">Status</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <!-- Debug Panel Toggle -->
+        <button class="debug-toggle" onclick="toggleDebugPanel()" 
+                aria-label="Toggle PWA debug panel" id="debug-toggle">
+            🔧
+        </button>
+        
+        <!-- Debug Panel -->
+        <aside class="debug-panel" id="debug-panel" aria-label="PWA debugging tools">
+            <div class="debug-header">
+                <h2 class="debug-title">PWA Debug Panel</h2>
+                <button class="debug-close" onclick="closeDebugPanel()" aria-label="Close debug panel">
+                    ×
+                </button>
+            </div>
+            
+            <div class="debug-content">
+                <!-- PWA Status Section -->
+                <div class="debug-section">
+                    <h3 class="debug-section-title">
+                        <span aria-hidden="true">⚡</span>
+                        PWA Status
+                    </h3>
+                    <div class="pwa-status">
+                        <div class="status-item">
+                            <span class="status-label">Service Worker</span>
+                            <div style="display: flex; align-items: center;">
+                                <span class="status-value" id="sw-status">Active</span>
+                                <div class="status-indicator active" id="sw-indicator"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="status-item">
+                            <span class="status-label">Cache Status</span>
+                            <div style="display: flex; align-items: center;">
+                                <span class="status-value" id="cache-status">21 items</span>
+                                <div class="status-indicator active" id="cache-indicator"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="status-item">
+                            <span class="status-label">Install Prompt</span>
+                            <div style="display: flex; align-items: center;">
+                                <span class="status-value" id="install-status">Ready</span>
+                                <div class="status-indicator active" id="install-indicator"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="status-item">
+                            <span class="status-label">Offline Support</span>
+                            <div style="display: flex; align-items: center;">
+                                <span class="status-value" id="offline-status">Enabled</span>
+                                <div class="status-indicator active" id="offline-indicator"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="sw-controls">
+                        <button class="debug-btn" onclick="updateServiceWorker()">Update SW</button>
+                        <button class="debug-btn warning" onclick="skipWaiting()">Skip Waiting</button>
+                        <button class="debug-btn" onclick="refreshCaches()">Refresh Cache</button>
+                        <button class="debug-btn error" onclick="clearAllCaches()">Clear All</button>
+                    </div>
+                </div>
+                
+                <!-- Installation Testing -->
+                <div class="debug-section">
+                    <h3 class="debug-section-title">
+                        <span aria-hidden="true">📱</span>
+                        Installation Testing
+                    </h3>
+                    <div class="install-test">
+                        <div class="browser-test">
+                            <div class="browser-icon">🟢</div>
+                            <div class="browser-info">
+                                <h4 class="browser-name">Chrome Desktop</h4>
+                                <p class="browser-support">Full PWA support</p>
+                            </div>
+                            <div class="test-result pass" id="chrome-test">Pass</div>
+                        </div>
+                        
+                        <div class="browser-test">
+                            <div class="browser-icon">🟡</div>
+                            <div class="browser-info">
+                                <h4 class="browser-name">Safari iOS</h4>
+                                <p class="browser-support">Limited PWA support</p>
+                            </div>
+                            <div class="test-result pending" id="safari-test">Pending</div>
+                        </div>
+                        
+                        <div class="browser-test">
+                            <div class="browser-icon">🟢</div>
+                            <div class="browser-info">
+                                <h4 class="browser-name">Firefox</h4>
+                                <p class="browser-support">Good PWA support</p>
+                            </div>
+                            <div class="test-result pass" id="firefox-test">Pass</div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: var(--space-4);">
+                        <button class="debug-btn" onclick="testInstallation()" style="width: 100%;">
+                            Run Installation Tests
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Network Simulation -->
+                <div class="debug-section">
+                    <h3 class="debug-section-title">
+                        <span aria-hidden="true">🌐</span>
+                        Network Simulation
+                    </h3>
+                    <div class="network-sim">
+                        <div class="network-status">
+                            <div class="network-indicator online" id="network-indicator"></div>
+                            <span>Connection Status: </span>
+                            <span style="font-weight: var(--font-weight-semibold);" id="connection-status">Online</span>
+                        </div>
+                        
+                        <div class="network-controls">
+                            <button class="network-btn active" onclick="setNetworkMode('online')" id="online-btn">
+                                Online
+                            </button>
+                            <button class="network-btn" onclick="setNetworkMode('offline')" id="offline-btn">
+                                Offline
+                            </button>
+                            <button class="network-btn" onclick="setNetworkMode('slow')" id="slow-btn">
+                                Slow 3G
+                            </button>
+                        </div>
+                        
+                        <div style="margin-top: var(--space-3);">
+                            <button class="debug-btn" onclick="testOfflineFunctionality()" style="width: 100%;">
+                                Test Offline Navigation
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Cache Inspector -->
+                <div class="debug-section">
+                    <h3 class="debug-section-title">
+                        <span aria-hidden="true">📦</span>
+                        Cache Inspector
+                    </h3>
+                    <div class="cache-inspector" id="cache-inspector">
+                        <div class="cache-item">
+                            <span class="cache-key">/</span>
+                            <span class="cache-size">12.4 KB</span>
+                        </div>
+                        <div class="cache-item">
+                            <span class="cache-key">/static/css/main.css</span>
+                            <span class="cache-size">45.2 KB</span>
+                        </div>
+                        <div class="cache-item">
+                            <span class="cache-key">/static/js/main.js</span>
+                            <span class="cache-size">238.7 KB</span>
+                        </div>
+                        <div class="cache-item">
+                            <span class="cache-key">/api/navigation-preferences</span>
+                            <span class="cache-size">2.1 KB</span>
+                        </div>
+                    </div>
+                    
+                    <div class="cache-actions">
+                        <button class="debug-btn" onclick="refreshCacheView()">Refresh</button>
+                        <button class="debug-btn warning" onclick="clearSelectiveCache()">Clear Selected</button>
+                    </div>
+                </div>
+                
+                <!-- Performance Metrics -->
+                <div class="debug-section">
+                    <h3 class="debug-section-title">
+                        <span aria-hidden="true">📊</span>
+                        Performance Metrics
+                    </h3>
+                    <div class="perf-metrics">
+                        <div class="perf-metric">
+                            <div class="metric-value" id="lcp-value">0.8s</div>
+                            <div class="metric-label">LCP</div>
+                            <div class="metric-trend trend-down">↓ 12%</div>
+                        </div>
+                        <div class="perf-metric">
+                            <div class="metric-value" id="fid-value">45ms</div>
+                            <div class="metric-label">FID</div>
+                            <div class="metric-trend trend-down">↓ 8%</div>
+                        </div>
+                        <div class="perf-metric">
+                            <div class="metric-value" id="cls-value">0.02</div>
+                            <div class="metric-label">CLS</div>
+                            <div class="metric-trend trend-up">↑ 3%</div>
+                        </div>
+                        <div class="perf-metric">
+                            <div class="metric-value" id="lighthouse-value">95</div>
+                            <div class="metric-label">Lighthouse</div>
+                            <div class="metric-trend trend-up">↑ 2%</div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: var(--space-4);">
+                        <button class="debug-btn" onclick="runPerformanceAudit()" style="width: 100%;">
+                            Run Performance Audit
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Console Log -->
+                <div class="debug-section">
+                    <h3 class="debug-section-title">
+                        <span aria-hidden="true">💬</span>
+                        PWA Console
+                    </h3>
+                    <div class="console-log" id="console-log">
+                        <div class="log-entry">
+                            <span class="log-timestamp">10:23:45</span>
+                            <span class="log-level info">INFO</span>
+                            <span class="log-message">Service Worker registered successfully</span>
+                        </div>
+                        <div class="log-entry">
+                            <span class="log-timestamp">10:23:46</span>
+                            <span class="log-level info">INFO</span>
+                            <span class="log-message">PWA manifest loaded and parsed</span>
+                        </div>
+                        <div class="log-entry">
+                            <span class="log-timestamp">10:23:47</span>
+                            <span class="log-level info">INFO</span>
+                            <span class="log-message">Navigation preferences cached successfully</span>
+                        </div>
+                        <div class="log-entry">
+                            <span class="log-timestamp">10:23:48</span>
+                            <span class="log-level warn">WARN</span>
+                            <span class="log-message">Install prompt criteria met, ready to show</span>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: var(--space-3); display: flex; gap: var(--space-2);">
+                        <button class="debug-btn" onclick="clearConsole()" style="flex: 1;">Clear</button>
+                        <button class="debug-btn" onclick="exportLogs()" style="flex: 1;">Export</button>
+                    </div>
+                </div>
+            </div>
+        </aside>
+        
+        <!-- Live region for announcements -->
+        <div aria-live="polite" aria-atomic="true" class="sr-only" id="announcements"></div>
+    </div>
+
+    <script>
+        // PWA Development Debug Panel JavaScript
+        class PWADebugPanel {
+            constructor() {
+                this.isOpen = false;
+                this.networkMode = 'online';
+                this.serviceWorkerStatus = 'active';
+                this.cacheItems = [
+                    { key: '/', size: '12.4 KB' },
+                    { key: '/static/css/main.css', size: '45.2 KB' },
+                    { key: '/static/js/main.js', size: '238.7 KB' },
+                    { key: '/api/navigation-preferences', size: '2.1 KB' }
+                ];
+                this.performanceMetrics = {
+                    lcp: 0.8,
+                    fid: 45,
+                    cls: 0.02,
+                    lighthouse: 95
+                };
+                this.consoleEntries = [];
+                
+                this.init();
+            }
+            
+            init() {
+                this.setupKeyboardShortcuts();
+                this.startPerformanceMonitoring();
+                this.initializeServiceWorker();
+                this.announcePageLoad();
+                this.bindAccessibilityEvents();
+                
+                // Simulate PWA environment
+                this.simulatePWAEnvironment();
+            }
+            
+            setupKeyboardShortcuts() {
+                document.addEventListener('keydown', (e) => {
+                    // Ctrl/Cmd + Shift + P to toggle debug panel
+                    if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === 'p') {
+                        e.preventDefault();
+                        this.toggleDebugPanel();
+                    }
+                    
+                    // Escape to close panels
+                    if (e.key === 'Escape') {
+                        this.closeAllPanels();
+                    }
+                    
+                    // Ctrl/Cmd + Shift + O for offline toggle
+                    if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === 'o') {
+                        e.preventDefault();
+                        this.toggleOfflineMode();
+                    }
+                });
+            }
+            
+            startPerformanceMonitoring() {
+                // Simulate real-time performance monitoring
+                setInterval(() => {
+                    this.updatePerformanceMetrics();
+                    this.updateUI();
+                }, 5000);
+            }
+            
+            initializeServiceWorker() {
+                // Simulate service worker registration and status
+                this.logToConsole('INFO', 'Service Worker registered successfully');
+                this.logToConsole('INFO', 'PWA manifest loaded and parsed');
+                this.logToConsole('INFO', 'Navigation preferences cached successfully');
+                this.logToConsole('WARN', 'Install prompt criteria met, ready to show');
+                
+                // Check for actual service worker in real environment
+                if ('serviceWorker' in navigator) {
+                    navigator.serviceWorker.getRegistrations().then(registrations => {
+                        if (registrations.length > 0) {
+                            this.logToConsole('INFO', `Found ${registrations.length} active service worker(s)`);
+                        } else {
+                            this.logToConsole('WARN', 'No service workers found - PWA features limited');
+                        }
+                    });
+                }
+            }
+            
+            simulatePWAEnvironment() {
+                // Simulate PWA environment checks
+                setTimeout(() => {
+                    this.logToConsole('INFO', 'Checking PWA installation criteria...');
+                    this.updateInstallationStatus();
+                }, 2000);
+                
+                // Simulate network monitoring
+                this.monitorNetworkStatus();
+                
+                // Update cache display periodically
+                setInterval(() => {
+                    this.updateCacheDisplay();
+                }, 10000);
+            }
+            
+            updateInstallationStatus() {
+                const browsers = ['chrome', 'safari', 'firefox'];
+                
+                browsers.forEach((browser, index) => {
+                    setTimeout(() => {
+                        const testResult = this.runBrowserInstallTest(browser);
+                        const element = document.getElementById(`${browser}-test`);
+                        if (element) {
+                            element.textContent = testResult;
+                            element.className = `test-result ${testResult.toLowerCase()}`;
+                        }
+                        this.logToConsole('INFO', `${browser} installation test: ${testResult}`);
+                    }, (index + 1) * 1000);
+                });
+            }
+            
+            runBrowserInstallTest(browser) {
+                const testResults = {
+                    chrome: 'Pass',
+                    safari: Math.random() > 0.5 ? 'Pass' : 'Fail',
+                    firefox: 'Pass'
+                };
+                
+                return testResults[browser];
+            }
+            
+            monitorNetworkStatus() {
+                // Monitor online/offline status
+                window.addEventListener('online', () => {
+                    this.setNetworkMode('online');
+                    this.logToConsole('INFO', 'Network connection restored');
+                });
+                
+                window.addEventListener('offline', () => {
+                    this.setNetworkMode('offline');
+                    this.logToConsole('WARN', 'Network connection lost - offline mode active');
+                });
+            }
+            
+            updatePerformanceMetrics() {
+                // Simulate performance metric variations
+                this.performanceMetrics.lcp += (Math.random() - 0.5) * 0.1;
+                this.performanceMetrics.fid += (Math.random() - 0.5) * 5;
+                this.performanceMetrics.cls += (Math.random() - 0.5) * 0.01;
+                this.performanceMetrics.lighthouse += (Math.random() - 0.5) * 2;
+                
+                // Keep values in reasonable ranges
+                this.performanceMetrics.lcp = Math.max(0.5, Math.min(3.0, this.performanceMetrics.lcp));
+                this.performanceMetrics.fid = Math.max(20, Math.min(100, this.performanceMetrics.fid));
+                this.performanceMetrics.cls = Math.max(0.01, Math.min(0.25, this.performanceMetrics.cls));
+                this.performanceMetrics.lighthouse = Math.max(75, Math.min(100, this.performanceMetrics.lighthouse));
+            }
+            
+            updateUI() {
+                // Update performance metric displays
+                document.getElementById('lcp-value').textContent = `${this.performanceMetrics.lcp.toFixed(1)}s`;
+                document.getElementById('fid-value').textContent = `${Math.round(this.performanceMetrics.fid)}ms`;
+                document.getElementById('cls-value').textContent = this.performanceMetrics.cls.toFixed(2);
+                document.getElementById('lighthouse-value').textContent = Math.round(this.performanceMetrics.lighthouse);
+            }
+            
+            updateCacheDisplay() {
+                const inspector = document.getElementById('cache-inspector');
+                if (!inspector) return;
+                
+                // Clear current display
+                inspector.innerHTML = '';
+                
+                // Add cache items
+                this.cacheItems.forEach((item, index) => {
+                    const itemElement = document.createElement('div');
+                    itemElement.className = 'cache-item';
+                    itemElement.innerHTML = `
+                        <span class="cache-key">${item.key}</span>
+                        <span class="cache-size">${item.size}</span>
+                    `;
+                    inspector.appendChild(itemElement);
+                });
+            }
+            
+            logToConsole(level, message) {
+                const timestamp = new Date().toLocaleTimeString();
+                const entry = { timestamp, level, message };
+                this.consoleEntries.push(entry);
+                
+                // Keep only last 50 entries
+                if (this.consoleEntries.length > 50) {
+                    this.consoleEntries.shift();
+                }
+                
+                this.updateConsoleDisplay();
+            }
+            
+            updateConsoleDisplay() {
+                const consoleLog = document.getElementById('console-log');
+                if (!consoleLog) return;
+                
+                consoleLog.innerHTML = '';
+                
+                this.consoleEntries.forEach(entry => {
+                    const entryElement = document.createElement('div');
+                    entryElement.className = 'log-entry';
+                    entryElement.innerHTML = `
+                        <span class="log-timestamp">${entry.timestamp}</span>
+                        <span class="log-level ${entry.level.toLowerCase()}">${entry.level}</span>
+                        <span class="log-message">${entry.message}</span>
+                    `;
+                    consoleLog.appendChild(entryElement);
+                });
+                
+                // Scroll to bottom
+                consoleLog.scrollTop = consoleLog.scrollHeight;
+            }
+            
+            toggleDebugPanel() {
+                const panel = document.getElementById('debug-panel');
+                const toggle = document.getElementById('debug-toggle');
+                
+                this.isOpen = !this.isOpen;
+                
+                if (this.isOpen) {
+                    panel.classList.add('open');
+                    toggle.classList.add('active');
+                    toggle.textContent = '✖';
+                    this.announceToUser('PWA Debug Panel opened');
+                    
+                    // Focus first interactive element
+                    setTimeout(() => {
+                        panel.querySelector('button').focus();
+                    }, 300);
+                } else {
+                    panel.classList.remove('open');
+                    toggle.classList.remove('active');
+                    toggle.textContent = '🔧';
+                    this.announceToUser('PWA Debug Panel closed');
+                }
+            }
+            
+            closeDebugPanel() {
+                const panel = document.getElementById('debug-panel');
+                const toggle = document.getElementById('debug-toggle');
+                
+                this.isOpen = false;
+                panel.classList.remove('open');
+                toggle.classList.remove('active');
+                toggle.textContent = '🔧';
+                this.announceToUser('PWA Debug Panel closed');
+            }
+            
+            closeAllPanels() {
+                this.closeDebugPanel();
+            }
+            
+            setNetworkMode(mode) {
+                this.networkMode = mode;
+                
+                // Update UI indicators
+                const indicator = document.getElementById('network-indicator');
+                const status = document.getElementById('connection-status');
+                const buttons = document.querySelectorAll('.network-btn');
+                
+                // Reset button states
+                buttons.forEach(btn => btn.classList.remove('active'));
+                
+                switch (mode) {
+                    case 'online':
+                        indicator.className = 'network-indicator online';
+                        status.textContent = 'Online';
+                        document.getElementById('online-btn').classList.add('active');
+                        break;
+                    case 'offline':
+                        indicator.className = 'network-indicator offline';
+                        status.textContent = 'Offline';
+                        document.getElementById('offline-btn').classList.add('active');
+                        break;
+                    case 'slow':
+                        indicator.className = 'network-indicator warning';
+                        status.textContent = 'Slow 3G';
+                        document.getElementById('slow-btn').classList.add('active');
+                        break;
+                }
+                
+                this.logToConsole('INFO', `Network mode changed to: ${mode}`);
+                this.announceToUser(`Network simulation set to ${mode} mode`);
+            }
+            
+            toggleOfflineMode() {
+                const newMode = this.networkMode === 'offline' ? 'online' : 'offline';
+                this.setNetworkMode(newMode);
+            }
+            
+            updateServiceWorker() {
+                this.logToConsole('INFO', 'Checking for service worker updates...');
+                
+                setTimeout(() => {
+                    this.logToConsole('INFO', 'Service worker updated successfully');
+                    this.announceToUser('Service Worker updated');
+                }, 1000);
+            }
+            
+            skipWaiting() {
+                this.logToConsole('WARN', 'Forcing service worker to skip waiting phase');
+                
+                setTimeout(() => {
+                    this.logToConsole('INFO', 'Service worker activated immediately');
+                    this.announceToUser('Service Worker activated');
+                }, 500);
+            }
+            
+            refreshCaches() {
+                this.logToConsole('INFO', 'Refreshing all caches...');
+                
+                setTimeout(() => {
+                    // Simulate cache refresh
+                    this.cacheItems = this.cacheItems.map(item => ({
+                        ...item,
+                        size: `${(Math.random() * 100 + 10).toFixed(1)} KB`
+                    }));
+                    this.updateCacheDisplay();
+                    this.logToConsole('INFO', 'Cache refresh completed');
+                    this.announceToUser('Caches refreshed');
+                }, 1500);
+            }
+            
+            clearAllCaches() {
+                this.logToConsole('WARN', 'Clearing all caches...');
+                
+                setTimeout(() => {
+                    this.cacheItems = [];
+                    this.updateCacheDisplay();
+                    this.logToConsole('INFO', 'All caches cleared');
+                    this.announceToUser('All caches cleared');
+                }, 1000);
+            }
+            
+            testInstallation() {
+                this.logToConsole('INFO', 'Running PWA installation tests across browsers...');
+                this.announceToUser('Running installation tests');
+                
+                // Reset test results
+                const browsers = ['chrome', 'safari', 'firefox'];
+                browsers.forEach(browser => {
+                    const element = document.getElementById(`${browser}-test`);
+                    if (element) {
+                        element.textContent = 'Testing...';
+                        element.className = 'test-result pending';
+                    }
+                });
+                
+                // Run tests with delays
+                setTimeout(() => {
+                    this.updateInstallationStatus();
+                }, 1000);
+            }
+            
+            testOfflineFunctionality() {
+                this.logToConsole('INFO', 'Testing offline navigation functionality...');
+                this.announceToUser('Testing offline navigation');
+                
+                // Simulate offline test
+                setTimeout(() => {
+                    const success = Math.random() > 0.2; // 80% success rate
+                    const message = success 
+                        ? 'Offline navigation test passed - all personalized features work offline'
+                        : 'Offline navigation test failed - some features unavailable offline';
+                    
+                    this.logToConsole(success ? 'INFO' : 'WARN', message);
+                    this.announceToUser(success ? 'Offline test passed' : 'Offline test failed');
+                }, 2000);
+            }
+            
+            runPerformanceAudit() {
+                this.logToConsole('INFO', 'Running comprehensive PWA performance audit...');
+                this.announceToUser('Running performance audit');
+                
+                setTimeout(() => {
+                    this.updatePerformanceMetrics();
+                    this.updateUI();
+                    this.logToConsole('INFO', `Performance audit completed - Lighthouse score: ${Math.round(this.performanceMetrics.lighthouse)}`);
+                    this.announceToUser(`Performance audit completed - Score: ${Math.round(this.performanceMetrics.lighthouse)}`);
+                }, 3000);
+            }
+            
+            refreshCacheView() {
+                this.logToConsole('INFO', 'Refreshing cache inspector view...');
+                this.updateCacheDisplay();
+                this.announceToUser('Cache view refreshed');
+            }
+            
+            clearSelectiveCache() {
+                // Remove random cache item for demo
+                if (this.cacheItems.length > 0) {
+                    const removedItem = this.cacheItems.pop();
+                    this.updateCacheDisplay();
+                    this.logToConsole('INFO', `Cleared cache for: ${removedItem.key}`);
+                    this.announceToUser('Selected cache items cleared');
+                }
+            }
+            
+            clearConsole() {
+                this.consoleEntries = [];
+                this.updateConsoleDisplay();
+                this.announceToUser('Console cleared');
+            }
+            
+            exportLogs() {
+                const logs = this.consoleEntries.map(entry => 
+                    `[${entry.timestamp}] ${entry.level}: ${entry.message}`
+                ).join('\n');
+                
+                const blob = new Blob([logs], { type: 'text/plain' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `pwa-debug-logs-${new Date().toISOString().slice(0, 19)}.txt`;
+                a.click();
+                URL.revokeObjectURL(url);
+                
+                this.announceToUser('Debug logs exported');
+            }
+            
+            announceToUser(message) {
+                const announcements = document.getElementById('announcements');
+                announcements.textContent = message;
+            }
+            
+            announcePageLoad() {
+                setTimeout(() => {
+                    this.announceToUser('PWA Development Debug Panel loaded. Press Ctrl+Shift+P to open debug tools.');
+                }, 1000);
+            }
+            
+            bindAccessibilityEvents() {
+                const panel = document.getElementById('debug-panel');
+                
+                // Focus trap for debug panel
+                panel.addEventListener('keydown', (e) => {
+                    if (e.key === 'Tab') {
+                        const focusableElements = panel.querySelectorAll(
+                            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+                        );
+                        const firstElement = focusableElements[0];
+                        const lastElement = focusableElements[focusableElements.length - 1];
+                        
+                        if (e.shiftKey && document.activeElement === firstElement) {
+                            e.preventDefault();
+                            lastElement.focus();
+                        } else if (!e.shiftKey && document.activeElement === lastElement) {
+                            e.preventDefault();
+                            firstElement.focus();
+                        }
+                    }
+                });
+            }
+        }
+        
+        // Global functions for HTML onclick handlers
+        window.toggleDebugPanel = function() {
+            window.debugPanel.toggleDebugPanel();
+        };
+        
+        window.openDebugPanel = function() {
+            if (!window.debugPanel.isOpen) {
+                window.debugPanel.toggleDebugPanel();
+            }
+        };
+        
+        window.closeDebugPanel = function() {
+            window.debugPanel.closeDebugPanel();
+        };
+        
+        window.runInstallTest = function() {
+            window.debugPanel.testInstallation();
+        };
+        
+        window.toggleOfflineMode = function() {
+            window.debugPanel.toggleOfflineMode();
+        };
+        
+        window.updateServiceWorker = function() {
+            window.debugPanel.updateServiceWorker();
+        };
+        
+        window.skipWaiting = function() {
+            window.debugPanel.skipWaiting();
+        };
+        
+        window.refreshCaches = function() {
+            window.debugPanel.refreshCaches();
+        };
+        
+        window.clearAllCaches = function() {
+            window.debugPanel.clearAllCaches();
+        };
+        
+        window.testInstallation = function() {
+            window.debugPanel.testInstallation();
+        };
+        
+        window.setNetworkMode = function(mode) {
+            window.debugPanel.setNetworkMode(mode);
+        };
+        
+        window.testOfflineFunctionality = function() {
+            window.debugPanel.testOfflineFunctionality();
+        };
+        
+        window.refreshCacheView = function() {
+            window.debugPanel.refreshCacheView();
+        };
+        
+        window.clearSelectiveCache = function() {
+            window.debugPanel.clearSelectiveCache();
+        };
+        
+        window.runPerformanceAudit = function() {
+            window.debugPanel.runPerformanceAudit();
+        };
+        
+        window.clearConsole = function() {
+            window.debugPanel.clearConsole();
+        };
+        
+        window.exportLogs = function() {
+            window.debugPanel.exportLogs();
+        };
+        
+        // Initialize debug panel
+        document.addEventListener('DOMContentLoaded', () => {
+            window.debugPanel = new PWADebugPanel();
+        });
+    </script>
+</body>
+</html>
