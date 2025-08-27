@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OAuth Unified Authentication - ADHD-Friendly Design</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Core Design System Colors */
+            --coffee-50: #f7f3f0;
+            --coffee-100: #e8d7cc;
+            --coffee-200: #d4b8a3;
+            --coffee-300: #c19a7a;
+            --coffee-400: #ae7c51;
+            --coffee-500: #8b5e3c;
+            --coffee-600: #6d4c2f;
+            --coffee-700: #4f3b23;
+            --coffee-800: #332a18;
+            --coffee-900: #1a190e;
+
+            /* OAuth Provider Colors */
+            --google-blue: #4285f4;
+            --google-blue-hover: #3367d6;
+            --github-dark: #181717;
+            --github-dark-hover: #0d1117;
+            --apple-black: #000000;
+            --apple-black-hover: #1a1a1a;
+            --microsoft-blue: #0078d4;
+            --microsoft-blue-hover: #106ebe;
+
+            /* Semantic Colors */
+            --success: #059669;
+            --success-light: #d1fae5;
+            --error: #dc2626;
+            --error-light: #fee2e2;
+            --warning: #d97706;
+            --warning-light: #fef3c7;
+            --info: #2563eb;
+            --info-light: #dbeafe;
+
+            /* Neutral Colors */
+            --white: #ffffff;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-400: #9ca3af;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+
+            /* Typography Scale */
+            --text-xs: 0.75rem;    /* 12px */
+            --text-sm: 0.875rem;   /* 14px */
+            --text-base: 1rem;     /* 16px */
+            --text-lg: 1.125rem;   /* 18px */
+            --text-xl: 1.25rem;    /* 20px */
+            --text-2xl: 1.5rem;    /* 24px */
+
+            /* Font Weights */
+            --font-normal: 400;
+            --font-medium: 500;
+            --font-semibold: 600;
+            --font-bold: 700;
+
+            /* Spacing Scale */
+            --space-1: 0.25rem;    /* 4px */
+            --space-2: 0.5rem;     /* 8px */
+            --space-3: 0.75rem;    /* 12px */
+            --space-4: 1rem;       /* 16px */
+            --space-5: 1.25rem;    /* 20px */
+            --space-6: 1.5rem;     /* 24px */
+            --space-8: 2rem;       /* 32px */
+            --space-10: 2.5rem;    /* 40px */
+            --space-12: 3rem;      /* 48px */
+            --space-16: 4rem;      /* 64px */
+
+            /* Border Radius */
+            --radius-sm: 0.25rem;   /* 4px */
+            --radius-md: 0.375rem;  /* 6px */
+            --radius-lg: 0.5rem;    /* 8px */
+            --radius-xl: 0.75rem;   /* 12px */
+
+            /* Shadows */
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+
+            /* Focus Ring for ADHD-Friendly Design */
+            --focus-ring: 0 0 0 4px rgba(66, 133, 244, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(135deg, var(--coffee-50) 0%, var(--coffee-100) 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--space-4);
+            color: var(--gray-800);
+            line-height: 1.6;
+        }
+
+        /* Main Authentication Container */
+        .auth-container {
+            background: var(--white);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-xl);
+            width: 100%;
+            max-width: 420px;
+            padding: var(--space-8);
+            border: 1px solid var(--gray-200);
+        }
+
+        /* Header Section */
+        .auth-header {
+            text-align: center;
+            margin-bottom: var(--space-8);
+        }
+
+        .logo {
+            width: 64px;
+            height: 64px;
+            background: var(--coffee-500);
+            border-radius: var(--radius-xl);
+            margin: 0 auto var(--space-4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: var(--text-2xl);
+            font-weight: var(--font-bold);
+        }
+
+        .auth-title {
+            font-size: var(--text-2xl);
+            font-weight: var(--font-bold);
+            color: var(--gray-900);
+            margin-bottom: var(--space-2);
+        }
+
+        .auth-subtitle {
+            font-size: var(--text-base);
+            color: var(--gray-600);
+        }
+
+        /* OAuth Provider Section */
+        .oauth-section {
+            margin-bottom: var(--space-6);
+        }
+
+        .oauth-section-title {
+            font-size: var(--text-sm);
+            font-weight: var(--font-medium);
+            color: var(--gray-700);
+            margin-bottom: var(--space-4);
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .oauth-providers {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-3);
+        }
+
+        .oauth-provider {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-3);
+            padding: var(--space-4) var(--space-6);
+            border-radius: var(--radius-lg);
+            font-size: var(--text-base);
+            font-weight: var(--font-medium);
+            text-decoration: none;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            border: 2px solid transparent;
+            min-height: 60px; /* ADHD-friendly touch target */
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Focus states for ADHD accessibility */
+        .oauth-provider:focus {
+            outline: none;
+            box-shadow: var(--focus-ring);
+            transform: translateY(-1px);
+        }
+
+        .oauth-provider:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .oauth-provider:active {
+            transform: translateY(0);
+            transition-duration: 0.1s;
+        }
+
+        /* Provider-specific styling */
+        .oauth-provider--google {
+            background: var(--google-blue);
+            color: var(--white);
+        }
+
+        .oauth-provider--google:hover {
+            background: var(--google-blue-hover);
+        }
+
+        .oauth-provider--github {
+            background: var(--github-dark);
+            color: var(--white);
+        }
+
+        .oauth-provider--github:hover {
+            background: var(--github-dark-hover);
+        }
+
+        .oauth-provider--apple {
+            background: var(--apple-black);
+            color: var(--white);
+        }
+
+        .oauth-provider--apple:hover {
+            background: var(--apple-black-hover);
+        }
+
+        .oauth-provider--microsoft {
+            background: var(--microsoft-blue);
+            color: var(--white);
+        }
+
+        .oauth-provider--microsoft:hover {
+            background: var(--microsoft-blue-hover);
+        }
+
+        /* Provider Icons */
+        .provider-icon {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+        }
+
+        /* Recommended Badge */
+        .recommended-badge {
+            position: absolute;
+            top: var(--space-1);
+            right: var(--space-2);
+            background: rgba(255, 255, 255, 0.2);
+            color: var(--white);
+            font-size: var(--text-xs);
+            font-weight: var(--font-medium);
+            padding: var(--space-1) var(--space-2);
+            border-radius: var(--radius-sm);
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+        }
+
+        /* Loading State */
+        .oauth-provider.loading {
+            pointer-events: none;
+            opacity: 0.8;
+        }
+
+        .loading-spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top: 2px solid var(--white);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        .oauth-provider.loading .loading-spinner {
+            display: block;
+        }
+
+        .oauth-provider.loading .provider-icon {
+            display: none;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Divider Section */
+        .divider {
+            margin: var(--space-8) 0 var(--space-6) 0;
+            position: relative;
+            text-align: center;
+        }
+
+        .divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: var(--gray-200);
+            z-index: 1;
+        }
+
+        .divider-text {
+            background: var(--white);
+            color: var(--gray-500);
+            font-size: var(--text-sm);
+            font-weight: var(--font-medium);
+            padding: 0 var(--space-4);
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Traditional Form Section */
+        .traditional-section {
+            opacity: 1;
+            max-height: 1000px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .traditional-section.collapsed {
+            opacity: 0;
+            max-height: 0;
+            overflow: hidden;
+            margin: 0;
+        }
+
+        .traditional-toggle {
+            width: 100%;
+            background: transparent;
+            border: 2px dashed var(--gray-300);
+            color: var(--gray-600);
+            padding: var(--space-4);
+            border-radius: var(--radius-lg);
+            cursor: pointer;
+            font-size: var(--text-base);
+            font-weight: var(--font-medium);
+            transition: all 0.2s ease;
+            margin-bottom: var(--space-6);
+        }
+
+        .traditional-toggle:hover {
+            border-color: var(--coffee-400);
+            color: var(--coffee-600);
+            background: var(--coffee-50);
+        }
+
+        .traditional-toggle:focus {
+            outline: none;
+            box-shadow: var(--focus-ring);
+            border-color: var(--google-blue);
+        }
+
+        /* Form Elements */
+        .form-group {
+            margin-bottom: var(--space-5);
+        }
+
+        .form-label {
+            display: block;
+            font-size: var(--text-sm);
+            font-weight: var(--font-medium);
+            color: var(--gray-700);
+            margin-bottom: var(--space-2);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: var(--space-4);
+            border: 2px solid var(--gray-300);
+            border-radius: var(--radius-lg);
+            font-size: var(--text-base);
+            background: var(--white);
+            transition: all 0.2s ease;
+            min-height: 48px; /* ADHD-friendly touch target */
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--google-blue);
+            box-shadow: var(--focus-ring);
+        }
+
+        .form-input:invalid {
+            border-color: var(--error);
+        }
+
+        .form-input:valid:not(:placeholder-shown) {
+            border-color: var(--success);
+        }
+
+        /* Mode Switcher */
+        .mode-switcher {
+            display: flex;
+            background: var(--gray-100);
+            border-radius: var(--radius-lg);
+            padding: var(--space-1);
+            margin-bottom: var(--space-6);
+        }
+
+        .mode-button {
+            flex: 1;
+            padding: var(--space-2) var(--space-4);
+            background: transparent;
+            border: none;
+            border-radius: var(--radius-md);
+            font-size: var(--text-sm);
+            font-weight: var(--font-medium);
+            color: var(--gray-600);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .mode-button.active {
+            background: var(--white);
+            color: var(--gray-900);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .mode-button:focus {
+            outline: none;
+            box-shadow: var(--focus-ring);
+        }
+
+        /* Primary Button */
+        .primary-button {
+            width: 100%;
+            background: var(--coffee-500);
+            color: var(--white);
+            border: none;
+            padding: var(--space-4) var(--space-6);
+            border-radius: var(--radius-lg);
+            font-size: var(--text-base);
+            font-weight: var(--font-semibold);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            min-height: 52px; /* ADHD-friendly touch target */
+            margin-top: var(--space-4);
+        }
+
+        .primary-button:hover {
+            background: var(--coffee-600);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .primary-button:focus {
+            outline: none;
+            box-shadow: var(--focus-ring);
+        }
+
+        .primary-button:active {
+            transform: translateY(0);
+        }
+
+        .primary-button:disabled {
+            background: var(--gray-300);
+            color: var(--gray-500);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Security Message */
+        .security-message {
+            background: var(--info-light);
+            border: 1px solid var(--info);
+            color: var(--info);
+            padding: var(--space-3) var(--space-4);
+            border-radius: var(--radius-lg);
+            font-size: var(--text-sm);
+            margin-top: var(--space-4);
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+        }
+
+        .security-icon {
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
+        }
+
+        /* Account Linking Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            padding: var(--space-4);
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            background: var(--white);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-xl);
+            width: 100%;
+            max-width: 480px;
+            padding: var(--space-8);
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.active .modal {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            text-align: center;
+            margin-bottom: var(--space-6);
+        }
+
+        .modal-title {
+            font-size: var(--text-xl);
+            font-weight: var(--font-bold);
+            color: var(--gray-900);
+            margin-bottom: var(--space-2);
+        }
+
+        .modal-subtitle {
+            color: var(--gray-600);
+        }
+
+        .account-info {
+            background: var(--gray-50);
+            border-radius: var(--radius-lg);
+            padding: var(--space-4);
+            margin: var(--space-6) 0;
+        }
+
+        .account-email {
+            font-weight: var(--font-medium);
+            color: var(--gray-900);
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: var(--space-3);
+            margin-top: var(--space-6);
+        }
+
+        .modal-button {
+            flex: 1;
+            padding: var(--space-3) var(--space-4);
+            border-radius: var(--radius-lg);
+            font-size: var(--text-base);
+            font-weight: var(--font-medium);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 2px solid transparent;
+        }
+
+        .modal-button--primary {
+            background: var(--success);
+            color: var(--white);
+        }
+
+        .modal-button--primary:hover {
+            background: #047857;
+            transform: translateY(-1px);
+        }
+
+        .modal-button--secondary {
+            background: var(--gray-100);
+            color: var(--gray-700);
+        }
+
+        .modal-button--secondary:hover {
+            background: var(--gray-200);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 480px) {
+            .auth-container {
+                padding: var(--space-6);
+            }
+            
+            .oauth-providers {
+                gap: var(--space-2);
+            }
+            
+            .oauth-provider {
+                padding: var(--space-3) var(--space-4);
+                font-size: var(--text-sm);
+            }
+            
+            .modal-actions {
+                flex-direction: column;
+            }
+        }
+
+        /* Reduced Motion Support for ADHD Users */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+            
+            .oauth-provider:hover,
+            .primary-button:hover {
+                transform: none;
+            }
+        }
+
+        /* High Contrast Support */
+        @media (prefers-contrast: high) {
+            :root {
+                --gray-300: #999999;
+                --gray-600: #333333;
+            }
+            
+            .oauth-provider {
+                border: 2px solid var(--white);
+            }
+            
+            .form-input {
+                border-width: 3px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-header">
+            <div class="logo">☕</div>
+            <h1 class="auth-title">Welcome Back</h1>
+            <p class="auth-subtitle">Choose your preferred sign-in method</p>
+        </div>
+
+        <!-- OAuth Provider Section -->
+        <div class="oauth-section">
+            <div class="oauth-section-title">Secure & Fast Sign-In</div>
+            <div class="oauth-providers">
+                <a href="#" class="oauth-provider oauth-provider--google" data-provider="google">
+                    <svg class="provider-icon" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                        <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                        <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                        <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                    </svg>
+                    Continue with Google
+                    <span class="recommended-badge">Recommended</span>
+                    <div class="loading-spinner"></div>
+                </a>
+
+                <a href="#" class="oauth-provider oauth-provider--github" data-provider="github">
+                    <svg class="provider-icon" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                    </svg>
+                    Sign in with GitHub
+                    <div class="loading-spinner"></div>
+                </a>
+
+                <a href="#" class="oauth-provider oauth-provider--apple" data-provider="apple">
+                    <svg class="provider-icon" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/>
+                    </svg>
+                    Use Apple ID
+                    <div class="loading-spinner"></div>
+                </a>
+
+                <a href="#" class="oauth-provider oauth-provider--microsoft" data-provider="microsoft">
+                    <svg class="provider-icon" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M11.4 24H0V12.6h11.4V24zM24 24H12.6V12.6H24V24zM11.4 11.4H0V0h11.4v11.4zM24 11.4H12.6V0H24v11.4z"/>
+                    </svg>
+                    Continue with Microsoft
+                    <div class="loading-spinner"></div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Divider -->
+        <div class="divider">
+            <span class="divider-text">Or use email instead</span>
+        </div>
+
+        <!-- Traditional Authentication Section -->
+        <div class="traditional-section" id="traditionalSection">
+            <button type="button" class="traditional-toggle" id="traditionalToggle">
+                ✉️ Sign in with email address
+            </button>
+
+            <div id="traditionalForm" style="display: none;">
+                <div class="mode-switcher">
+                    <button type="button" class="mode-button active" data-mode="login">Sign In</button>
+                    <button type="button" class="mode-button" data-mode="register">Create Account</button>
+                </div>
+
+                <form>
+                    <div class="form-group">
+                        <label for="email" class="form-label">Email Address</label>
+                        <input type="email" id="email" class="form-input" placeholder="your@email.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" id="password" class="form-input" placeholder="Enter your password" required>
+                    </div>
+
+                    <div id="confirmPasswordGroup" class="form-group" style="display: none;">
+                        <label for="confirmPassword" class="form-label">Confirm Password</label>
+                        <input type="password" id="confirmPassword" class="form-input" placeholder="Confirm your password">
+                    </div>
+
+                    <button type="submit" class="primary-button" id="submitButton">
+                        Sign In to Coffee Roast Tracker
+                    </button>
+                </form>
+
+                <div class="security-message">
+                    <svg class="security-icon" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                    </svg>
+                    <span>Your data is protected with enterprise-grade security</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Account Linking Modal -->
+    <div class="modal-overlay" id="accountLinkingModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Link Your Accounts?</h3>
+                <p class="modal-subtitle">We found an existing account with this email address</p>
+            </div>
+            
+            <div class="account-info">
+                <div class="account-email" id="linkingEmail">john@example.com</div>
+                <div style="margin-top: 8px; font-size: 14px; color: #6b7280;">
+                    Would you like to connect your <span id="oauthProviderName">Google</span> account to your existing Coffee Roast Tracker account?
+                </div>
+            </div>
+
+            <div style="margin: 24px 0; padding: 16px; background: #d1fae5; border-radius: 8px; color: #059669; font-size: 14px;">
+                ✅ <strong>Benefits of linking:</strong><br>
+                • Sign in with either method<br>
+                • Keep all your roasting data<br>
+                • Enhanced security options
+            </div>
+
+            <div class="modal-actions">
+                <button class="modal-button modal-button--secondary" id="keepSeparate">Keep Separate</button>
+                <button class="modal-button modal-button--primary" id="linkAccounts">Link Accounts</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // OAuth provider handling with ADHD-friendly feedback
+        document.querySelectorAll('.oauth-provider').forEach(provider => {
+            provider.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const providerName = this.dataset.provider;
+                const providerDisplayName = providerName.charAt(0).toUpperCase() + providerName.slice(1);
+                
+                // Add loading state
+                this.classList.add('loading');
+                
+                // Simulate OAuth flow with realistic timing
+                setTimeout(() => {
+                    // Simulate finding existing account (30% chance)
+                    if (Math.random() < 0.3) {
+                        showAccountLinkingModal(providerDisplayName, 'john@example.com');
+                        this.classList.remove('loading');
+                    } else {
+                        // Simulate successful OAuth authentication
+                        showSuccessMessage(`Successfully signed in with ${providerDisplayName}!`);
+                        
+                        setTimeout(() => {
+                            window.location.href = '#dashboard'; // Would redirect to app
+                        }, 1500);
+                    }
+                }, 2000); // Realistic OAuth timing
+            });
+        });
+
+        // Traditional form toggle
+        const traditionalToggle = document.getElementById('traditionalToggle');
+        const traditionalForm = document.getElementById('traditionalForm');
+        let isTraditionalExpanded = false;
+
+        traditionalToggle.addEventListener('click', function() {
+            isTraditionalExpanded = !isTraditionalExpanded;
+            
+            if (isTraditionalExpanded) {
+                traditionalForm.style.display = 'block';
+                this.textContent = '← Back to OAuth options';
+                this.style.background = '#f3f4f6';
+                this.style.borderColor = '#d1d5db';
+                
+                // Smooth scroll to form
+                setTimeout(() => {
+                    traditionalForm.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }, 100);
+            } else {
+                traditionalForm.style.display = 'none';
+                this.textContent = '✉️ Sign in with email address';
+                this.style.background = 'transparent';
+                this.style.borderColor = '#d1d5db';
+            }
+        });
+
+        // Mode switching (login/register)
+        const modeButtons = document.querySelectorAll('.mode-button');
+        const submitButton = document.getElementById('submitButton');
+        const confirmPasswordGroup = document.getElementById('confirmPasswordGroup');
+
+        modeButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const mode = this.dataset.mode;
+                
+                // Update active state
+                modeButtons.forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Update form based on mode
+                if (mode === 'register') {
+                    submitButton.textContent = 'Create Your Account';
+                    confirmPasswordGroup.style.display = 'block';
+                    document.getElementById('confirmPassword').required = true;
+                } else {
+                    submitButton.textContent = 'Sign In to Coffee Roast Tracker';
+                    confirmPasswordGroup.style.display = 'none';
+                    document.getElementById('confirmPassword').required = false;
+                }
+            });
+        });
+
+        // Form submission
+        document.querySelector('form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const isRegisterMode = document.querySelector('.mode-button.active').dataset.mode === 'register';
+            
+            // Add loading state to submit button
+            submitButton.disabled = true;
+            submitButton.textContent = isRegisterMode ? 'Creating Account...' : 'Signing In...';
+            
+            // Simulate form submission
+            setTimeout(() => {
+                showSuccessMessage(`Successfully ${isRegisterMode ? 'created account' : 'signed in'} with email!`);
+                
+                setTimeout(() => {
+                    window.location.href = '#dashboard'; // Would redirect to app
+                }, 1500);
+            }, 1500);
+        });
+
+        // Account linking modal functions
+        function showAccountLinkingModal(providerName, email) {
+            const modal = document.getElementById('accountLinkingModal');
+            document.getElementById('linkingEmail').textContent = email;
+            document.getElementById('oauthProviderName').textContent = providerName;
+            
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden'; // Prevent background scroll
+        }
+
+        function hideAccountLinkingModal() {
+            const modal = document.getElementById('accountLinkingModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Modal button handlers
+        document.getElementById('linkAccounts').addEventListener('click', function() {
+            hideAccountLinkingModal();
+            showSuccessMessage('Accounts linked successfully! You can now sign in with either method.');
+            
+            setTimeout(() => {
+                window.location.href = '#dashboard';
+            }, 2000);
+        });
+
+        document.getElementById('keepSeparate').addEventListener('click', function() {
+            hideAccountLinkingModal();
+            showSuccessMessage('New account created! Welcome to Coffee Roast Tracker.');
+            
+            setTimeout(() => {
+                window.location.href = '#dashboard';
+            }, 1500);
+        });
+
+        // Close modal on overlay click
+        document.getElementById('accountLinkingModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                hideAccountLinkingModal();
+            }
+        });
+
+        // Success message helper
+        function showSuccessMessage(message) {
+            // Create success notification
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: #10b981;
+                color: white;
+                padding: 16px 24px;
+                border-radius: 12px;
+                font-weight: 600;
+                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+                z-index: 9999;
+                transform: translateX(400px);
+                transition: transform 0.3s ease;
+            `;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            // Animate in
+            setTimeout(() => {
+                notification.style.transform = 'translateX(0)';
+            }, 100);
+            
+            // Animate out and remove
+            setTimeout(() => {
+                notification.style.transform = 'translateX(400px)';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+
+        // Keyboard navigation improvements for ADHD accessibility
+        document.addEventListener('keydown', function(e) {
+            // Escape key closes modal
+            if (e.key === 'Escape') {
+                hideAccountLinkingModal();
+            }
+            
+            // Enter key on OAuth providers
+            if (e.key === 'Enter' && e.target.classList.contains('oauth-provider')) {
+                e.target.click();
+            }
+        });
+
+        // Focus management for screen readers
+        document.querySelectorAll('.oauth-provider, .form-input, .primary-button').forEach(element => {
+            element.addEventListener('focus', function() {
+                this.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            });
+        });
+
+        // Reduce motion preference handling
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            document.documentElement.style.setProperty('--transition-duration', '0ms');
+        }
+
+        // High contrast mode detection and enhancement
+        if (window.matchMedia('(prefers-contrast: high)').matches) {
+            document.body.classList.add('high-contrast');
+        }
+
+        // Initialize focus indicators for keyboard users
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Tab') {
+                document.body.classList.add('keyboard-user');
+            }
+        });
+
+        document.addEventListener('mousedown', function() {
+            document.body.classList.remove('keyboard-user');
+        });
+
+        // Add CSS for keyboard user focus enhancement
+        const focusStyle = document.createElement('style');
+        focusStyle.textContent = `
+            .keyboard-user *:focus {
+                outline: 4px solid rgba(66, 133, 244, 0.6) !important;
+                outline-offset: 2px !important;
+            }
+        `;
+        document.head.appendChild(focusStyle);
+    </script>
+</body>
+</html>
