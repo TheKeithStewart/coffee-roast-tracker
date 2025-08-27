@@ -13,7 +13,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import bcrypt from 'bcryptjs';
-import { headers } from 'next/headers';
+// import { headers } from 'next/headers'; // TODO: Implement security headers if needed
 import type { SecurityAuditLog } from '@/types/auth';
 
 // Registration validation schema
@@ -337,7 +337,7 @@ export async function POST(request: NextRequest) {
           code: 'VALIDATION_ERROR',
           recoverable: true,
           retryable: true,
-          details: error.errors,
+          details: error.issues,
         },
       };
     } else {

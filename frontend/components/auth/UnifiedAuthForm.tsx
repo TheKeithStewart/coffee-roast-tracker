@@ -141,7 +141,7 @@ export function UnifiedAuthForm({
   const { login, register: registerUser, error, clearError, isLoading } = useAuth();
   const [mode, setMode] = useState<AuthMode>('login');
   const [showPassword, setShowPassword] = useState(false);
-  const [passwordStrength, setPasswordStrength] = useState({ score: 0, feedback: [] });
+  const [passwordStrength, setPasswordStrength] = useState<{ score: number; feedback: string[] }>({ score: 0, feedback: [] });
   const formRef = useRef<HTMLFormElement>(null);
 
   // Form setup with conditional validation
@@ -157,7 +157,7 @@ export function UnifiedAuthForm({
   } = useForm({
     resolver: zodResolver(currentSchema),
     mode: 'onChange'
-  });
+  }) as any; // TODO: Fix type inference for dynamic schema
 
   const watchedPassword = watch('password', '');
 
@@ -255,8 +255,8 @@ export function UnifiedAuthForm({
    */
   const handleInputChange = useCallback((fieldName: string) => {
     clearError();
-    if (errors[fieldName]) {
-      clearErrors(fieldName);
+    if (errors[fieldName as keyof typeof errors]) {
+      clearErrors(fieldName as any);
     }
   }, [clearError, clearErrors, errors]);
 

@@ -4,7 +4,7 @@
  * 
  * Features:
  * - User-controlled performance visibility (5 modes: Hidden, Minimal, Helpful, Detailed, Coach)
- * - Core Web Vitals tracking (LCP, FID, CLS) with positive messaging
+ * - Core Web Vitals tracking (LCP, INP, CLS) with positive messaging
  * - Performance coaching tips without anxiety triggers
  * - Accessibility compliant with screen reader support
  * - Real-time metrics with gentle, non-overwhelming presentation
@@ -13,7 +13,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { getCLS, getFID, getFCP, getLCP, getTTFB } from 'web-vitals';
+import { onCLS, onINP, onFCP, onLCP, onTTFB } from 'web-vitals';
 import type { 
   PerformanceMetrics, 
   PerformanceDisplayConfig,
@@ -31,7 +31,7 @@ interface PerformanceMonitorProps {
 
 const PERFORMANCE_THRESHOLDS = {
   LCP: { good: 2500, needsImprovement: 4000, poor: Infinity },
-  FID: { good: 100, needsImprovement: 300, poor: Infinity },
+  INP: { good: 200, needsImprovement: 500, poor: Infinity },
   CLS: { good: 0.1, needsImprovement: 0.25, poor: Infinity },
   FCP: { good: 1800, needsImprovement: 3000, poor: Infinity },
   TTFB: { good: 800, needsImprovement: 1800, poor: Infinity }
@@ -81,16 +81,16 @@ export function PerformanceMonitor({
       // Generate positive feedback based on performance
       if (name === 'LCP' && value <= PERFORMANCE_THRESHOLDS.LCP.good) {
         showPositiveMessage('excellent');
-      } else if (name === 'FID' && value <= PERFORMANCE_THRESHOLDS.FID.good) {
+      } else if (name === 'INP' && value <= PERFORMANCE_THRESHOLDS.INP.good) {
         showPositiveMessage('good');
       }
     };
 
-    getCLS(({ value }) => updateMetric('CLS', value));
-    getFID(({ value }) => updateMetric('FID', value));
-    getFCP(({ value }) => updateMetric('FCP', value));
-    getLCP(({ value }) => updateMetric('LCP', value));
-    getTTFB(({ value }) => updateMetric('TTFB', value));
+    onCLS(({ value }) => updateMetric('CLS', value));
+    onINP(({ value }) => updateMetric('INP', value));
+    onFCP(({ value }) => updateMetric('FCP', value));
+    onLCP(({ value }) => updateMetric('LCP', value));
+    onTTFB(({ value }) => updateMetric('TTFB', value));
   }, [mode]);
 
   const showPositiveMessage = useCallback((type: keyof typeof POSITIVE_MESSAGES) => {
@@ -178,11 +178,11 @@ export function PerformanceMonitor({
             </span>
           </div>
         )}
-        {metrics.FID && (
+        {metrics.INP && (
           <div className="flex justify-between">
-            <span>FID:</span>
-            <span className={getPerformanceScore(metrics.FID, PERFORMANCE_THRESHOLDS.FID).color}>
-              {formatMetric(metrics.FID)}
+            <span>INP:</span>
+            <span className={getPerformanceScore(metrics.INP, PERFORMANCE_THRESHOLDS.INP).color}>
+              {formatMetric(metrics.INP)}
             </span>
           </div>
         )}
@@ -284,7 +284,7 @@ export function PerformanceMonitor({
       <div className="sr-only">
         Performance monitor active in {mode} mode. 
         {metrics.LCP && `Largest Contentful Paint: ${formatMetric(metrics.LCP)}`}
-        {metrics.FID && `, First Input Delay: ${formatMetric(metrics.FID)}`}
+        {metrics.INP && `, Interaction to Next Paint: ${formatMetric(metrics.INP)}`}
         {metrics.CLS && `, Cumulative Layout Shift: ${formatMetric(metrics.CLS, '')}`}
       </div>
     </div>

@@ -6,11 +6,12 @@
 export interface PerformanceMetrics {
   coreWebVitals: {
     LCP: number; // Largest Contentful Paint - Target: <2.5s
-    FID: number; // First Input Delay - Target: <100ms
+    INP: number; // Interaction to Next Paint - Target: <200ms
     CLS: number; // Cumulative Layout Shift - Target: <0.1
+    FCP?: number; // First Contentful Paint - Target: <1.8s
+    TTFB?: number; // Time to First Byte - Target: <600ms
     TTI?: number; // Time to Interactive - Target: <3.5s
-    TTFB?: number; // Time to First Byte
-    INP?: number; // Interaction to Next Paint
+    FID?: number; // First Input Delay (deprecated in favor of INP)
   };
   customMetrics: {
     navigationDuration: number; // Target: <300ms
@@ -53,8 +54,11 @@ export interface PerformanceTargets {
 
 export interface PerformanceThresholds {
   LCP: PerformanceTargets; // { good: 2500, needsImprovement: 4000, poor: Infinity }
-  FID: PerformanceTargets; // { good: 100, needsImprovement: 300, poor: Infinity }
+  INP: PerformanceTargets; // { good: 200, needsImprovement: 500, poor: Infinity }
   CLS: PerformanceTargets; // { good: 0.1, needsImprovement: 0.25, poor: Infinity }
+  FCP?: PerformanceTargets; // { good: 1800, needsImprovement: 3000, poor: Infinity }
+  TTFB?: PerformanceTargets; // { good: 600, needsImprovement: 1500, poor: Infinity }
+  FID?: PerformanceTargets; // { good: 100, needsImprovement: 300, poor: Infinity } - deprecated
   navigationDuration: PerformanceTargets;
   bundleSize: PerformanceTargets;
   cacheHitRatio: PerformanceTargets;

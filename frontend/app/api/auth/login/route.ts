@@ -418,7 +418,7 @@ export async function POST(request: NextRequest) {
           code: 'VALIDATION_ERROR',
           recoverable: true,
           retryable: true,
-          details: error.errors,
+          details: error.issues,
         },
       };
     } else {

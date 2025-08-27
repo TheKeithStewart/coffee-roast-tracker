@@ -10,7 +10,7 @@ export default withPWA({
   cacheOnFrontEndNav: true,
   aggressiveFrontEndNavCaching: true,
   reloadOnOnline: true,
-  swcMinify: true,
+  // swcMinify is deprecated in newer versions
   disable: process.env.NODE_ENV === "development",
   workboxOptions: {
     disableDevLogs: true,
@@ -24,7 +24,7 @@ export default withPWA({
             maxEntries: 10,
             maxAgeSeconds: 60 * 60 * 24 * 365, // 365 days
           },
-          cacheKeyWillBeUsed: async ({ request }) => `${request.url}?${Date.now()}`,
+          // TODO: Fix cache key configuration for PWA
         },
       },
       {

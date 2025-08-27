@@ -49,8 +49,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const [isInitialized, setIsInitialized] = useState(false);
   
   // References for cleanup
-  const refreshTimeoutRef = useRef<NodeJS.Timeout>();
-  const broadcastChannelRef = useRef<BroadcastChannel>();
+  const refreshTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const broadcastChannelRef = useRef<BroadcastChannel | null>(null);
 
   // Loading state derived from NextAuth status and initialization
   const isLoading = status === 'loading' || !isInitialized;

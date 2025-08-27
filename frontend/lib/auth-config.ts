@@ -1,5 +1,5 @@
 /**
- * NextAuth.js Configuration with OAuth Providers and Security
+ * NextAuth.js v5 Base Configuration
  * User Story #18: Production Authentication & Security Foundation
  * 
  * Features:
@@ -10,11 +10,11 @@
  * - Production-grade security headers and cookies
  */
 
-import { NextAuthOptions } from 'next-auth';
+import type { NextAuthConfig } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 import GitHubProvider from 'next-auth/providers/github';
 import AppleProvider from 'next-auth/providers/apple';
-import { Provider } from 'next-auth/providers';
+import type { Provider } from 'next-auth/providers';
 import type { SecurityAuditLog } from '@/types/auth';
 
 /**
@@ -26,33 +26,24 @@ function MicrosoftProvider(options: { clientId: string; clientSecret: string; te
   return {
     id: 'microsoft',
     name: 'Microsoft',
-    type: 'oauth',
-    version: '2.0',
+    type: 'oidc',
+    issuer: `https://login.microsoftonline.com/${tenantId}/v2.0`,
     authorization: {
-      url: `https://login.microsoftonline.com/${tenantId}/oauth2/v2.0/authorize`,
       params: {
         scope: 'openid profile email',
-        response_type: 'code',
-        response_mode: 'query',
       },
-    },
-    token: `https://login.microsoftonline.com/${tenantId}/oauth2/v2.0/token`,
-    userinfo: 'https://graph.microsoft.com/v1.0/me',
-    client: {
-      token_endpoint_auth_method: 'client_secret_post',
     },
     clientId,
     clientSecret,
     profile(profile: any) {
       return {
-        id: profile.id,
-        name: profile.displayName,
-        email: profile.mail || profile.userPrincipalName,
-        image: null, // Microsoft Graph doesn't provide profile pictures by default
+        id: profile.sub,
+        name: profile.name,
+        email: profile.email,
+        image: null,
       };
     },
-    options,
-  };
+  } as const;
 }
 
 /**
@@ -100,9 +91,9 @@ function getClientIP(req: any): string {
 }
 
 /**
- * NextAuth.js configuration with comprehensive security
+ * NextAuth.js v5 configuration with comprehensive security
  */
-export const authOptions: NextAuthOptions = {
+export const authConfig: NextAuthConfig = {
   // OAuth Providers Configuration
   providers: [
     GoogleProvider({
@@ -226,7 +217,7 @@ export const authOptions: NextAuthOptions = {
         userAgent: 'server-side',
         severity: 'low',
         additionalData: {
-          oauthState: account?.state,
+          oauthState: account?.state as string,
           pkceVerified: true, // NextAuth.js handles PKCE automatically
           accountLinkingAttempt: false, // Would be set by custom logic
         },
@@ -238,10 +229,10 @@ export const authOptions: NextAuthOptions = {
       }
     },
 
-    async signOut({ session, token }) {
+    async signOut() {
       await logSecurityEvent({
         event: 'logout',
-        userId: token?.sub || session?.user?.id,
+        userId: undefined, // User ID not available in signOut event in v5
         ipAddress: 'server-side',
         userAgent: 'server-side',
         severity: 'low',
@@ -266,7 +257,7 @@ export const authOptions: NextAuthOptions = {
             userAgent: 'server-side',
             severity: 'medium',
             additionalData: {
-              oauthState: account?.state,
+              oauthState: account?.state as string,
               accountLinkingAttempt: false,
             },
           });
@@ -282,14 +273,14 @@ export const authOptions: NextAuthOptions = {
           // Validate OAuth provider response
           if (!profile?.email || profile.email !== user.email) {
             await logSecurityEvent({
-              event: 'oauth_callback_error',
+              event: 'failed_login',
               userId: user.id,
               oauthProvider: account.provider as any,
               ipAddress: 'server-side',
               userAgent: 'server-side',
               severity: 'high',
               additionalData: {
-                oauthState: account.state,
+                oauthState: account.state as string,
                 accountLinkingAttempt: false,
               },
             });
@@ -332,10 +323,9 @@ export const authOptions: NextAuthOptions = {
      */
     async session({ session, token }) {
       // Add token info to session
-      if (token) {
+      if (token && token.sub) {
         session.user.id = token.sub;
-        session.provider = token.provider;
-        session.providerAccountId = token.providerAccountId;
+        // TODO: Add provider info with proper type extension
       }
 
       return session;
@@ -389,4 +379,4 @@ export async function linkOAuthAccount(userId: string, provider: string, provide
   };
 }
 
-export default authOptions;
+export default authConfig;

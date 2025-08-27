@@ -34,6 +34,7 @@ export interface AuthError {
   code?: string;
   recoverable: boolean;
   retryable: boolean;
+  details?: any; // Zod validation issues or other error details
 }
 
 export interface OAuthProvider {
@@ -97,6 +98,9 @@ export interface SecurityAuditLog {
     accountLinkingAttempt?: boolean;
     pkceVerified?: boolean;
     failureReason?: string;
+    lockedUntil?: number;
+    error?: string;
+    refreshedSession?: boolean;
   };
 }
 
