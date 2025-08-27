@@ -85,8 +85,9 @@ describe('PWAInstallPrompt', () => {
         />
       );
 
-      expect(screen.getByText(/install our app/i)).toBeInTheDocument();
-      expect(screen.getByText(/get app-like experience/i)).toBeInTheDocument();
+      // Without installEvent, should show fallback instructions
+      expect(screen.getByText(/bookmark this page/i)).toBeInTheDocument();
+      expect(screen.getByText(/for easy access from browser menu/i)).toBeInTheDocument();
     });
 
     test('detects iOS Safari with limitations awareness', () => {
@@ -100,9 +101,9 @@ describe('PWAInstallPrompt', () => {
         />
       );
 
-      expect(screen.getByText(/add to home screen/i)).toBeInTheDocument();
-      expect(screen.getByText(/limited features on ios/i)).toBeInTheDocument();
-      expect(screen.getByText(/50mb storage limit/i)).toBeInTheDocument();
+      expect(screen.getByRole('heading', { name: /add to home screen/i })).toBeInTheDocument();
+      expect(screen.getByText(/limited features on ios safari/i)).toBeInTheDocument();
+      expect(screen.getAllByText(/50mb storage limit/i)).toHaveLength(2); // Appears in both limitations list and summary
     });
 
     test('shows automatic prompt for supported browsers', () => {

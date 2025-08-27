@@ -240,7 +240,11 @@ describe('UnifiedAuthForm', () => {
 
       expect(mockSignIn).toHaveBeenCalledWith('google', {
         callbackUrl: expect.any(String),
-        redirect: false
+        redirect: false,
+        code_challenge: expect.any(String),
+        code_challenge_method: 'S256',
+        scope: expect.any(String),
+        state: expect.any(String)
       });
     });
 

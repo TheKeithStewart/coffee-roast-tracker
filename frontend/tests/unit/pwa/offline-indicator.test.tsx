@@ -123,9 +123,10 @@ describe('OfflineIndicator', () => {
         />
       );
 
-      expect(screen.getByText(/offline/i)).toBeInTheDocument();
-      expect(screen.getByText(/no internet connection/i)).toBeInTheDocument();
+      // Use more specific selector to avoid multiple matches
+      expect(screen.getByRole('status')).toHaveTextContent(/offline.*no internet connection/i);
       expect(screen.getByRole('status')).toHaveAttribute('aria-live', 'assertive');
+      expect(screen.getByText('Offline')).toBeInTheDocument(); // More specific text match
     });
 
     test('explains offline capabilities', async () => {
