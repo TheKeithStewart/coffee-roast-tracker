@@ -294,12 +294,20 @@ describe('UnifiedAuthForm', () => {
 
       // Fill in login form
       await user.type(screen.getByLabelText(/email/i), 'user@example.com');
-      await user.type(screen.getByLabelText(/password/i), 'StrongPass123!');
+      await user.type(screen.getByPlaceholderText(/your secure password/i), 'StrongPass123!');
+      
+      // Wait for the form to be valid and submit button to be enabled
+      await waitFor(() => {
+        expect(screen.getByRole('button', { name: /sign in/i })).not.toBeDisabled();
+      });
+      
       await user.click(screen.getByRole('button', { name: /sign in/i }));
 
-      expect(mockLogin).toHaveBeenCalledWith({
-        email: 'user@example.com',
-        password: 'StrongPass123!'
+      await waitFor(() => {
+        expect(mockLogin).toHaveBeenCalledWith({
+          email: 'user@example.com',
+          password: 'StrongPass123!'
+        });
       });
     });
 

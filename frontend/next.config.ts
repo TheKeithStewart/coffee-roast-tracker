@@ -10,8 +10,10 @@ export default withPWA({
   cacheOnFrontEndNav: true,
   aggressiveFrontEndNavCaching: true,
   reloadOnOnline: true,
-  // swcMinify is deprecated in newer versions
-  disable: process.env.NODE_ENV === "development",
+  // Enable PWA in development for Issue #63: PWA Development Testing Environment
+  disable: false,
+  // Use custom service worker for unified environment awareness
+  sw: "sw.js",
   workboxOptions: {
     disableDevLogs: true,
     runtimeCaching: [

@@ -1,6 +1,10 @@
 {
   "compilerOptions": {
-    "lib": ["dom", "dom.iterable", "es6"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "es6"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -12,14 +16,25 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
-    "plugins": [{ "name": "next" }],
-    "paths": { "@/*": ["./*"] },
-    
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "paths": {
+      "@/*": [
+        "./*"
+      ]
+    },
     // Enhanced type checking for tests
-    "types": ["jest", "@testing-library/jest-dom", "node"],
-    
+    "types": [
+      "jest",
+      "@testing-library/jest-dom",
+      "node"
+    ],
     // Improved compilation performance
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "target": "ES2017"
   },
   "include": [
     "next-env.d.ts",
@@ -29,5 +44,9 @@
     "tests/**/*",
     "jest.setup.js"
   ],
-  "exclude": ["node_modules", ".next", "dist"]
+  "exclude": [
+    "node_modules",
+    ".next",
+    "dist"
+  ]
 }
