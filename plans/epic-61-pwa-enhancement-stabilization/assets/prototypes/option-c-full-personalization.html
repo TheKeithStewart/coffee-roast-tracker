@@ -1,0 +1,2263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Option C: Full Personalization Navigation - Coffee Roast Tracker</title>
+    <style>
+        /* Import Epic #12 design system foundation */
+        :root {
+            --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            --font-size-xs: 0.75rem;
+            --font-size-sm: 0.875rem;
+            --font-size-base: 1rem;
+            --font-size-lg: 1.125rem;
+            --font-size-xl: 1.25rem;
+            --font-size-2xl: 1.5rem;
+            --font-size-3xl: 1.875rem;
+            --font-weight-normal: 400;
+            --font-weight-medium: 500;
+            --font-weight-semibold: 600;
+            --font-weight-bold: 700;
+            --line-height-normal: 1.5;
+            --line-height-tight: 1.25;
+            
+            --space-1: 0.25rem;
+            --space-2: 0.5rem;
+            --space-3: 0.75rem;
+            --space-4: 1rem;
+            --space-5: 1.25rem;
+            --space-6: 1.5rem;
+            --space-8: 2rem;
+            --space-10: 2.5rem;
+            --space-12: 3rem;
+            --space-16: 4rem;
+            
+            --radius-md: 0.75rem;
+            --radius-lg: 1rem;
+            --radius-xl: 1.5rem;
+            --radius-2xl: 2rem;
+            --radius-full: 9999px;
+            
+            /* Dynamic color system - user customizable */
+            --color-primary-500: #c8794a;
+            --color-primary-600: #b86c3e;
+            --color-primary-700: #995536;
+            --color-primary-300: #e4b894;
+            --color-primary-100: #f9ede0;
+            --color-primary-50: #fdf7f0;
+            
+            --color-secondary-500: #6b7280;
+            --color-secondary-600: #4b5563;
+            --color-secondary-100: #f3f4f6;
+            --color-secondary-50: #f9fafb;
+            
+            --color-accent-500: #8b5cf6;
+            --color-accent-600: #7c3aed;
+            --color-accent-100: #ede9fe;
+            --color-accent-50: #f5f3ff;
+            
+            --color-success-500: #10b981;
+            --color-success-600: #059669;
+            --color-success-100: #d1fae5;
+            --color-success-50: #ecfdf5;
+            
+            --color-warning-500: #f59e0b;
+            --color-warning-600: #d97706;
+            --color-warning-100: #fef3c7;
+            --color-warning-50: #fffbeb;
+            
+            --color-text-primary: #1c1917;
+            --color-text-secondary: #57534e;
+            --color-text-tertiary: #78716c;
+            --color-text-on-primary: #fafaf9;
+            
+            --color-surface: #ffffff;
+            --color-surface-secondary: #f5f5f4;
+            --color-surface-elevated: #ffffff;
+            --color-background: #fafaf9;
+            
+            --color-border: #e7e5e4;
+            --color-border-secondary: #d6d3d1;
+            --color-border-strong: #a8a29e;
+            
+            --color-focus: #c8794a;
+            --color-focus-ring: rgba(200, 121, 74, 0.5);
+            
+            /* User-customizable design tokens */
+            --nav-style: 'horizontal'; /* horizontal, vertical, floating, sidebar */
+            --nav-size: 'standard'; /* compact, standard, large, xl */
+            --animation-speed: 200ms;
+            --border-radius: var(--radius-lg);
+            --content-width: 1200px;
+            --sidebar-width: 280px;
+            
+            --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            
+            --duration-150: 150ms;
+            --duration-200: 200ms;
+            --duration-300: 300ms;
+            --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+            --ease-out: cubic-bezier(0, 0, 0.2, 1);
+            
+            --z-base: 0;
+            --z-docked: 10;
+            --z-sticky: 1020;
+            --z-overlay: 1040;
+            --z-modal: 1050;
+        }
+        
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: var(--font-primary);
+            font-size: var(--font-size-base);
+            line-height: var(--line-height-normal);
+            color: var(--color-text-primary);
+            background-color: var(--color-background);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            transition: all var(--animation-speed) var(--ease-in-out);
+        }
+        
+        /* Customizable Layout Container */
+        .app {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        
+        .app.layout-sidebar {
+            flex-direction: row;
+        }
+        
+        .app.layout-floating {
+            position: relative;
+        }
+        
+        /* Skip Link for Accessibility */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 6px;
+            background: var(--color-surface);
+            color: var(--color-text-primary);
+            padding: var(--space-2) var(--space-4);
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            font-weight: var(--font-weight-medium);
+            z-index: calc(var(--z-modal) + 10);
+            border: 2px solid var(--color-border-strong);
+            transition: top var(--animation-speed) var(--ease-out);
+        }
+        
+        .skip-link:focus {
+            top: 6px;
+        }
+        
+        /* Customizable Header */
+        .header {
+            background-color: var(--color-surface);
+            border-bottom: 2px solid var(--color-border);
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 0;
+            z-index: var(--z-sticky);
+            transition: all var(--animation-speed) var(--ease-in-out);
+        }
+        
+        .layout-sidebar .header {
+            order: 2;
+            flex: 1;
+        }
+        
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--space-4) var(--space-6);
+            max-width: var(--content-width);
+            margin: 0 auto;
+        }
+        
+        .layout-sidebar .header-content {
+            max-width: none;
+            margin: 0;
+        }
+        
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+        }
+        
+        .brand-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--color-primary-500), var(--color-primary-600));
+            border-radius: var(--border-radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: var(--font-size-xl);
+            font-weight: var(--font-weight-bold);
+        }
+        
+        .brand-title {
+            font-size: var(--font-size-xl);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-primary-600);
+            margin: 0;
+        }
+        
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: var(--space-4);
+        }
+        
+        /* Personalization Studio Trigger */
+        .studio-trigger {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+            padding: var(--space-3) var(--space-4);
+            background: linear-gradient(135deg, var(--color-accent-50), var(--color-accent-100));
+            color: var(--color-accent-600);
+            border: 2px solid var(--color-accent-300);
+            border-radius: var(--border-radius);
+            text-decoration: none;
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-semibold);
+            cursor: pointer;
+            transition: all var(--animation-speed) var(--ease-in-out);
+        }
+        
+        .studio-trigger:hover,
+        .studio-trigger:focus {
+            background: linear-gradient(135deg, var(--color-accent-100), var(--color-accent-50));
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+            outline: none;
+        }
+        
+        /* Profile Selector */
+        .profile-selector {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+            padding: var(--space-2) var(--space-3);
+            background: var(--color-surface-secondary);
+            border: 2px solid var(--color-border);
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: all var(--animation-speed) var(--ease-in-out);
+        }
+        
+        .profile-selector:hover {
+            border-color: var(--color-primary-500);
+            background: var(--color-primary-50);
+        }
+        
+        .profile-avatar {
+            width: 32px;
+            height: 32px;
+            background: var(--color-primary-500);
+            color: white;
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-bold);
+        }
+        
+        .profile-name {
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-medium);
+            color: var(--color-text-primary);
+        }
+        
+        .profile-dropdown {
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            background: var(--color-surface);
+            border: 2px solid var(--color-border);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-lg);
+            z-index: var(--z-overlay);
+            min-width: 200px;
+            padding: var(--space-2);
+        }
+        
+        .profile-dropdown.hidden {
+            display: none;
+        }
+        
+        .profile-option {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+            padding: var(--space-3);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: background var(--duration-150) var(--ease-out);
+        }
+        
+        .profile-option:hover {
+            background: var(--color-primary-50);
+        }
+        
+        .profile-option.active {
+            background: var(--color-primary-100);
+            color: var(--color-primary-600);
+            font-weight: var(--font-weight-semibold);
+        }
+        
+        /* Flexible Navigation System */
+        .navigation-container {
+            position: relative;
+            transition: all var(--animation-speed) var(--ease-in-out);
+        }
+        
+        /* Horizontal Navigation (Default) */
+        .nav-horizontal {
+            background-color: var(--color-surface-secondary);
+            border-bottom: 2px solid var(--color-border);
+            padding: 0 var(--space-6);
+        }
+        
+        .nav-horizontal .nav-container {
+            max-width: var(--content-width);
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .nav-horizontal .nav-list {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            gap: var(--space-2);
+        }
+        
+        /* Sidebar Navigation */
+        .nav-sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--color-surface);
+            border-right: 2px solid var(--color-border);
+            padding: var(--space-6);
+            overflow-y: auto;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+        }
+        
+        .nav-sidebar .nav-list {
+            display: flex;
+            flex-direction: column;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            gap: var(--space-2);
+        }
+        
+        /* Floating Navigation */
+        .nav-floating {
+            position: fixed;
+            top: 50%;
+            left: 20px;
+            transform: translateY(-50%);
+            background: var(--color-surface);
+            border: 2px solid var(--color-border);
+            border-radius: var(--radius-xl);
+            padding: var(--space-4);
+            box-shadow: var(--shadow-lg);
+            z-index: var(--z-overlay);
+        }
+        
+        .nav-floating .nav-list {
+            display: flex;
+            flex-direction: column;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            gap: var(--space-2);
+        }
+        
+        /* Navigation Items */
+        .nav-item {
+            position: relative;
+        }
+        
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+            padding: var(--space-4) var(--space-5);
+            color: var(--color-text-secondary);
+            text-decoration: none;
+            font-weight: var(--font-weight-medium);
+            border-radius: var(--border-radius);
+            transition: all var(--animation-speed) var(--ease-in-out);
+            min-height: 60px;
+            font-size: var(--font-size-base);
+            position: relative;
+            border: 2px solid transparent;
+        }
+        
+        .nav-link:hover,
+        .nav-link:focus {
+            background-color: var(--color-primary-50);
+            color: var(--color-primary-600);
+            outline: none;
+            box-shadow: 0 0 0 3px var(--color-focus-ring);
+        }
+        
+        .nav-link.active {
+            background-color: var(--color-primary-100);
+            color: var(--color-primary-600);
+            border-color: var(--color-primary-300);
+            font-weight: var(--font-weight-semibold);
+        }
+        
+        /* Custom Navigation Icons */
+        .nav-icon {
+            font-size: var(--font-size-xl);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+        }
+        
+        .nav-icon.custom {
+            background: var(--color-primary-500);
+            color: white;
+            border-radius: var(--radius-md);
+        }
+        
+        /* Drag and Drop Handles */
+        .drag-handle {
+            position: absolute;
+            left: 4px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 8px;
+            height: 20px;
+            background: var(--color-border-secondary);
+            border-radius: var(--radius-md);
+            cursor: grab;
+            opacity: 0;
+            transition: opacity var(--duration-150) var(--ease-out);
+        }
+        
+        .nav-item:hover .drag-handle {
+            opacity: 1;
+        }
+        
+        .drag-handle:active {
+            cursor: grabbing;
+        }
+        
+        /* Custom Shortcuts Panel */
+        .shortcuts-panel {
+            background: var(--color-surface);
+            border: 2px solid var(--color-accent-300);
+            border-radius: var(--border-radius);
+            padding: var(--space-4);
+            margin: var(--space-4) 0;
+        }
+        
+        .shortcuts-title {
+            font-size: var(--font-size-lg);
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-text-primary);
+            margin: 0 0 var(--space-4) 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .add-shortcut {
+            background: var(--color-accent-500);
+            color: white;
+            border: none;
+            border-radius: var(--radius-md);
+            padding: var(--space-1) var(--space-3);
+            font-size: var(--font-size-xs);
+            font-weight: var(--font-weight-semibold);
+            cursor: pointer;
+            transition: all var(--duration-150) var(--ease-out);
+        }
+        
+        .add-shortcut:hover {
+            background: var(--color-accent-600);
+            transform: scale(1.05);
+        }
+        
+        .shortcuts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: var(--space-3);
+        }
+        
+        .shortcut-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: var(--space-2);
+            padding: var(--space-3);
+            background: var(--color-surface-secondary);
+            border: 2px solid var(--color-border);
+            border-radius: var(--border-radius);
+            text-decoration: none;
+            color: var(--color-text-primary);
+            transition: all var(--animation-speed) var(--ease-in-out);
+            position: relative;
+        }
+        
+        .shortcut-item:hover,
+        .shortcut-item:focus {
+            border-color: var(--color-accent-500);
+            background: var(--color-accent-50);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+            outline: none;
+        }
+        
+        .shortcut-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--color-accent-500);
+            color: white;
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: var(--font-size-lg);
+        }
+        
+        .shortcut-label {
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-medium);
+            text-align: center;
+        }
+        
+        .shortcut-key {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            background: var(--color-text-tertiary);
+            color: white;
+            padding: var(--space-1) var(--space-2);
+            border-radius: var(--radius-md);
+            font-size: var(--font-size-xs);
+            font-weight: var(--font-weight-bold);
+        }
+        
+        .shortcut-remove {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            width: 20px;
+            height: 20px;
+            background: var(--color-warning-500);
+            color: white;
+            border: none;
+            border-radius: var(--radius-full);
+            font-size: var(--font-size-xs);
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity var(--duration-150) var(--ease-out);
+        }
+        
+        .shortcut-item:hover .shortcut-remove {
+            opacity: 1;
+        }
+        
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            max-width: var(--content-width);
+            margin: 0 auto;
+            width: 100%;
+            padding: var(--space-8);
+        }
+        
+        .layout-sidebar .main-content {
+            max-width: none;
+            margin: 0;
+            flex: 1;
+        }
+        
+        /* Personalization Studio Modal */
+        .studio-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: var(--z-modal);
+            animation: fade-in 0.3s ease-out;
+        }
+        
+        .studio-modal.hidden {
+            display: none;
+        }
+        
+        @keyframes fade-in {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .studio-content {
+            width: 90%;
+            max-width: 1000px;
+            height: 90%;
+            background: var(--color-surface);
+            border-radius: var(--radius-xl);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .studio-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--space-6);
+            border-bottom: 2px solid var(--color-border);
+            background: var(--color-surface-secondary);
+        }
+        
+        .studio-title {
+            font-size: var(--font-size-2xl);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-text-primary);
+            margin: 0;
+        }
+        
+        .studio-close {
+            width: 40px;
+            height: 40px;
+            background: var(--color-border);
+            color: var(--color-text-secondary);
+            border: none;
+            border-radius: var(--radius-full);
+            font-size: var(--font-size-xl);
+            cursor: pointer;
+            transition: all var(--duration-150) var(--ease-out);
+        }
+        
+        .studio-close:hover {
+            background: var(--color-warning-500);
+            color: white;
+        }
+        
+        .studio-body {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+        }
+        
+        .studio-sidebar {
+            width: 280px;
+            background: var(--color-surface-secondary);
+            border-right: 2px solid var(--color-border);
+            padding: var(--space-6);
+            overflow-y: auto;
+        }
+        
+        .studio-main {
+            flex: 1;
+            padding: var(--space-6);
+            overflow-y: auto;
+        }
+        
+        /* Studio Controls */
+        .studio-section {
+            margin-bottom: var(--space-8);
+        }
+        
+        .studio-section-title {
+            font-size: var(--font-size-lg);
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-text-primary);
+            margin: 0 0 var(--space-4) 0;
+        }
+        
+        .control-group {
+            margin-bottom: var(--space-6);
+        }
+        
+        .control-label {
+            display: block;
+            font-size: var(--font-size-base);
+            font-weight: var(--font-weight-medium);
+            color: var(--color-text-primary);
+            margin: 0 0 var(--space-2) 0;
+        }
+        
+        .control-description {
+            font-size: var(--font-size-sm);
+            color: var(--color-text-secondary);
+            margin: 0 0 var(--space-3) 0;
+            line-height: 1.5;
+        }
+        
+        /* Custom Form Controls */
+        .select-control {
+            width: 100%;
+            padding: var(--space-3) var(--space-4);
+            border: 2px solid var(--color-border);
+            border-radius: var(--border-radius);
+            font-size: var(--font-size-base);
+            font-family: var(--font-primary);
+            background: var(--color-surface);
+            color: var(--color-text-primary);
+            cursor: pointer;
+            transition: all var(--duration-150) var(--ease-out);
+        }
+        
+        .select-control:hover,
+        .select-control:focus {
+            border-color: var(--color-primary-500);
+            outline: none;
+            box-shadow: 0 0 0 3px var(--color-focus-ring);
+        }
+        
+        .range-control {
+            width: 100%;
+            margin: var(--space-3) 0;
+        }
+        
+        .range-input {
+            width: 100%;
+            -webkit-appearance: none;
+            height: 8px;
+            background: var(--color-border-secondary);
+            border-radius: var(--radius-full);
+            outline: none;
+            cursor: pointer;
+        }
+        
+        .range-input::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            background: var(--color-primary-500);
+            border-radius: var(--radius-full);
+            cursor: pointer;
+            transition: all var(--duration-150) var(--ease-out);
+        }
+        
+        .range-input::-webkit-slider-thumb:hover {
+            background: var(--color-primary-600);
+            transform: scale(1.2);
+        }
+        
+        .range-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: var(--font-size-xs);
+            color: var(--color-text-secondary);
+            margin-top: var(--space-2);
+        }
+        
+        /* Color Picker */
+        .color-picker {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: var(--space-2);
+            margin: var(--space-3) 0;
+        }
+        
+        .color-option {
+            width: 40px;
+            height: 40px;
+            border: 3px solid transparent;
+            border-radius: var(--radius-lg);
+            cursor: pointer;
+            transition: all var(--duration-150) var(--ease-out);
+        }
+        
+        .color-option:hover,
+        .color-option.active {
+            border-color: var(--color-text-primary);
+            transform: scale(1.1);
+        }
+        
+        /* Layout Preview */
+        .layout-preview {
+            background: var(--color-surface-secondary);
+            border: 2px solid var(--color-border);
+            border-radius: var(--border-radius);
+            padding: var(--space-4);
+            margin: var(--space-4) 0;
+            min-height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .preview-content {
+            text-align: center;
+            color: var(--color-text-secondary);
+        }
+        
+        .preview-title {
+            font-size: var(--font-size-lg);
+            font-weight: var(--font-weight-semibold);
+            margin: 0 0 var(--space-2) 0;
+        }
+        
+        .preview-description {
+            font-size: var(--font-size-sm);
+            margin: 0;
+        }
+        
+        /* Action Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-2);
+            padding: var(--space-3) var(--space-5);
+            font-family: var(--font-primary);
+            font-size: var(--font-size-base);
+            font-weight: var(--font-weight-semibold);
+            text-decoration: none;
+            border: 2px solid transparent;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: all var(--animation-speed) var(--ease-in-out);
+            user-select: none;
+            min-height: 48px;
+        }
+        
+        .btn:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px var(--color-focus-ring);
+        }
+        
+        .btn--primary {
+            background-color: var(--color-primary-500);
+            color: var(--color-text-on-primary);
+            border-color: var(--color-primary-600);
+        }
+        
+        .btn--primary:hover:not(:disabled) {
+            background-color: var(--color-primary-600);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .btn--secondary {
+            background-color: var(--color-surface);
+            color: var(--color-text-primary);
+            border-color: var(--color-border-secondary);
+        }
+        
+        .btn--secondary:hover:not(:disabled) {
+            background-color: var(--color-surface-secondary);
+            border-color: var(--color-primary-500);
+            transform: translateY(-1px);
+        }
+        
+        .btn--accent {
+            background-color: var(--color-accent-500);
+            color: white;
+            border-color: var(--color-accent-600);
+        }
+        
+        .btn--accent:hover:not(:disabled) {
+            background-color: var(--color-accent-600);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        /* Studio Action Bar */
+        .studio-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--space-4) var(--space-6);
+            border-top: 2px solid var(--color-border);
+            background: var(--color-surface-secondary);
+        }
+        
+        .actions-left {
+            display: flex;
+            gap: var(--space-3);
+        }
+        
+        .actions-right {
+            display: flex;
+            gap: var(--space-3);
+        }
+        
+        /* Template Gallery */
+        .template-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--space-4);
+            margin: var(--space-4) 0;
+        }
+        
+        .template-card {
+            background: var(--color-surface);
+            border: 2px solid var(--color-border);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            cursor: pointer;
+            transition: all var(--animation-speed) var(--ease-in-out);
+        }
+        
+        .template-card:hover {
+            border-color: var(--color-accent-500);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .template-card.active {
+            border-color: var(--color-accent-500);
+            background: var(--color-accent-50);
+        }
+        
+        .template-preview {
+            height: 120px;
+            background: var(--color-surface-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: var(--font-size-2xl);
+        }
+        
+        .template-info {
+            padding: var(--space-4);
+        }
+        
+        .template-name {
+            font-size: var(--font-size-base);
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-text-primary);
+            margin: 0 0 var(--space-2) 0;
+        }
+        
+        .template-description {
+            font-size: var(--font-size-sm);
+            color: var(--color-text-secondary);
+            margin: 0;
+            line-height: 1.4;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-content {
+                padding: var(--space-3) var(--space-4);
+            }
+            
+            .brand-title {
+                display: none;
+            }
+            
+            .main-content {
+                padding: var(--space-4);
+            }
+            
+            .studio-content {
+                width: 95%;
+                height: 95%;
+            }
+            
+            .studio-body {
+                flex-direction: column;
+            }
+            
+            .studio-sidebar {
+                width: 100%;
+                height: auto;
+                border-right: none;
+                border-bottom: 2px solid var(--color-border);
+            }
+            
+            .template-gallery {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
+            
+            .nav-sidebar {
+                width: 100%;
+                height: auto;
+                position: static;
+                border-right: none;
+                border-bottom: 2px solid var(--color-border);
+            }
+            
+            .layout-sidebar {
+                flex-direction: column;
+            }
+        }
+        
+        /* High contrast mode */
+        @media (prefers-contrast: high) {
+            .nav-link,
+            .btn,
+            .shortcut-item,
+            .template-card {
+                border-width: 3px;
+            }
+            
+            .studio-trigger,
+            .profile-selector {
+                border-width: 3px;
+            }
+        }
+        
+        /* Reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+        
+        /* Hidden utilities */
+        .hidden {
+            display: none !important;
+        }
+        
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="app" id="app">
+        <!-- Skip Link for Accessibility -->
+        <a href="#main-content" class="skip-link">Skip to main content</a>
+        
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="brand">
+                    <div class="brand-icon" aria-hidden="true">☕</div>
+                    <h1 class="brand-title">Coffee Roast Tracker</h1>
+                </div>
+                
+                <div class="header-actions">
+                    <!-- Profile Selector -->
+                    <div class="profile-selector" onclick="toggleProfileDropdown()">
+                        <div class="profile-avatar" id="profile-avatar">JS</div>
+                        <div class="profile-name" id="profile-name">Jane Smith</div>
+                        <span aria-hidden="true">▼</span>
+                        
+                        <div class="profile-dropdown hidden" id="profile-dropdown">
+                            <div class="profile-option active" onclick="selectProfile('jane')">
+                                <div class="profile-avatar">JS</div>
+                                <div>
+                                    <div class="profile-name">Jane Smith</div>
+                                    <div style="font-size: var(--font-size-xs); color: var(--color-text-secondary);">Personal Profile</div>
+                                </div>
+                            </div>
+                            <div class="profile-option" onclick="selectProfile('work')">
+                                <div class="profile-avatar">JW</div>
+                                <div>
+                                    <div class="profile-name">Jane Work</div>
+                                    <div style="font-size: var(--font-size-xs); color: var(--color-text-secondary);">Coffee Shop Profile</div>
+                                </div>
+                            </div>
+                            <div class="profile-option" onclick="selectProfile('family')">
+                                <div class="profile-avatar">FM</div>
+                                <div>
+                                    <div class="profile-name">Family Mode</div>
+                                    <div style="font-size: var(--font-size-xs); color: var(--color-text-secondary);">Shared Device</div>
+                                </div>
+                            </div>
+                            <hr style="margin: var(--space-2) 0; border: 1px solid var(--color-border);">
+                            <div class="profile-option" onclick="createNewProfile()">
+                                <div class="profile-avatar" style="background: var(--color-accent-500);">+</div>
+                                <div class="profile-name">Create New Profile</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Studio Trigger -->
+                    <button class="studio-trigger" onclick="openPersonalizationStudio()">
+                        <span aria-hidden="true">🎨</span>
+                        <span>Personalization Studio</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Flexible Navigation -->
+        <nav class="navigation-container" id="navigation-container" aria-label="Main navigation">
+            <!-- Horizontal Navigation (Default) -->
+            <div class="nav-horizontal" id="nav-horizontal">
+                <div class="nav-container">
+                    <ul class="nav-list" role="menubar" id="nav-list">
+                        <li class="nav-item" role="none" draggable="true">
+                            <div class="drag-handle" aria-label="Drag to reorder"></div>
+                            <a href="#dashboard" class="nav-link" role="menuitem" 
+                               aria-current="page" id="nav-dashboard">
+                                <span class="nav-icon" aria-hidden="true">🏠</span>
+                                <span>Dashboard</span>
+                            </a>
+                        </li>
+                        <li class="nav-item" role="none" draggable="true">
+                            <div class="drag-handle" aria-label="Drag to reorder"></div>
+                            <a href="#roasting" class="nav-link active" role="menuitem" id="nav-roasting">
+                                <span class="nav-icon custom" aria-hidden="true">☕</span>
+                                <span>Active Roast</span>
+                            </a>
+                        </li>
+                        <li class="nav-item" role="none" draggable="true">
+                            <div class="drag-handle" aria-label="Drag to reorder"></div>
+                            <a href="#beans" class="nav-link" role="menuitem" id="nav-beans">
+                                <span class="nav-icon" aria-hidden="true">🌱</span>
+                                <span>Bean Management</span>
+                            </a>
+                        </li>
+                        <li class="nav-item" role="none" draggable="true">
+                            <div class="drag-handle" aria-label="Drag to reorder"></div>
+                            <a href="#statistics" class="nav-link" role="menuitem" id="nav-statistics">
+                                <span class="nav-icon" aria-hidden="true">📊</span>
+                                <span>Analytics</span>
+                            </a>
+                        </li>
+                        <li class="nav-item" role="none" draggable="true">
+                            <div class="drag-handle" aria-label="Drag to reorder"></div>
+                            <a href="#settings" class="nav-link" role="menuitem" id="nav-settings">
+                                <span class="nav-icon" aria-hidden="true">⚙️</span>
+                                <span>Settings</span>
+                            </a>
+                        </li>
+                    </ul>
+                    
+                    <!-- Custom Shortcuts -->
+                    <div class="shortcuts-panel">
+                        <h3 class="shortcuts-title">
+                            My Shortcuts
+                            <button class="add-shortcut" onclick="addCustomShortcut()">
+                                + Add
+                            </button>
+                        </h3>
+                        <div class="shortcuts-grid" id="shortcuts-grid">
+                            <a href="#quick-note" class="shortcut-item">
+                                <button class="shortcut-remove" onclick="removeShortcut(this)" aria-label="Remove shortcut">×</button>
+                                <div class="shortcut-icon">📝</div>
+                                <div class="shortcut-label">Quick Note</div>
+                                <div class="shortcut-key">N</div>
+                            </a>
+                            
+                            <a href="#temperature-log" class="shortcut-item">
+                                <button class="shortcut-remove" onclick="removeShortcut(this)" aria-label="Remove shortcut">×</button>
+                                <div class="shortcut-icon">🌡️</div>
+                                <div class="shortcut-label">Temp Log</div>
+                                <div class="shortcut-key">T</div>
+                            </a>
+                            
+                            <a href="#timer-controls" class="shortcut-item">
+                                <button class="shortcut-remove" onclick="removeShortcut(this)" aria-label="Remove shortcut">×</button>
+                                <div class="shortcut-icon">⏱️</div>
+                                <div class="shortcut-label">Timer</div>
+                                <div class="shortcut-key">Space</div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        
+        <!-- Main Content -->
+        <main class="main-content" id="main-content" tabindex="-1">
+            <section style="width: 100%;">
+                <div style="margin-bottom: var(--space-8);">
+                    <h1 style="font-size: var(--font-size-3xl); font-weight: var(--font-weight-bold); color: var(--color-text-primary); margin: 0 0 var(--space-2) 0;">
+                        Full Personalization Studio
+                    </h1>
+                    <p style="font-size: var(--font-size-lg); color: var(--color-text-secondary); margin: 0;">
+                        Complete control over your navigation experience with unlimited customization
+                    </p>
+                </div>
+                
+                <div style="background-color: var(--color-surface); border: 2px solid var(--color-border); border-radius: var(--border-radius); padding: var(--space-6); box-shadow: var(--shadow-sm); margin-bottom: var(--space-6);">
+                    <h2 style="margin: 0 0 var(--space-4) 0;">Current Configuration: Jane's Personal Setup</h2>
+                    <p style="margin: 0 0 var(--space-6) 0; color: var(--color-text-secondary);">
+                        Your personalized interface with custom navigation layout, color scheme, and shortcuts. 
+                        Switch profiles or open the Personalization Studio for complete customization.
+                    </p>
+                    <div style="display: flex; gap: var(--space-4); flex-wrap: wrap;">
+                        <button class="btn btn--primary" onclick="openPersonalizationStudio()">
+                            <span aria-hidden="true">🎨</span>
+                            <span>Open Studio</span>
+                        </button>
+                        <button class="btn btn--secondary" onclick="quickLayoutSwitch()">
+                            <span aria-hidden="true">🔄</span>
+                            <span>Switch Layout</span>
+                        </button>
+                        <button class="btn btn--secondary" onclick="importConfiguration()">
+                            <span aria-hidden="true">📥</span>
+                            <span>Import Config</span>
+                        </button>
+                        <button class="btn btn--secondary" onclick="exportConfiguration()">
+                            <span aria-hidden="true">📤</span>
+                            <span>Export Config</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <div style="background-color: var(--color-surface); border: 2px solid var(--color-border); border-radius: var(--border-radius); padding: var(--space-6); box-shadow: var(--shadow-sm);">
+                    <h3 style="margin: 0 0 var(--space-4) 0;">Full Personalization Features</h3>
+                    <p style="margin: 0 0 var(--space-4) 0; color: var(--color-text-secondary);">
+                        Experience complete interface customization:
+                    </p>
+                    <ul style="margin: 0 0 var(--space-6) 0; color: var(--color-text-secondary);">
+                        <li><strong>Drag & Drop Navigation:</strong> Reorder navigation items by dragging</li>
+                        <li><strong>Multiple Layout Options:</strong> Horizontal, sidebar, floating navigation modes</li>
+                        <li><strong>Custom Color Themes:</strong> Create and save personalized color schemes</li>
+                        <li><strong>Profile Management:</strong> Multiple user profiles with separate configurations</li>
+                        <li><strong>Custom Shortcuts:</strong> Create keyboard shortcuts for any action</li>
+                        <li><strong>Advanced Customization:</strong> Font sizes, animations, spacing, and more</li>
+                        <li><strong>Import/Export:</strong> Share configurations or backup your settings</li>
+                        <li><strong>Template System:</strong> Start from pre-designed layouts</li>
+                    </ul>
+                    <div style="display: flex; gap: var(--space-4); flex-wrap: wrap;">
+                        <button class="btn btn--secondary" onclick="demoFeature('drag-drop')">
+                            <span aria-hidden="true">🖱️</span>
+                            <span>Try Drag & Drop</span>
+                        </button>
+                        <button class="btn btn--secondary" onclick="demoFeature('layouts')">
+                            <span aria-hidden="true">📱</span>
+                            <span>Switch Layouts</span>
+                        </button>
+                        <button class="btn btn--secondary" onclick="demoFeature('colors')">
+                            <span aria-hidden="true">🎨</span>
+                            <span>Change Colors</span>
+                        </button>
+                        <button class="btn btn--accent" onclick="demoFeature('full-studio')">
+                            <span aria-hidden="true">✨</span>
+                            <span>See All Features</span>
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </main>
+        
+        <!-- Personalization Studio Modal -->
+        <div class="studio-modal hidden" id="studio-modal">
+            <div class="studio-content">
+                <div class="studio-header">
+                    <h2 class="studio-title">Personalization Studio</h2>
+                    <button class="studio-close" onclick="closePersonalizationStudio()" aria-label="Close studio">
+                        ×
+                    </button>
+                </div>
+                
+                <div class="studio-body">
+                    <div class="studio-sidebar">
+                        <div class="studio-section">
+                            <h3 class="studio-section-title">Quick Templates</h3>
+                            <div class="template-gallery">
+                                <div class="template-card active" onclick="selectTemplate('default')">
+                                    <div class="template-preview">🏠</div>
+                                    <div class="template-info">
+                                        <h4 class="template-name">Default</h4>
+                                        <p class="template-description">Standard horizontal layout</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="template-card" onclick="selectTemplate('sidebar')">
+                                    <div class="template-preview">📋</div>
+                                    <div class="template-info">
+                                        <h4 class="template-name">Sidebar</h4>
+                                        <p class="template-description">Vertical side navigation</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="template-card" onclick="selectTemplate('floating')">
+                                    <div class="template-preview">🎈</div>
+                                    <div class="template-info">
+                                        <h4 class="template-name">Floating</h4>
+                                        <p class="template-description">Minimalist floating nav</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="template-card" onclick="selectTemplate('adhd-minimal')">
+                                    <div class="template-preview">🧠</div>
+                                    <div class="template-info">
+                                        <h4 class="template-name">ADHD Minimal</h4>
+                                        <p class="template-description">Cognitive load optimized</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="studio-section">
+                            <h3 class="studio-section-title">Layout</h3>
+                            <div class="control-group">
+                                <label class="control-label" for="layout-style">Navigation Style</label>
+                                <p class="control-description">Choose how navigation is displayed</p>
+                                <select class="select-control" id="layout-style" onchange="updateLayoutStyle(this.value)">
+                                    <option value="horizontal">Horizontal Bar</option>
+                                    <option value="sidebar">Sidebar Navigation</option>
+                                    <option value="floating">Floating Panel</option>
+                                    <option value="bottom">Bottom Mobile Nav</option>
+                                </select>
+                            </div>
+                            
+                            <div class="control-group">
+                                <label class="control-label" for="nav-size">Navigation Size</label>
+                                <div class="range-control">
+                                    <input type="range" class="range-input" id="nav-size" min="1" max="4" value="2" onchange="updateNavSize(this.value)">
+                                    <div class="range-labels">
+                                        <span>Compact</span>
+                                        <span>Standard</span>
+                                        <span>Large</span>
+                                        <span>Extra Large</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="control-group">
+                                <label class="control-label" for="content-width">Content Width</label>
+                                <div class="range-control">
+                                    <input type="range" class="range-input" id="content-width" min="800" max="1400" value="1200" step="100" onchange="updateContentWidth(this.value)">
+                                    <div class="range-labels">
+                                        <span>800px</span>
+                                        <span>1400px</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="studio-section">
+                            <h3 class="studio-section-title">Colors</h3>
+                            <div class="control-group">
+                                <label class="control-label">Primary Color</label>
+                                <p class="control-description">Main accent color for navigation and buttons</p>
+                                <div class="color-picker">
+                                    <div class="color-option active" style="background: #c8794a;" onclick="updatePrimaryColor('#c8794a')"></div>
+                                    <div class="color-option" style="background: #3b82f6;" onclick="updatePrimaryColor('#3b82f6')"></div>
+                                    <div class="color-option" style="background: #10b981;" onclick="updatePrimaryColor('#10b981')"></div>
+                                    <div class="color-option" style="background: #8b5cf6;" onclick="updatePrimaryColor('#8b5cf6')"></div>
+                                    <div class="color-option" style="background: #f59e0b;" onclick="updatePrimaryColor('#f59e0b')"></div>
+                                    <div class="color-option" style="background: #ef4444;" onclick="updatePrimaryColor('#ef4444')"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="control-group">
+                                <label class="control-label">Background Theme</label>
+                                <select class="select-control" onchange="updateBackgroundTheme(this.value)">
+                                    <option value="light">Light Theme</option>
+                                    <option value="dark">Dark Theme</option>
+                                    <option value="auto">Auto (System)</option>
+                                    <option value="high-contrast">High Contrast</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="studio-main">
+                        <div class="studio-section">
+                            <h3 class="studio-section-title">Live Preview</h3>
+                            <div class="layout-preview" id="layout-preview">
+                                <div class="preview-content">
+                                    <div class="preview-title">Navigation Preview</div>
+                                    <p class="preview-description">Your customized layout will appear here in real-time</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="studio-section">
+                            <h3 class="studio-section-title">Advanced Settings</h3>
+                            
+                            <div class="control-group">
+                                <label class="control-label" for="animation-speed">Animation Speed</label>
+                                <p class="control-description">Controls transition and hover effect speeds</p>
+                                <div class="range-control">
+                                    <input type="range" class="range-input" id="animation-speed" min="50" max="500" value="200" step="50" onchange="updateAnimationSpeed(this.value)">
+                                    <div class="range-labels">
+                                        <span>Fast</span>
+                                        <span>Slow</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="control-group">
+                                <label class="control-label" for="border-radius">Border Radius</label>
+                                <p class="control-description">Roundness of buttons and navigation elements</p>
+                                <div class="range-control">
+                                    <input type="range" class="range-input" id="border-radius" min="0" max="24" value="12" onchange="updateBorderRadius(this.value)">
+                                    <div class="range-labels">
+                                        <span>Sharp</span>
+                                        <span>Rounded</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="control-group">
+                                <label class="control-label">Typography</label>
+                                <select class="select-control" onchange="updateFontFamily(this.value)">
+                                    <option value="inter">Inter (Default)</option>
+                                    <option value="system">System Font</option>
+                                    <option value="roboto">Roboto</option>
+                                    <option value="open-sans">Open Sans</option>
+                                    <option value="source-sans">Source Sans Pro</option>
+                                </select>
+                            </div>
+                            
+                            <div class="control-group">
+                                <label class="control-label" for="font-size">Base Font Size</label>
+                                <div class="range-control">
+                                    <input type="range" class="range-input" id="font-size" min="14" max="20" value="16" onchange="updateFontSize(this.value)">
+                                    <div class="range-labels">
+                                        <span>14px</span>
+                                        <span>20px</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="studio-section">
+                            <h3 class="studio-section-title">Accessibility</h3>
+                            
+                            <div class="control-group">
+                                <label class="control-label">ADHD Optimizations</label>
+                                <p class="control-description">Specialized settings for ADHD-friendly interfaces</p>
+                                <label style="display: flex; align-items: center; gap: var(--space-2); margin: var(--space-2) 0;">
+                                    <input type="checkbox" checked onchange="toggleADHDOptimizations(this.checked)">
+                                    <span>Reduce cognitive load</span>
+                                </label>
+                                <label style="display: flex; align-items: center; gap: var(--space-2); margin: var(--space-2) 0;">
+                                    <input type="checkbox" checked onchange="toggleFocusMode(this.checked)">
+                                    <span>Enable focus mode</span>
+                                </label>
+                                <label style="display: flex; align-items: center; gap: var(--space-2); margin: var(--space-2) 0;">
+                                    <input type="checkbox" onchange="toggleReducedMotion(this.checked)">
+                                    <span>Reduce motion and animations</span>
+                                </label>
+                            </div>
+                            
+                            <div class="control-group">
+                                <label class="control-label">Touch Targets</label>
+                                <p class="control-description">Minimum size for touch-friendly interactions</p>
+                                <select class="select-control" onchange="updateTouchTargets(this.value)">
+                                    <option value="standard">Standard (44px)</option>
+                                    <option value="large">Large (60px)</option>
+                                    <option value="xl">Extra Large (80px)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="studio-actions">
+                    <div class="actions-left">
+                        <button class="btn btn--secondary" onclick="resetToDefault()">
+                            <span aria-hidden="true">🔄</span>
+                            <span>Reset to Default</span>
+                        </button>
+                        <button class="btn btn--secondary" onclick="importConfiguration()">
+                            <span aria-hidden="true">📥</span>
+                            <span>Import</span>
+                        </button>
+                    </div>
+                    
+                    <div class="actions-right">
+                        <button class="btn btn--secondary" onclick="exportConfiguration()">
+                            <span aria-hidden="true">📤</span>
+                            <span>Export</span>
+                        </button>
+                        <button class="btn btn--accent" onclick="previewChanges()">
+                            <span aria-hidden="true">👁️</span>
+                            <span>Preview</span>
+                        </button>
+                        <button class="btn btn--primary" onclick="applyChanges()">
+                            <span aria-hidden="true">✅</span>
+                            <span>Apply Changes</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Live region for announcements -->
+        <div aria-live="polite" aria-atomic="true" class="sr-only" id="announcements"></div>
+    </div>
+
+    <script>
+        // Full Personalization Navigation Prototype JavaScript
+        class FullPersonalizationNavigation {
+            constructor() {
+                this.currentProfile = 'jane';
+                this.profiles = {
+                    jane: {
+                        name: 'Jane Smith',
+                        avatar: 'JS',
+                        description: 'Personal Profile',
+                        config: this.getDefaultConfig()
+                    },
+                    work: {
+                        name: 'Jane Work', 
+                        avatar: 'JW',
+                        description: 'Coffee Shop Profile',
+                        config: this.getWorkConfig()
+                    },
+                    family: {
+                        name: 'Family Mode',
+                        avatar: 'FM', 
+                        description: 'Shared Device',
+                        config: this.getFamilyConfig()
+                    }
+                };
+                this.shortcuts = [
+                    { id: 'quick-note', icon: '📝', label: 'Quick Note', key: 'N' },
+                    { id: 'temperature-log', icon: '🌡️', label: 'Temp Log', key: 'T' },
+                    { id: 'timer-controls', icon: '⏱️', label: 'Timer', key: 'Space' }
+                ];
+                this.draggedItem = null;
+                
+                this.init();
+            }
+            
+            getDefaultConfig() {
+                return {
+                    layoutStyle: 'horizontal',
+                    navSize: 'standard',
+                    contentWidth: 1200,
+                    primaryColor: '#c8794a',
+                    backgroundTheme: 'light',
+                    animationSpeed: 200,
+                    borderRadius: 12,
+                    fontFamily: 'inter',
+                    fontSize: 16,
+                    touchTargets: 'standard',
+                    adhdOptimizations: true,
+                    focusMode: true,
+                    reducedMotion: false
+                };
+            }
+            
+            getWorkConfig() {
+                return {
+                    ...this.getDefaultConfig(),
+                    layoutStyle: 'sidebar',
+                    primaryColor: '#3b82f6',
+                    navSize: 'large',
+                    backgroundTheme: 'light'
+                };
+            }
+            
+            getFamilyConfig() {
+                return {
+                    ...this.getDefaultConfig(),
+                    layoutStyle: 'horizontal',
+                    primaryColor: '#10b981',
+                    navSize: 'xl',
+                    fontSize: 18,
+                    touchTargets: 'large'
+                };
+            }
+            
+            init() {
+                this.applyCurrentConfig();
+                this.bindNavigationEvents();
+                this.setupDragAndDrop();
+                this.setupKeyboardShortcuts();
+                this.announcePageLoad();
+                this.bindAccessibilityEvents();
+            }
+            
+            applyCurrentConfig() {
+                const config = this.profiles[this.currentProfile].config;
+                
+                // Apply CSS custom properties
+                document.documentElement.style.setProperty('--content-width', config.contentWidth + 'px');
+                document.documentElement.style.setProperty('--color-primary-500', config.primaryColor);
+                document.documentElement.style.setProperty('--animation-speed', config.animationSpeed + 'ms');
+                document.documentElement.style.setProperty('--border-radius', config.borderRadius + 'px');
+                document.documentElement.style.setProperty('--font-size-base', config.fontSize + 'px');
+                
+                // Apply layout
+                this.updateLayout(config.layoutStyle);
+                
+                // Apply theme
+                if (config.backgroundTheme === 'dark') {
+                    document.body.classList.add('dark-theme');
+                } else {
+                    document.body.classList.remove('dark-theme');
+                }
+                
+                // Apply ADHD optimizations
+                if (config.adhdOptimizations) {
+                    document.body.classList.add('adhd-optimized');
+                } else {
+                    document.body.classList.remove('adhd-optimized');
+                }
+                
+                // Apply reduced motion
+                if (config.reducedMotion) {
+                    document.body.classList.add('reduced-motion');
+                } else {
+                    document.body.classList.remove('reduced-motion');
+                }
+                
+                this.updateProfileDisplay();
+            }
+            
+            updateLayout(layoutStyle) {
+                const app = document.getElementById('app');
+                const navContainer = document.getElementById('navigation-container');
+                const navHorizontal = document.getElementById('nav-horizontal');
+                
+                // Reset classes
+                app.className = 'app';
+                navContainer.className = 'navigation-container';
+                
+                switch (layoutStyle) {
+                    case 'sidebar':
+                        app.classList.add('layout-sidebar');
+                        navContainer.innerHTML = `
+                            <div class="nav-sidebar">
+                                ${navHorizontal.innerHTML}
+                            </div>
+                        `;
+                        break;
+                    case 'floating':
+                        app.classList.add('layout-floating');
+                        navContainer.innerHTML = `
+                            <div class="nav-floating">
+                                ${navHorizontal.innerHTML}
+                            </div>
+                        `;
+                        break;
+                    default:
+                        navContainer.innerHTML = `<div class="nav-horizontal" id="nav-horizontal">${navHorizontal.innerHTML}</div>`;
+                }
+                
+                this.bindNavigationEvents();
+                this.setupDragAndDrop();
+            }
+            
+            updateProfileDisplay() {
+                const profile = this.profiles[this.currentProfile];
+                document.getElementById('profile-avatar').textContent = profile.avatar;
+                document.getElementById('profile-name').textContent = profile.name;
+            }
+            
+            bindNavigationEvents() {
+                // Main navigation
+                document.querySelectorAll('.nav-link').forEach(link => {
+                    link.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const section = link.id.replace('nav-', '');
+                        this.navigateToSection(section);
+                    });
+                });
+                
+                // Custom shortcuts
+                document.querySelectorAll('.shortcut-item').forEach(shortcut => {
+                    shortcut.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const shortcutId = shortcut.getAttribute('href').substring(1);
+                        this.performShortcut(shortcutId);
+                    });
+                });
+            }
+            
+            setupDragAndDrop() {
+                const navItems = document.querySelectorAll('.nav-item[draggable="true"]');
+                
+                navItems.forEach(item => {
+                    item.addEventListener('dragstart', (e) => {
+                        this.draggedItem = item;
+                        item.style.opacity = '0.5';
+                        e.dataTransfer.effectAllowed = 'move';
+                        this.announceToUser('Started dragging navigation item');
+                    });
+                    
+                    item.addEventListener('dragend', (e) => {
+                        item.style.opacity = '';
+                        this.draggedItem = null;
+                        this.announceToUser('Finished dragging navigation item');
+                    });
+                    
+                    item.addEventListener('dragover', (e) => {
+                        e.preventDefault();
+                        e.dataTransfer.dropEffect = 'move';
+                    });
+                    
+                    item.addEventListener('drop', (e) => {
+                        e.preventDefault();
+                        if (this.draggedItem && this.draggedItem !== item) {
+                            const navList = item.parentNode;
+                            const draggedIndex = Array.from(navList.children).indexOf(this.draggedItem);
+                            const targetIndex = Array.from(navList.children).indexOf(item);
+                            
+                            if (draggedIndex < targetIndex) {
+                                navList.insertBefore(this.draggedItem, item.nextSibling);
+                            } else {
+                                navList.insertBefore(this.draggedItem, item);
+                            }
+                            
+                            this.announceToUser('Navigation order updated');
+                        }
+                    });
+                });
+            }
+            
+            setupKeyboardShortcuts() {
+                document.addEventListener('keydown', (e) => {
+                    // Custom shortcuts
+                    if (e.altKey) {
+                        const shortcutMap = {
+                            'n': 'quick-note',
+                            't': 'temperature-log'
+                        };
+                        
+                        const shortcutId = shortcutMap[e.key.toLowerCase()];
+                        if (shortcutId) {
+                            e.preventDefault();
+                            this.performShortcut(shortcutId);
+                        }
+                    }
+                    
+                    // Space for timer (if not in input field)
+                    if (e.key === ' ' && !e.target.matches('input, textarea, select, [contenteditable]')) {
+                        e.preventDefault();
+                        this.performShortcut('timer-controls');
+                    }
+                    
+                    // Alt + P for personalization studio
+                    if (e.altKey && e.key.toLowerCase() === 'p') {
+                        e.preventDefault();
+                        this.openPersonalizationStudio();
+                    }
+                    
+                    // Escape to close modals
+                    if (e.key === 'Escape') {
+                        this.closeAllModals();
+                    }
+                });
+            }
+            
+            navigateToSection(section) {
+                // Update active navigation
+                document.querySelectorAll('.nav-link').forEach(link => {
+                    link.classList.remove('active');
+                    link.removeAttribute('aria-current');
+                });
+                
+                const activeLink = document.getElementById(`nav-${section}`);
+                if (activeLink) {
+                    activeLink.classList.add('active');
+                    activeLink.setAttribute('aria-current', 'page');
+                }
+                
+                this.announceNavigation(section);
+            }
+            
+            performShortcut(shortcutId) {
+                const shortcut = this.shortcuts.find(s => s.id === shortcutId);
+                if (shortcut) {
+                    this.announceToUser(`Executed shortcut: ${shortcut.label}`);
+                }
+            }
+            
+            openPersonalizationStudio() {
+                document.getElementById('studio-modal').classList.remove('hidden');
+                this.announceToUser('Personalization Studio opened');
+                
+                // Focus first control
+                setTimeout(() => {
+                    document.getElementById('layout-style').focus();
+                }, 100);
+            }
+            
+            closePersonalizationStudio() {
+                document.getElementById('studio-modal').classList.add('hidden');
+                this.announceToUser('Personalization Studio closed');
+            }
+            
+            closeAllModals() {
+                document.getElementById('studio-modal').classList.add('hidden');
+                document.getElementById('profile-dropdown').classList.add('hidden');
+            }
+            
+            selectProfile(profileId) {
+                if (this.profiles[profileId]) {
+                    this.currentProfile = profileId;
+                    this.applyCurrentConfig();
+                    this.announceToUser(`Switched to ${this.profiles[profileId].name} profile`);
+                    
+                    // Update active state in dropdown
+                    document.querySelectorAll('.profile-option').forEach(option => {
+                        option.classList.remove('active');
+                    });
+                    event.target.closest('.profile-option').classList.add('active');
+                    
+                    // Close dropdown
+                    document.getElementById('profile-dropdown').classList.add('hidden');
+                }
+            }
+            
+            updateLayoutStyle(style) {
+                this.profiles[this.currentProfile].config.layoutStyle = style;
+                this.updateLayout(style);
+                this.announceToUser(`Layout changed to ${style}`);
+            }
+            
+            updatePrimaryColor(color) {
+                this.profiles[this.currentProfile].config.primaryColor = color;
+                document.documentElement.style.setProperty('--color-primary-500', color);
+                
+                // Update active color picker
+                document.querySelectorAll('.color-option').forEach(option => {
+                    option.classList.remove('active');
+                });
+                event.target.classList.add('active');
+                
+                this.announceToUser('Primary color updated');
+            }
+            
+            updateAnimationSpeed(speed) {
+                this.profiles[this.currentProfile].config.animationSpeed = speed;
+                document.documentElement.style.setProperty('--animation-speed', speed + 'ms');
+                this.announceToUser(`Animation speed set to ${speed}ms`);
+            }
+            
+            updateBorderRadius(radius) {
+                this.profiles[this.currentProfile].config.borderRadius = radius;
+                document.documentElement.style.setProperty('--border-radius', radius + 'px');
+                this.announceToUser(`Border radius set to ${radius}px`);
+            }
+            
+            updateFontSize(size) {
+                this.profiles[this.currentProfile].config.fontSize = size;
+                document.documentElement.style.setProperty('--font-size-base', size + 'px');
+                this.announceToUser(`Font size set to ${size}px`);
+            }
+            
+            updateContentWidth(width) {
+                this.profiles[this.currentProfile].config.contentWidth = width;
+                document.documentElement.style.setProperty('--content-width', width + 'px');
+                this.announceToUser(`Content width set to ${width}px`);
+            }
+            
+            addCustomShortcut() {
+                const shortcutId = `custom-${Date.now()}`;
+                const newShortcut = {
+                    id: shortcutId,
+                    icon: '⭐',
+                    label: 'Custom Action',
+                    key: 'C'
+                };
+                
+                this.shortcuts.push(newShortcut);
+                this.renderShortcuts();
+                this.announceToUser('Custom shortcut added');
+            }
+            
+            removeShortcut(button) {
+                const shortcutItem = button.closest('.shortcut-item');
+                const shortcutId = shortcutItem.getAttribute('href').substring(1);
+                
+                this.shortcuts = this.shortcuts.filter(s => s.id !== shortcutId);
+                shortcutItem.remove();
+                this.announceToUser('Shortcut removed');
+            }
+            
+            renderShortcuts() {
+                const grid = document.getElementById('shortcuts-grid');
+                grid.innerHTML = '';
+                
+                this.shortcuts.forEach(shortcut => {
+                    const item = document.createElement('a');
+                    item.href = `#${shortcut.id}`;
+                    item.className = 'shortcut-item';
+                    item.innerHTML = `
+                        <button class="shortcut-remove" onclick="removeShortcut(this)" aria-label="Remove shortcut">×</button>
+                        <div class="shortcut-icon">${shortcut.icon}</div>
+                        <div class="shortcut-label">${shortcut.label}</div>
+                        <div class="shortcut-key">${shortcut.key}</div>
+                    `;
+                    grid.appendChild(item);
+                });
+                
+                this.bindNavigationEvents();
+            }
+            
+            selectTemplate(templateId) {
+                // Update active template
+                document.querySelectorAll('.template-card').forEach(card => {
+                    card.classList.remove('active');
+                });
+                event.target.closest('.template-card').classList.add('active');
+                
+                // Apply template configuration
+                const templates = {
+                    'default': this.getDefaultConfig(),
+                    'sidebar': { ...this.getDefaultConfig(), layoutStyle: 'sidebar' },
+                    'floating': { ...this.getDefaultConfig(), layoutStyle: 'floating' },
+                    'adhd-minimal': {
+                        ...this.getDefaultConfig(),
+                        navSize: 'large',
+                        fontSize: 18,
+                        touchTargets: 'large',
+                        adhdOptimizations: true,
+                        reducedMotion: true
+                    }
+                };
+                
+                if (templates[templateId]) {
+                    this.profiles[this.currentProfile].config = { ...templates[templateId] };
+                    this.applyCurrentConfig();
+                    this.updateStudioControls();
+                    this.announceToUser(`Applied ${templateId} template`);
+                }
+            }
+            
+            updateStudioControls() {
+                const config = this.profiles[this.currentProfile].config;
+                
+                // Update form controls to match current config
+                document.getElementById('layout-style').value = config.layoutStyle;
+                document.getElementById('nav-size').value = this.mapNavSize(config.navSize);
+                document.getElementById('content-width').value = config.contentWidth;
+                document.getElementById('animation-speed').value = config.animationSpeed;
+                document.getElementById('border-radius').value = config.borderRadius;
+                document.getElementById('font-size').value = config.fontSize;
+            }
+            
+            mapNavSize(size) {
+                const sizeMap = { compact: 1, standard: 2, large: 3, xl: 4 };
+                return sizeMap[size] || 2;
+            }
+            
+            applyChanges() {
+                this.closePersonalizationStudio();
+                this.announceToUser('Personalization changes applied successfully');
+                
+                // Show confirmation
+                this.showToastMessage('✅ Configuration Updated', 'Your personalized interface has been saved and applied.');
+            }
+            
+            exportConfiguration() {
+                const config = {
+                    profile: this.currentProfile,
+                    settings: this.profiles[this.currentProfile].config,
+                    shortcuts: this.shortcuts,
+                    timestamp: new Date().toISOString()
+                };
+                
+                const dataStr = JSON.stringify(config, null, 2);
+                const dataBlob = new Blob([dataStr], {type: 'application/json'});
+                const url = URL.createObjectURL(dataBlob);
+                
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = `coffee-tracker-config-${this.currentProfile}.json`;
+                link.click();
+                
+                URL.revokeObjectURL(url);
+                this.announceToUser('Configuration exported successfully');
+            }
+            
+            importConfiguration() {
+                const input = document.createElement('input');
+                input.type = 'file';
+                input.accept = '.json';
+                input.onchange = (e) => {
+                    const file = e.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = (event) => {
+                            try {
+                                const config = JSON.parse(event.target.result);
+                                if (config.settings) {
+                                    this.profiles[this.currentProfile].config = config.settings;
+                                    if (config.shortcuts) {
+                                        this.shortcuts = config.shortcuts;
+                                        this.renderShortcuts();
+                                    }
+                                    this.applyCurrentConfig();
+                                    this.updateStudioControls();
+                                    this.announceToUser('Configuration imported successfully');
+                                }
+                            } catch (error) {
+                                this.announceToUser('Error importing configuration file');
+                            }
+                        };
+                        reader.readAsText(file);
+                    }
+                };
+                input.click();
+            }
+            
+            showToastMessage(title, message) {
+                // Create and show toast notification
+                const toast = document.createElement('div');
+                toast.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    background: var(--color-surface);
+                    border: 2px solid var(--color-success-500);
+                    border-radius: var(--border-radius);
+                    padding: var(--space-4);
+                    box-shadow: var(--shadow-lg);
+                    z-index: var(--z-overlay);
+                    max-width: 320px;
+                    animation: slide-in 0.3s ease-out;
+                `;
+                
+                toast.innerHTML = `
+                    <div style="font-weight: var(--font-weight-semibold); color: var(--color-success-600); margin-bottom: var(--space-2);">
+                        ${title}
+                    </div>
+                    <div style="color: var(--color-text-primary);">
+                        ${message}
+                    </div>
+                `;
+                
+                document.body.appendChild(toast);
+                
+                setTimeout(() => {
+                    toast.remove();
+                }, 4000);
+            }
+            
+            announceToUser(message) {
+                const announcements = document.getElementById('announcements');
+                announcements.textContent = message;
+            }
+            
+            announceNavigation(section) {
+                const sectionNames = {
+                    dashboard: 'Dashboard',
+                    roasting: 'Active roast management', 
+                    beans: 'Bean management and selection',
+                    statistics: 'Analytics and performance statistics',
+                    settings: 'Application settings and preferences'
+                };
+                
+                const sectionName = sectionNames[section] || section;
+                this.announceToUser(`Navigated to ${sectionName}`);
+            }
+            
+            announcePageLoad() {
+                setTimeout(() => {
+                    this.announceToUser(`Full personalization interface loaded. Currently using ${this.profiles[this.currentProfile].name} profile. Press Alt+P to open Personalization Studio.`);
+                }, 1000);
+            }
+            
+            bindAccessibilityEvents() {
+                // Handle modal focus trapping
+                const modal = document.getElementById('studio-modal');
+                modal.addEventListener('keydown', (e) => {
+                    if (e.key === 'Tab') {
+                        const focusableElements = modal.querySelectorAll(
+                            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+                        );
+                        const firstElement = focusableElements[0];
+                        const lastElement = focusableElements[focusableElements.length - 1];
+                        
+                        if (e.shiftKey && document.activeElement === firstElement) {
+                            e.preventDefault();
+                            lastElement.focus();
+                        } else if (!e.shiftKey && document.activeElement === lastElement) {
+                            e.preventDefault();
+                            firstElement.focus();
+                        }
+                    }
+                });
+            }
+        }
+        
+        // Global functions for HTML onclick handlers
+        window.toggleProfileDropdown = function() {
+            const dropdown = document.getElementById('profile-dropdown');
+            dropdown.classList.toggle('hidden');
+            
+            if (!dropdown.classList.contains('hidden')) {
+                window.navigation.announceToUser('Profile menu opened');
+            }
+        };
+        
+        window.selectProfile = function(profileId) {
+            window.navigation.selectProfile(profileId);
+        };
+        
+        window.createNewProfile = function() {
+            window.navigation.announceToUser('Create new profile feature - would open profile creation dialog');
+            document.getElementById('profile-dropdown').classList.add('hidden');
+        };
+        
+        window.openPersonalizationStudio = function() {
+            window.navigation.openPersonalizationStudio();
+        };
+        
+        window.closePersonalizationStudio = function() {
+            window.navigation.closePersonalizationStudio();
+        };
+        
+        window.quickLayoutSwitch = function() {
+            const layouts = ['horizontal', 'sidebar', 'floating'];
+            const current = window.navigation.profiles[window.navigation.currentProfile].config.layoutStyle;
+            const currentIndex = layouts.indexOf(current);
+            const nextLayout = layouts[(currentIndex + 1) % layouts.length];
+            
+            window.navigation.updateLayoutStyle(nextLayout);
+        };
+        
+        window.importConfiguration = function() {
+            window.navigation.importConfiguration();
+        };
+        
+        window.exportConfiguration = function() {
+            window.navigation.exportConfiguration();
+        };
+        
+        window.demoFeature = function(feature) {
+            const messages = {
+                'drag-drop': 'Try dragging navigation items to reorder them!',
+                'layouts': 'Click the layout switcher to see different navigation styles.',
+                'colors': 'Open the Studio to customize colors and themes.',
+                'full-studio': 'Opening Personalization Studio with all customization options...'
+            };
+            
+            window.navigation.announceToUser(messages[feature]);
+            
+            if (feature === 'full-studio') {
+                window.navigation.openPersonalizationStudio();
+            }
+        };
+        
+        window.addCustomShortcut = function() {
+            window.navigation.addCustomShortcut();
+        };
+        
+        window.removeShortcut = function(button) {
+            window.navigation.removeShortcut(button);
+        };
+        
+        window.selectTemplate = function(templateId) {
+            window.navigation.selectTemplate(templateId);
+        };
+        
+        window.updateLayoutStyle = function(style) {
+            window.navigation.updateLayoutStyle(style);
+        };
+        
+        window.updateNavSize = function(size) {
+            const sizeNames = ['', 'compact', 'standard', 'large', 'xl'];
+            window.navigation.profiles[window.navigation.currentProfile].config.navSize = sizeNames[size];
+            window.navigation.announceToUser(`Navigation size set to ${sizeNames[size]}`);
+        };
+        
+        window.updateContentWidth = function(width) {
+            window.navigation.updateContentWidth(width);
+        };
+        
+        window.updatePrimaryColor = function(color) {
+            window.navigation.updatePrimaryColor(color);
+        };
+        
+        window.updateBackgroundTheme = function(theme) {
+            window.navigation.profiles[window.navigation.currentProfile].config.backgroundTheme = theme;
+            window.navigation.applyCurrentConfig();
+            window.navigation.announceToUser(`Background theme set to ${theme}`);
+        };
+        
+        window.updateAnimationSpeed = function(speed) {
+            window.navigation.updateAnimationSpeed(speed);
+        };
+        
+        window.updateBorderRadius = function(radius) {
+            window.navigation.updateBorderRadius(radius);
+        };
+        
+        window.updateFontFamily = function(family) {
+            window.navigation.profiles[window.navigation.currentProfile].config.fontFamily = family;
+            window.navigation.announceToUser(`Font family set to ${family}`);
+        };
+        
+        window.updateFontSize = function(size) {
+            window.navigation.updateFontSize(size);
+        };
+        
+        window.toggleADHDOptimizations = function(enabled) {
+            window.navigation.profiles[window.navigation.currentProfile].config.adhdOptimizations = enabled;
+            window.navigation.applyCurrentConfig();
+            window.navigation.announceToUser(`ADHD optimizations ${enabled ? 'enabled' : 'disabled'}`);
+        };
+        
+        window.toggleFocusMode = function(enabled) {
+            window.navigation.profiles[window.navigation.currentProfile].config.focusMode = enabled;
+            window.navigation.announceToUser(`Focus mode ${enabled ? 'enabled' : 'disabled'}`);
+        };
+        
+        window.toggleReducedMotion = function(enabled) {
+            window.navigation.profiles[window.navigation.currentProfile].config.reducedMotion = enabled;
+            window.navigation.applyCurrentConfig();
+            window.navigation.announceToUser(`Reduced motion ${enabled ? 'enabled' : 'disabled'}`);
+        };
+        
+        window.updateTouchTargets = function(size) {
+            window.navigation.profiles[window.navigation.currentProfile].config.touchTargets = size;
+            window.navigation.announceToUser(`Touch targets set to ${size}`);
+        };
+        
+        window.resetToDefault = function() {
+            window.navigation.profiles[window.navigation.currentProfile].config = window.navigation.getDefaultConfig();
+            window.navigation.applyCurrentConfig();
+            window.navigation.updateStudioControls();
+            window.navigation.announceToUser('Configuration reset to default settings');
+        };
+        
+        window.previewChanges = function() {
+            window.navigation.announceToUser('Preview mode - changes shown in real-time');
+        };
+        
+        window.applyChanges = function() {
+            window.navigation.applyChanges();
+        };
+        
+        // Initialize navigation
+        document.addEventListener('DOMContentLoaded', () => {
+            window.navigation = new FullPersonalizationNavigation();
+        });
+    </script>
+</body>
+</html>

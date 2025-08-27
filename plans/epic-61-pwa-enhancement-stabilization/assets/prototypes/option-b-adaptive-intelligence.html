@@ -1,0 +1,1704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Option B: Adaptive Intelligence Navigation - Coffee Roast Tracker</title>
+    <style>
+        /* Import Epic #12 design system foundation */
+        :root {
+            --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            --font-size-xs: 0.75rem;
+            --font-size-sm: 0.875rem;
+            --font-size-base: 1rem;
+            --font-size-lg: 1.125rem;
+            --font-size-xl: 1.25rem;
+            --font-size-2xl: 1.5rem;
+            --font-size-3xl: 1.875rem;
+            --font-weight-normal: 400;
+            --font-weight-medium: 500;
+            --font-weight-semibold: 600;
+            --font-weight-bold: 700;
+            --line-height-normal: 1.5;
+            --line-height-tight: 1.25;
+            
+            --space-1: 0.25rem;
+            --space-2: 0.5rem;
+            --space-3: 0.75rem;
+            --space-4: 1rem;
+            --space-5: 1.25rem;
+            --space-6: 1.5rem;
+            --space-8: 2rem;
+            --space-10: 2.5rem;
+            --space-12: 3rem;
+            --space-16: 4rem;
+            
+            --radius-md: 0.75rem;
+            --radius-lg: 1rem;
+            --radius-xl: 1.5rem;
+            --radius-2xl: 2rem;
+            --radius-full: 9999px;
+            
+            /* Adaptive highlighting colors */
+            --color-primary-500: #c8794a;
+            --color-primary-600: #b86c3e;
+            --color-primary-700: #995536;
+            --color-primary-300: #e4b894;
+            --color-primary-100: #f9ede0;
+            --color-primary-50: #fdf7f0;
+            
+            --color-success-500: #10b981;
+            --color-success-600: #059669;
+            --color-success-100: #d1fae5;
+            --color-success-50: #ecfdf5;
+            
+            --color-adaptive-500: #8b5cf6;
+            --color-adaptive-600: #7c3aed;
+            --color-adaptive-100: #ede9fe;
+            --color-adaptive-50: #f5f3ff;
+            
+            --color-learning-500: #f59e0b;
+            --color-learning-600: #d97706;
+            --color-learning-100: #fef3c7;
+            --color-learning-50: #fffbeb;
+            
+            --color-text-primary: #1c1917;
+            --color-text-secondary: #57534e;
+            --color-text-tertiary: #78716c;
+            --color-text-on-primary: #fafaf9;
+            
+            --color-surface: #ffffff;
+            --color-surface-secondary: #f5f5f4;
+            --color-surface-elevated: #ffffff;
+            --color-background: #fafaf9;
+            
+            --color-border: #e7e5e4;
+            --color-border-secondary: #d6d3d1;
+            --color-border-strong: #a8a29e;
+            
+            --color-focus: #c8794a;
+            --color-focus-ring: rgba(200, 121, 74, 0.5);
+            
+            --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            
+            --duration-150: 150ms;
+            --duration-200: 200ms;
+            --duration-300: 300ms;
+            --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+            --ease-out: cubic-bezier(0, 0, 0.2, 1);
+            
+            --z-base: 0;
+            --z-docked: 10;
+            --z-sticky: 1020;
+            --z-overlay: 1040;
+            --z-modal: 1050;
+        }
+        
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: var(--font-primary);
+            font-size: var(--font-size-base);
+            line-height: var(--line-height-normal);
+            color: var(--color-text-primary);
+            background-color: var(--color-background);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+        
+        .app {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Skip Link for Accessibility */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 6px;
+            background: var(--color-surface);
+            color: var(--color-text-primary);
+            padding: var(--space-2) var(--space-4);
+            text-decoration: none;
+            border-radius: var(--radius-md);
+            font-weight: var(--font-weight-medium);
+            z-index: calc(var(--z-modal) + 10);
+            border: 2px solid var(--color-border-strong);
+            transition: top var(--duration-200) var(--ease-out);
+        }
+        
+        .skip-link:focus {
+            top: 6px;
+        }
+        
+        /* Header with Learning Indicator */
+        .header {
+            background-color: var(--color-surface);
+            border-bottom: 2px solid var(--color-border);
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 0;
+            z-index: var(--z-sticky);
+        }
+        
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--space-4) var(--space-6);
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+        }
+        
+        .brand-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--color-primary-500), var(--color-primary-600));
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: var(--font-size-xl);
+            font-weight: var(--font-weight-bold);
+        }
+        
+        .brand-title {
+            font-size: var(--font-size-xl);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-primary-600);
+            margin: 0;
+        }
+        
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: var(--space-4);
+        }
+        
+        /* Learning Status Indicator */
+        .learning-indicator {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+            padding: var(--space-2) var(--space-4);
+            background: linear-gradient(135deg, var(--color-adaptive-50), var(--color-adaptive-100));
+            color: var(--color-adaptive-600);
+            border: 2px solid var(--color-adaptive-500);
+            border-radius: var(--radius-full);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-medium);
+            cursor: pointer;
+            transition: all var(--duration-200) var(--ease-in-out);
+        }
+        
+        .learning-indicator:hover {
+            background: linear-gradient(135deg, var(--color-adaptive-100), var(--color-adaptive-50));
+            transform: scale(1.05);
+        }
+        
+        .learning-indicator.active {
+            animation: learning-pulse 2s infinite;
+        }
+        
+        @keyframes learning-pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        /* Adaptive Navigation */
+        .adaptive-nav {
+            background-color: var(--color-surface-secondary);
+            border-bottom: 2px solid var(--color-border);
+            padding: 0 var(--space-6);
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .nav-list {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            gap: var(--space-2);
+        }
+        
+        .nav-item {
+            position: relative;
+        }
+        
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+            padding: var(--space-4) var(--space-5);
+            color: var(--color-text-secondary);
+            text-decoration: none;
+            font-weight: var(--font-weight-medium);
+            border-radius: var(--radius-lg);
+            transition: all var(--duration-200) var(--ease-in-out);
+            min-height: 60px;
+            font-size: var(--font-size-base);
+            position: relative;
+        }
+        
+        .nav-link:hover,
+        .nav-link:focus {
+            background-color: var(--color-primary-50);
+            color: var(--color-primary-600);
+            outline: none;
+            box-shadow: 0 0 0 3px var(--color-focus-ring);
+        }
+        
+        .nav-link.active {
+            background-color: var(--color-primary-100);
+            color: var(--color-primary-600);
+            border: 2px solid var(--color-primary-300);
+            font-weight: var(--font-weight-semibold);
+        }
+        
+        /* Adaptive Priority Indicators */
+        .nav-link.high-priority {
+            background: linear-gradient(135deg, var(--color-success-50), var(--color-success-100));
+            border: 2px solid var(--color-success-500);
+            color: var(--color-success-700);
+            font-weight: var(--font-weight-semibold);
+            order: -1; /* Move to front */
+        }
+        
+        .nav-link.frequent-use {
+            background: linear-gradient(135deg, var(--color-adaptive-50), var(--color-adaptive-100));
+            border: 2px solid var(--color-adaptive-300);
+        }
+        
+        .nav-link.suggested {
+            position: relative;
+            animation: gentle-suggest 3s infinite;
+        }
+        
+        .nav-link.suggested::after {
+            content: '';
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            width: 12px;
+            height: 12px;
+            background: var(--color-learning-500);
+            border-radius: var(--radius-full);
+            border: 2px solid white;
+        }
+        
+        @keyframes gentle-suggest {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+        
+        /* Smart Shortcuts Panel */
+        .shortcuts-panel {
+            background: linear-gradient(135deg, var(--color-adaptive-50), var(--color-adaptive-100));
+            border: 2px solid var(--color-adaptive-300);
+            border-radius: var(--radius-lg);
+            padding: var(--space-4);
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+            font-size: var(--font-size-sm);
+            color: var(--color-adaptive-600);
+        }
+        
+        .shortcuts-title {
+            font-weight: var(--font-weight-semibold);
+            margin: 0;
+        }
+        
+        .shortcut-item {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+            padding: var(--space-2) var(--space-3);
+            background: white;
+            border: 1px solid var(--color-adaptive-300);
+            border-radius: var(--radius-md);
+            color: var(--color-text-primary);
+            text-decoration: none;
+            font-weight: var(--font-weight-medium);
+            transition: all var(--duration-150) var(--ease-out);
+        }
+        
+        .shortcut-item:hover,
+        .shortcut-item:focus {
+            background: var(--color-adaptive-50);
+            border-color: var(--color-adaptive-500);
+            outline: none;
+            transform: translateY(-1px);
+        }
+        
+        .shortcut-key {
+            background: var(--color-text-tertiary);
+            color: white;
+            padding: var(--space-1) var(--space-2);
+            border-radius: var(--radius-md);
+            font-size: var(--font-size-xs);
+            font-weight: var(--font-weight-bold);
+        }
+        
+        /* Contextual Suggestions */
+        .suggestions-container {
+            padding: var(--space-4) var(--space-6);
+            background: linear-gradient(135deg, var(--color-learning-50), var(--color-learning-100));
+            border-bottom: 2px solid var(--color-learning-300);
+        }
+        
+        .suggestions-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .suggestion-message {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+        }
+        
+        .suggestion-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--color-learning-500);
+            color: white;
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: var(--font-size-lg);
+        }
+        
+        .suggestion-text {
+            color: var(--color-learning-700);
+            font-weight: var(--font-weight-medium);
+            margin: 0;
+        }
+        
+        .suggestion-actions {
+            display: flex;
+            gap: var(--space-3);
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-2);
+            padding: var(--space-3) var(--space-4);
+            font-family: var(--font-primary);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-semibold);
+            text-decoration: none;
+            border: 2px solid transparent;
+            border-radius: var(--radius-lg);
+            cursor: pointer;
+            transition: all var(--duration-200) var(--ease-in-out);
+            user-select: none;
+            min-height: 44px;
+        }
+        
+        .btn:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px var(--color-focus-ring);
+        }
+        
+        .btn--primary {
+            background-color: var(--color-learning-500);
+            color: white;
+            border-color: var(--color-learning-600);
+        }
+        
+        .btn--primary:hover:not(:disabled) {
+            background-color: var(--color-learning-600);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .btn--secondary {
+            background-color: var(--color-surface);
+            color: var(--color-text-primary);
+            border-color: var(--color-border-secondary);
+        }
+        
+        .btn--secondary:hover:not(:disabled) {
+            background-color: var(--color-surface-secondary);
+            border-color: var(--color-learning-500);
+            transform: translateY(-1px);
+        }
+        
+        .btn--ghost {
+            background-color: transparent;
+            color: var(--color-text-secondary);
+        }
+        
+        .btn--ghost:hover:not(:disabled) {
+            background-color: var(--color-surface-secondary);
+            color: var(--color-text-primary);
+        }
+        
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        
+        .sidebar {
+            width: 320px;
+            background-color: var(--color-surface);
+            border-right: 2px solid var(--color-border);
+            padding: var(--space-6);
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-6);
+        }
+        
+        .content-area {
+            flex: 1;
+            padding: var(--space-8);
+        }
+        
+        /* Adaptive Quick Actions */
+        .adaptive-actions {
+            background-color: var(--color-surface-secondary);
+            border-radius: var(--radius-xl);
+            padding: var(--space-6);
+        }
+        
+        .section-title {
+            font-size: var(--font-size-lg);
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-text-primary);
+            margin: 0 0 var(--space-4) 0;
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+        }
+        
+        .adaptive-badge {
+            background: var(--color-adaptive-500);
+            color: white;
+            padding: var(--space-1) var(--space-2);
+            border-radius: var(--radius-md);
+            font-size: var(--font-size-xs);
+            font-weight: var(--font-weight-bold);
+        }
+        
+        .action-grid {
+            display: grid;
+            gap: var(--space-3);
+        }
+        
+        .action-item {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+            padding: var(--space-4);
+            background-color: var(--color-surface);
+            border: 2px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            text-decoration: none;
+            color: var(--color-text-primary);
+            transition: all var(--duration-200) var(--ease-in-out);
+            min-height: 60px;
+            position: relative;
+        }
+        
+        .action-item:hover,
+        .action-item:focus {
+            border-color: var(--color-primary-500);
+            background-color: var(--color-primary-50);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+            outline: none;
+        }
+        
+        .action-item.priority-boost {
+            border-color: var(--color-success-500);
+            background: linear-gradient(135deg, var(--color-success-50), var(--color-surface));
+            order: -1;
+        }
+        
+        .action-item.learned-pattern {
+            border-color: var(--color-adaptive-300);
+            background: linear-gradient(135deg, var(--color-adaptive-50), var(--color-surface));
+        }
+        
+        .action-icon {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: var(--font-size-lg);
+            color: var(--color-primary-600);
+        }
+        
+        .action-content {
+            flex: 1;
+        }
+        
+        .action-text {
+            font-weight: var(--font-weight-medium);
+            margin: 0 0 var(--space-1) 0;
+        }
+        
+        .action-hint {
+            font-size: var(--font-size-sm);
+            color: var(--color-text-secondary);
+            margin: 0;
+        }
+        
+        .action-frequency {
+            font-size: var(--font-size-xs);
+            color: var(--color-adaptive-600);
+            background: var(--color-adaptive-100);
+            padding: var(--space-1) var(--space-2);
+            border-radius: var(--radius-md);
+            font-weight: var(--font-weight-medium);
+        }
+        
+        /* Learning Dashboard */
+        .learning-dashboard {
+            background-color: var(--color-surface);
+            border: 2px solid var(--color-adaptive-300);
+            border-radius: var(--radius-xl);
+            padding: var(--space-6);
+        }
+        
+        .learning-metric {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-3);
+            padding: var(--space-3);
+            background: var(--color-adaptive-50);
+            border-radius: var(--radius-lg);
+        }
+        
+        .learning-metric:last-child {
+            margin-bottom: 0;
+        }
+        
+        .metric-label {
+            font-weight: var(--font-weight-medium);
+            color: var(--color-text-primary);
+        }
+        
+        .metric-value {
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-adaptive-600);
+        }
+        
+        .learning-progress {
+            width: 100%;
+            height: 8px;
+            background: var(--color-border-secondary);
+            border-radius: var(--radius-full);
+            overflow: hidden;
+            margin: var(--space-2) 0;
+        }
+        
+        .learning-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--color-adaptive-500), var(--color-adaptive-600));
+            border-radius: var(--radius-full);
+            transition: width var(--duration-300) var(--ease-out);
+        }
+        
+        /* Context Awareness Display */
+        .context-display {
+            background: linear-gradient(135deg, var(--color-learning-50), var(--color-learning-100));
+            border: 2px solid var(--color-learning-300);
+            border-radius: var(--radius-xl);
+            padding: var(--space-6);
+            margin-bottom: var(--space-6);
+        }
+        
+        .context-title {
+            font-size: var(--font-size-lg);
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-learning-700);
+            margin: 0 0 var(--space-4) 0;
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+        }
+        
+        .context-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: var(--space-4);
+        }
+        
+        .context-item {
+            text-align: center;
+            padding: var(--space-3);
+            background: white;
+            border-radius: var(--radius-lg);
+            border: 2px solid var(--color-learning-200);
+        }
+        
+        .context-label {
+            font-size: var(--font-size-sm);
+            color: var(--color-text-secondary);
+            margin: 0 0 var(--space-1) 0;
+        }
+        
+        .context-value {
+            font-size: var(--font-size-lg);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-learning-600);
+            margin: 0;
+        }
+        
+        /* Page Content */
+        .page-header {
+            margin-bottom: var(--space-8);
+        }
+        
+        .page-title {
+            font-size: var(--font-size-3xl);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-text-primary);
+            margin: 0 0 var(--space-2) 0;
+        }
+        
+        .page-subtitle {
+            font-size: var(--font-size-lg);
+            color: var(--color-text-secondary);
+            margin: 0;
+        }
+        
+        .card {
+            background-color: var(--color-surface);
+            border: 2px solid var(--color-border);
+            border-radius: var(--radius-xl);
+            padding: var(--space-6);
+            box-shadow: var(--shadow-sm);
+            margin-bottom: var(--space-6);
+            transition: all var(--duration-200) var(--ease-in-out);
+        }
+        
+        .card:hover {
+            border-color: var(--color-primary-300);
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+        
+        /* Suggestion Toast */
+        .suggestion-toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            max-width: 400px;
+            background: var(--color-surface);
+            border: 2px solid var(--color-adaptive-500);
+            border-radius: var(--radius-xl);
+            padding: var(--space-6);
+            box-shadow: var(--shadow-lg);
+            z-index: var(--z-overlay);
+            animation: slide-up 0.3s ease-out;
+        }
+        
+        .suggestion-toast.hidden {
+            display: none;
+        }
+        
+        @keyframes slide-up {
+            from {
+                transform: translateY(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        .toast-header {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+            margin-bottom: var(--space-3);
+        }
+        
+        .toast-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--color-adaptive-500);
+            color: white;
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: var(--font-size-lg);
+        }
+        
+        .toast-title {
+            font-size: var(--font-size-lg);
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-adaptive-600);
+            margin: 0;
+        }
+        
+        .toast-message {
+            color: var(--color-text-primary);
+            margin: 0 0 var(--space-4) 0;
+            line-height: 1.5;
+        }
+        
+        .toast-actions {
+            display: flex;
+            gap: var(--space-2);
+        }
+        
+        /* Hidden utilities */
+        .hidden {
+            display: none !important;
+        }
+        
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+        
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                padding: var(--space-3) var(--space-4);
+            }
+            
+            .brand-title {
+                display: none;
+            }
+            
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 2px solid var(--color-border);
+                padding: var(--space-4);
+            }
+            
+            .suggestions-container {
+                padding: var(--space-3) var(--space-4);
+            }
+            
+            .suggestions-content {
+                flex-direction: column;
+                gap: var(--space-3);
+                align-items: flex-start;
+            }
+            
+            .suggestion-actions {
+                width: 100%;
+                justify-content: stretch;
+            }
+            
+            .suggestion-actions .btn {
+                flex: 1;
+            }
+            
+            .content-area {
+                padding: var(--space-4);
+            }
+            
+            .context-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .suggestion-toast {
+                right: 15px;
+                left: 15px;
+                max-width: none;
+            }
+        }
+        
+        /* High contrast mode */
+        @media (prefers-contrast: high) {
+            .nav-link,
+            .action-item,
+            .card,
+            .btn {
+                border-width: 3px;
+            }
+            
+            .learning-indicator,
+            .shortcuts-panel {
+                border-width: 3px;
+            }
+        }
+        
+        /* Reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
+            
+            .learning-pulse,
+            .gentle-suggest {
+                animation: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <!-- Skip Link for Accessibility -->
+        <a href="#main-content" class="skip-link">Skip to main content</a>
+        
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="brand">
+                    <div class="brand-icon" aria-hidden="true">☕</div>
+                    <h1 class="brand-title">Coffee Roast Tracker</h1>
+                </div>
+                
+                <div class="header-actions">
+                    <div class="learning-indicator active" id="learning-indicator" 
+                         aria-live="polite" aria-label="Adaptive learning status"
+                         onclick="showLearningDetails()">
+                        <span aria-hidden="true">🧠</span>
+                        <span id="learning-text">Learning Active</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Contextual Suggestions -->
+        <section class="suggestions-container" id="suggestions-container">
+            <div class="suggestions-content">
+                <div class="suggestion-message">
+                    <div class="suggestion-icon" aria-hidden="true">💡</div>
+                    <p class="suggestion-text" id="suggestion-text">
+                        I noticed you usually check bean temperature after 8 minutes. Want me to remind you?
+                    </p>
+                </div>
+                <div class="suggestion-actions">
+                    <button class="btn btn--primary" onclick="acceptSuggestion()">
+                        Yes, remind me
+                    </button>
+                    <button class="btn btn--secondary" onclick="dismissSuggestion()">
+                        Not this time
+                    </button>
+                    <button class="btn btn--ghost" onclick="neverSuggest()">
+                        Don't suggest this again
+                    </button>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Adaptive Navigation -->
+        <nav class="adaptive-nav" aria-label="Adaptive main navigation">
+            <div class="nav-container">
+                <ul class="nav-list" role="menubar">
+                    <li class="nav-item" role="none">
+                        <a href="#dashboard" class="nav-link frequent-use" role="menuitem" 
+                           aria-current="page" id="nav-dashboard">
+                            <span aria-hidden="true">🏠</span>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" role="none">
+                        <a href="#roasting" class="nav-link high-priority active" role="menuitem" id="nav-roasting">
+                            <span aria-hidden="true">☕</span>
+                            <span>Active Roast</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" role="none">
+                        <a href="#beans" class="nav-link suggested" role="menuitem" id="nav-beans">
+                            <span aria-hidden="true">🌱</span>
+                            <span>Bean Selection</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" role="none">
+                        <a href="#statistics" class="nav-link" role="menuitem" id="nav-statistics">
+                            <span aria-hidden="true">📊</span>
+                            <span>Statistics</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" role="none">
+                        <a href="#settings" class="nav-link" role="menuitem" id="nav-settings">
+                            <span aria-hidden="true">⚙️</span>
+                            <span>Settings</span>
+                        </a>
+                    </li>
+                </ul>
+                
+                <div class="shortcuts-panel">
+                    <h3 class="shortcuts-title">Smart Shortcuts</h3>
+                    <a href="#quick-note" class="shortcut-item">
+                        <span class="shortcut-key">N</span>
+                        <span>Quick Note</span>
+                    </a>
+                    <a href="#temperature" class="shortcut-item">
+                        <span class="shortcut-key">T</span>
+                        <span>Temperature</span>
+                    </a>
+                </div>
+            </div>
+        </nav>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Context-Aware Sidebar -->
+            <aside class="sidebar" aria-label="Adaptive actions and insights">
+                <!-- Context Awareness Display -->
+                <section class="context-display">
+                    <h3 class="context-title">
+                        <span aria-hidden="true">🎯</span>
+                        Current Context
+                    </h3>
+                    <div class="context-grid">
+                        <div class="context-item">
+                            <p class="context-label">Time of Day</p>
+                            <p class="context-value" id="time-context">Morning</p>
+                        </div>
+                        <div class="context-item">
+                            <p class="context-label">Focus Level</p>
+                            <p class="context-value" id="focus-context">High</p>
+                        </div>
+                        <div class="context-item">
+                            <p class="context-label">Session Type</p>
+                            <p class="context-value" id="session-context">Active Roasting</p>
+                        </div>
+                        <div class="context-item">
+                            <p class="context-label">Usual Pattern</p>
+                            <p class="context-value" id="pattern-context">Check Temp @8min</p>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Adaptive Quick Actions -->
+                <section class="adaptive-actions">
+                    <h2 class="section-title">
+                        <span>Smart Actions</span>
+                        <span class="adaptive-badge">AI Enhanced</span>
+                    </h2>
+                    <div class="action-grid" id="adaptive-actions-grid">
+                        <a href="#continue-roast" class="action-item priority-boost">
+                            <span class="action-icon" aria-hidden="true">⏱️</span>
+                            <div class="action-content">
+                                <p class="action-text">Continue Roast Timer</p>
+                                <p class="action-hint">Your most common next action</p>
+                            </div>
+                            <span class="action-frequency">85%</span>
+                        </a>
+                        
+                        <a href="#check-temperature" class="action-item learned-pattern">
+                            <span class="action-icon" aria-hidden="true">🌡️</span>
+                            <div class="action-content">
+                                <p class="action-text">Check Bean Temperature</p>
+                                <p class="action-hint">Usually done around now</p>
+                            </div>
+                            <span class="action-frequency">72%</span>
+                        </a>
+                        
+                        <a href="#add-note" class="action-item">
+                            <span class="action-icon" aria-hidden="true">📝</span>
+                            <div class="action-content">
+                                <p class="action-text">Add Quick Note</p>
+                                <p class="action-hint">Capture observations</p>
+                            </div>
+                            <span class="action-frequency">45%</span>
+                        </a>
+                        
+                        <a href="#view-history" class="action-item">
+                            <span class="action-icon" aria-hidden="true">📋</span>
+                            <div class="action-content">
+                                <p class="action-text">View Similar Roasts</p>
+                                <p class="action-hint">Colombian beans reference</p>
+                            </div>
+                            <span class="action-frequency">38%</span>
+                        </a>
+                    </div>
+                </section>
+                
+                <!-- Learning Dashboard -->
+                <section class="learning-dashboard">
+                    <h2 class="section-title">
+                        <span aria-hidden="true">📈</span>
+                        Learning Insights
+                    </h2>
+                    <div class="learning-metric">
+                        <span class="metric-label">Patterns Learned</span>
+                        <span class="metric-value">23</span>
+                    </div>
+                    <div class="learning-progress">
+                        <div class="learning-fill" style="width: 78%;"></div>
+                    </div>
+                    <div class="learning-metric">
+                        <span class="metric-label">Accuracy</span>
+                        <span class="metric-value">87%</span>
+                    </div>
+                    <div class="learning-metric">
+                        <span class="metric-label">Time Saved</span>
+                        <span class="metric-value">12 min/day</span>
+                    </div>
+                </section>
+            </aside>
+            
+            <!-- Content Area -->
+            <section class="content-area" id="main-content" tabindex="-1">
+                <div class="page-header">
+                    <h1 class="page-title">Adaptive Dashboard</h1>
+                    <p class="page-subtitle">Personalized for your roasting workflow</p>
+                </div>
+                
+                <div class="card">
+                    <h2 style="margin: 0 0 var(--space-4) 0;">Current Roast: Colombian Supremo</h2>
+                    <p style="margin: 0 0 var(--space-6) 0; color: var(--color-text-secondary);">
+                        Based on your patterns, this roast is progressing perfectly. Timer shows 8:45 - 
+                        you usually check temperature around now.
+                    </p>
+                    <div style="display: flex; gap: var(--space-4); flex-wrap: wrap;">
+                        <button class="btn btn--primary" onclick="performPredictedAction('continue')">
+                            <span aria-hidden="true">▶️</span>
+                            <span>Continue Timer</span>
+                        </button>
+                        <button class="btn btn--secondary" onclick="performPredictedAction('temperature')">
+                            <span aria-hidden="true">🌡️</span>
+                            <span>Check Temperature</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3 style="margin: 0 0 var(--space-4) 0;">Learning Demo</h3>
+                    <p style="margin: 0 0 var(--space-4) 0; color: var(--color-text-secondary);">
+                        This adaptive interface learns from your behavior patterns:
+                    </p>
+                    <ul style="margin: 0 0 var(--space-6) 0; color: var(--color-text-secondary);">
+                        <li>Most-used actions automatically promoted to top</li>
+                        <li>Context-aware suggestions based on time and task</li>
+                        <li>Smart shortcuts created from your frequent workflows</li>
+                        <li>Intelligent reminders at optimal moments</li>
+                        <li>Transparent learning you can control and understand</li>
+                    </ul>
+                    <div style="display: flex; gap: var(--space-4); flex-wrap: wrap;">
+                        <button class="btn btn--secondary" onclick="simulateNewPattern()">
+                            <span aria-hidden="true">🔄</span>
+                            <span>Simulate New Pattern</span>
+                        </button>
+                        <button class="btn btn--secondary" onclick="showLearningExplanation()">
+                            <span aria-hidden="true">🤔</span>
+                            <span>How Does This Work?</span>
+                        </button>
+                        <button class="btn btn--secondary" onclick="toggleLearningMode()">
+                            <span aria-hidden="true">🧠</span>
+                            <span id="learning-toggle-text">Pause Learning</span>
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </main>
+        
+        <!-- Suggestion Toast -->
+        <div class="suggestion-toast hidden" id="suggestion-toast">
+            <div class="toast-header">
+                <div class="toast-icon" aria-hidden="true">💡</div>
+                <h3 class="toast-title" id="toast-title">Smart Suggestion</h3>
+            </div>
+            <p class="toast-message" id="toast-message">
+                I've noticed you often add notes after checking temperature. 
+                Would you like me to suggest that next time?
+            </p>
+            <div class="toast-actions">
+                <button class="btn btn--primary" onclick="acceptToastSuggestion()">
+                    Yes, learn this
+                </button>
+                <button class="btn btn--ghost" onclick="dismissToast()">
+                    Dismiss
+                </button>
+            </div>
+        </div>
+        
+        <!-- Live region for announcements -->
+        <div aria-live="polite" aria-atomic="true" class="sr-only" id="announcements"></div>
+    </div>
+
+    <script>
+        // Adaptive Intelligence Navigation Prototype JavaScript
+        class AdaptiveIntelligenceNavigation {
+            constructor() {
+                this.learningActive = true;
+                this.currentSection = 'roasting';
+                this.userPatterns = {
+                    'continue-roast': { frequency: 0.85, timeContext: 'morning', lastUsed: Date.now() },
+                    'check-temperature': { frequency: 0.72, timeContext: 'morning', avgTime: 8.5 },
+                    'add-note': { frequency: 0.45, afterAction: 'check-temperature' },
+                    'view-history': { frequency: 0.38, taskContext: 'similar-beans' }
+                };
+                this.contextData = {
+                    timeOfDay: 'Morning',
+                    focusLevel: 'High',
+                    sessionType: 'Active Roasting',
+                    usualPattern: 'Check Temp @8min'
+                };
+                this.sessionStartTime = Date.now();
+                this.patternsLearned = 23;
+                this.learningAccuracy = 87;
+                this.timeSavedDaily = 12;
+                
+                this.init();
+            }
+            
+            init() {
+                this.bindNavigationEvents();
+                this.setupKeyboardNavigation();
+                this.startContextTracking();
+                this.updateLearningDisplay();
+                this.announcePageLoad();
+                this.scheduleIntelligentSuggestions();
+                this.bindAccessibilityEvents();
+            }
+            
+            bindNavigationEvents() {
+                // Main navigation
+                document.querySelectorAll('.nav-link').forEach(link => {
+                    link.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const section = link.id.replace('nav-', '');
+                        this.navigateWithLearning(section);
+                    });
+                });
+                
+                // Adaptive actions
+                document.querySelectorAll('.action-item').forEach(action => {
+                    action.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const actionId = action.getAttribute('href').substring(1);
+                        this.performActionWithLearning(actionId);
+                    });
+                });
+                
+                // Smart shortcuts
+                document.querySelectorAll('.shortcut-item').forEach(shortcut => {
+                    shortcut.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const shortcutId = shortcut.getAttribute('href').substring(1);
+                        this.performShortcut(shortcutId);
+                    });
+                });
+            }
+            
+            setupKeyboardNavigation() {
+                document.addEventListener('keydown', (e) => {
+                    // Smart shortcuts (N for note, T for temperature)
+                    if (e.altKey) {
+                        if (e.key.toLowerCase() === 'n') {
+                            e.preventDefault();
+                            this.performShortcut('quick-note');
+                        } else if (e.key.toLowerCase() === 't') {
+                            e.preventDefault();
+                            this.performShortcut('temperature');
+                        }
+                    }
+                    
+                    // Alt + 1-5 for main navigation
+                    if (e.altKey && e.key >= '1' && e.key <= '5') {
+                        e.preventDefault();
+                        const sections = ['dashboard', 'roasting', 'beans', 'statistics', 'settings'];
+                        this.navigateWithLearning(sections[parseInt(e.key) - 1]);
+                    }
+                    
+                    // Escape to dismiss suggestions
+                    if (e.key === 'Escape') {
+                        this.dismissAllSuggestions();
+                    }
+                });
+            }
+            
+            startContextTracking() {
+                // Update context based on time and user behavior
+                setInterval(() => {
+                    this.updateContextData();
+                    this.adaptNavigationBasedOnContext();
+                }, 30000); // Update every 30 seconds
+                
+                // Track user interaction patterns
+                document.addEventListener('click', (e) => {
+                    if (this.learningActive) {
+                        this.recordInteraction(e.target);
+                    }
+                });
+            }
+            
+            updateContextData() {
+                const hour = new Date().getHours();
+                const elapsed = Date.now() - this.sessionStartTime;
+                const minutes = Math.floor(elapsed / 60000);
+                
+                // Update time context
+                if (hour < 12) {
+                    this.contextData.timeOfDay = 'Morning';
+                } else if (hour < 17) {
+                    this.contextData.timeOfDay = 'Afternoon';
+                } else {
+                    this.contextData.timeOfDay = 'Evening';
+                }
+                
+                // Update focus level based on session duration
+                if (minutes < 15) {
+                    this.contextData.focusLevel = 'High';
+                } else if (minutes < 30) {
+                    this.contextData.focusLevel = 'Medium';
+                } else {
+                    this.contextData.focusLevel = 'Low';
+                }
+                
+                // Update pattern prediction
+                if (minutes >= 8 && minutes <= 10) {
+                    this.contextData.usualPattern = 'Check Temp Now!';
+                } else if (minutes > 10) {
+                    this.contextData.usualPattern = 'Add Notes Soon';
+                } else {
+                    this.contextData.usualPattern = 'Check Temp @8min';
+                }
+                
+                this.updateContextDisplay();
+            }
+            
+            updateContextDisplay() {
+                document.getElementById('time-context').textContent = this.contextData.timeOfDay;
+                document.getElementById('focus-context').textContent = this.contextData.focusLevel;
+                document.getElementById('session-context').textContent = this.contextData.sessionType;
+                document.getElementById('pattern-context').textContent = this.contextData.usualPattern;
+            }
+            
+            adaptNavigationBasedOnContext() {
+                const navLinks = document.querySelectorAll('.nav-link');
+                const actionItems = document.querySelectorAll('.action-item');
+                
+                // Remove existing adaptive classes
+                navLinks.forEach(link => {
+                    link.classList.remove('high-priority', 'suggested', 'frequent-use');
+                });
+                
+                // Apply adaptive styling based on context and patterns
+                if (this.contextData.focusLevel === 'High') {
+                    // Promote roasting navigation during high focus
+                    const roastingNav = document.getElementById('nav-roasting');
+                    if (roastingNav) roastingNav.classList.add('high-priority');
+                }
+                
+                if (this.contextData.timeOfDay === 'Morning') {
+                    // Suggest beans section in morning (common pattern)
+                    const beansNav = document.getElementById('nav-beans');
+                    if (beansNav) beansNav.classList.add('suggested');
+                }
+                
+                // Update action priorities based on learned patterns
+                actionItems.forEach(item => {
+                    const href = item.getAttribute('href');
+                    const actionId = href ? href.substring(1) : '';
+                    const pattern = this.userPatterns[actionId];
+                    
+                    if (pattern && pattern.frequency > 0.7) {
+                        item.classList.add('priority-boost');
+                    } else if (pattern && pattern.frequency > 0.5) {
+                        item.classList.add('learned-pattern');
+                    }
+                });
+            }
+            
+            navigateWithLearning(section) {
+                // Record navigation pattern
+                if (this.learningActive) {
+                    this.recordNavigationPattern(this.currentSection, section);
+                }
+                
+                // Update active navigation
+                document.querySelectorAll('.nav-link').forEach(link => {
+                    link.classList.remove('active');
+                    link.removeAttribute('aria-current');
+                });
+                
+                const activeLink = document.getElementById(`nav-${section}`);
+                if (activeLink) {
+                    activeLink.classList.add('active');
+                    activeLink.setAttribute('aria-current', 'page');
+                }
+                
+                this.currentSection = section;
+                this.announceNavigation(section);
+                
+                // Trigger contextual suggestions after navigation
+                setTimeout(() => {
+                    this.suggestNextAction();
+                }, 1000);
+            }
+            
+            performActionWithLearning(actionId) {
+                // Record action pattern
+                if (this.learningActive) {
+                    this.recordActionPattern(actionId);
+                }
+                
+                this.announceToUser(`Performing ${actionId.replace('-', ' ')}`);
+                
+                // Simulate action completion and learning
+                setTimeout(() => {
+                    this.showLearningFeedback(actionId);
+                    this.updatePatternFrequency(actionId);
+                }, 500);
+            }
+            
+            performShortcut(shortcutId) {
+                this.announceToUser(`Smart shortcut: ${shortcutId.replace('-', ' ')}`);
+                this.performActionWithLearning(shortcutId);
+            }
+            
+            recordInteraction(target) {
+                // Track user interactions for learning
+                const actionType = target.closest('[data-action-type]')?.dataset.actionType || 'unknown';
+                const timestamp = Date.now();
+                
+                // Update learning metrics
+                this.patternsLearned += 0.1;
+                this.updateLearningDisplay();
+            }
+            
+            recordNavigationPattern(from, to) {
+                console.log(`Navigation pattern: ${from} → ${to} at ${new Date().toLocaleTimeString()}`);
+                
+                // In real implementation, this would update the learning model
+                this.learningAccuracy = Math.min(95, this.learningAccuracy + 0.1);
+                this.timeSavedDaily += 0.05;
+                this.updateLearningDisplay();
+            }
+            
+            recordActionPattern(actionId) {
+                console.log(`Action pattern: ${actionId} at ${new Date().toLocaleTimeString()}`);
+                
+                // Update pattern frequency (simulate learning)
+                if (this.userPatterns[actionId]) {
+                    this.userPatterns[actionId].frequency = Math.min(1, this.userPatterns[actionId].frequency + 0.02);
+                    this.userPatterns[actionId].lastUsed = Date.now();
+                }
+                
+                this.updateActionDisplay();
+            }
+            
+            updatePatternFrequency(actionId) {
+                const actionElement = document.querySelector(`[href="#${actionId}"] .action-frequency`);
+                if (actionElement && this.userPatterns[actionId]) {
+                    const frequency = Math.round(this.userPatterns[actionId].frequency * 100);
+                    actionElement.textContent = `${frequency}%`;
+                }
+            }
+            
+            updateActionDisplay() {
+                // Update action frequencies in the UI
+                Object.keys(this.userPatterns).forEach(actionId => {
+                    this.updatePatternFrequency(actionId);
+                });
+                
+                // Re-sort actions by frequency
+                const grid = document.getElementById('adaptive-actions-grid');
+                const actions = Array.from(grid.children);
+                
+                actions.sort((a, b) => {
+                    const aHref = a.getAttribute('href')?.substring(1) || '';
+                    const bHref = b.getAttribute('href')?.substring(1) || '';
+                    const aFreq = this.userPatterns[aHref]?.frequency || 0;
+                    const bFreq = this.userPatterns[bHref]?.frequency || 0;
+                    return bFreq - aFreq;
+                });
+                
+                actions.forEach(action => grid.appendChild(action));
+            }
+            
+            updateLearningDisplay() {
+                document.querySelector('.learning-dashboard .metric-value').textContent = Math.floor(this.patternsLearned);
+                
+                const accuracyElement = document.querySelectorAll('.learning-dashboard .metric-value')[1];
+                if (accuracyElement) accuracyElement.textContent = `${Math.floor(this.learningAccuracy)}%`;
+                
+                const timeElement = document.querySelectorAll('.learning-dashboard .metric-value')[2];
+                if (timeElement) timeElement.textContent = `${Math.floor(this.timeSavedDaily)} min/day`;
+                
+                // Update progress bar
+                const progress = Math.min(100, (this.patternsLearned / 50) * 100);
+                document.querySelector('.learning-fill').style.width = `${progress}%`;
+            }
+            
+            scheduleIntelligentSuggestions() {
+                // Suggest temperature check at 8 minutes (based on pattern)
+                setTimeout(() => {
+                    if (this.learningActive) {
+                        this.showIntelligentSuggestion(
+                            '🌡️ Temperature Check Reminder',
+                            'Based on your patterns, this is usually when you check bean temperature. Want me to remind you next time?'
+                        );
+                    }
+                }, 8 * 60 * 1000); // 8 minutes
+                
+                // Suggest note-taking after temperature (learned sequence)
+                setTimeout(() => {
+                    if (this.learningActive) {
+                        this.showIntelligentSuggestion(
+                            '📝 Note-Taking Pattern',
+                            'I\'ve noticed you often add notes after checking temperature. Should I suggest this workflow?'
+                        );
+                    }
+                }, 10 * 60 * 1000); // 10 minutes
+            }
+            
+            showIntelligentSuggestion(title, message) {
+                const toast = document.getElementById('suggestion-toast');
+                const titleElement = document.getElementById('toast-title');
+                const messageElement = document.getElementById('toast-message');
+                
+                titleElement.textContent = title;
+                messageElement.textContent = message;
+                toast.classList.remove('hidden');
+                
+                this.announceToUser(`Intelligent suggestion: ${title}`);
+                
+                // Auto-dismiss after 15 seconds
+                setTimeout(() => {
+                    if (!toast.classList.contains('hidden')) {
+                        this.dismissToast();
+                    }
+                }, 15000);
+            }
+            
+            showLearningFeedback(actionId) {
+                const actions = {
+                    'continue-roast': 'Great! Timer resumed. I\'ll remember this timing preference.',
+                    'check-temperature': 'Temperature noted! I see this follows your usual 8-minute pattern.',
+                    'add-note': 'Note added! I\'ve learned you like to document at this stage.',
+                    'view-history': 'History viewed! This helps with your bean comparison workflow.'
+                };
+                
+                const feedback = actions[actionId] || 'Action completed! Learning from your choice.';
+                this.showToastMessage('📈 Learning Update', feedback);
+            }
+            
+            showToastMessage(title, message) {
+                const existingToast = document.getElementById('suggestion-toast');
+                if (!existingToast.classList.contains('hidden')) {
+                    return; // Don't show multiple toasts
+                }
+                
+                const titleElement = document.getElementById('toast-title');
+                const messageElement = document.getElementById('toast-message');
+                const actionsElement = document.querySelector('.toast-actions');
+                
+                titleElement.textContent = title;
+                messageElement.textContent = message;
+                
+                // Hide action buttons for feedback messages
+                actionsElement.style.display = 'none';
+                existingToast.classList.remove('hidden');
+                
+                setTimeout(() => {
+                    existingToast.classList.add('hidden');
+                    actionsElement.style.display = 'flex';
+                }, 3000);
+            }
+            
+            suggestNextAction() {
+                if (!this.learningActive) return;
+                
+                const suggestions = [
+                    'Based on similar roasting sessions, you might want to check the bean color next.',
+                    'Your typical workflow suggests adding a quick note about aroma at this point.',
+                    'I notice you usually compare with previous Colombian roasts around now.',
+                    'This is typically when you start thinking about the ending temperature.'
+                ];
+                
+                const suggestion = suggestions[Math.floor(Math.random() * suggestions.length)];
+                
+                setTimeout(() => {
+                    document.getElementById('suggestion-text').textContent = suggestion;
+                }, 1000);
+            }
+            
+            announceToUser(message) {
+                const announcements = document.getElementById('announcements');
+                announcements.textContent = message;
+            }
+            
+            announceNavigation(section) {
+                const sectionNames = {
+                    dashboard: 'Dashboard with personalized insights',
+                    roasting: 'Active roasting session',
+                    beans: 'Bean selection and management',
+                    statistics: 'Performance statistics and analytics',
+                    settings: 'Personalization and app settings'
+                };
+                
+                const sectionName = sectionNames[section] || section;
+                this.announceToUser(`Navigated to ${sectionName}. Interface adapted to your patterns.`);
+            }
+            
+            announcePageLoad() {
+                setTimeout(() => {
+                    this.announceToUser('Adaptive intelligence interface loaded. Learning from your patterns to provide personalized navigation.');
+                }, 1000);
+            }
+            
+            dismissAllSuggestions() {
+                document.getElementById('suggestions-container').style.display = 'none';
+                document.getElementById('suggestion-toast').classList.add('hidden');
+            }
+            
+            bindAccessibilityEvents() {
+                // Ensure suggestions are properly announced to screen readers
+                const observer = new MutationObserver((mutations) => {
+                    mutations.forEach((mutation) => {
+                        if (mutation.type === 'childList' || mutation.type === 'characterData') {
+                            const target = mutation.target;
+                            if (target.id === 'suggestion-text' || target.closest('#suggestion-text')) {
+                                this.announceToUser('Navigation suggestion updated.');
+                            }
+                        }
+                    });
+                });
+                
+                observer.observe(document.body, {
+                    childList: true,
+                    subtree: true,
+                    characterData: true
+                });
+            }
+        }
+        
+        // Global functions for HTML onclick handlers
+        window.showLearningDetails = function() {
+            window.navigation.announceToUser('Learning system active. 23 patterns learned with 87% accuracy, saving 12 minutes daily.');
+        };
+        
+        window.acceptSuggestion = function() {
+            window.navigation.announceToUser('Suggestion accepted! I\'ll add this to your patterns.');
+            document.getElementById('suggestions-container').style.display = 'none';
+            window.navigation.patternsLearned += 1;
+            window.navigation.updateLearningDisplay();
+        };
+        
+        window.dismissSuggestion = function() {
+            window.navigation.announceToUser('Suggestion dismissed for now.');
+            document.getElementById('suggestions-container').style.display = 'none';
+        };
+        
+        window.neverSuggest = function() {
+            window.navigation.announceToUser('Understood! I won\'t suggest this pattern again.');
+            document.getElementById('suggestions-container').style.display = 'none';
+        };
+        
+        window.performPredictedAction = function(action) {
+            const actions = {
+                continue: 'continue-roast',
+                temperature: 'check-temperature'
+            };
+            
+            const actionId = actions[action];
+            if (actionId) {
+                window.navigation.performActionWithLearning(actionId);
+            }
+        };
+        
+        window.simulateNewPattern = function() {
+            // Simulate learning a new pattern
+            const newPattern = 'quick-aromatics-check';
+            window.navigation.userPatterns[newPattern] = { 
+                frequency: 0.3, 
+                timeContext: 'morning', 
+                lastUsed: Date.now() 
+            };
+            
+            window.navigation.announceToUser('New pattern detected: Aromatics check during morning sessions.');
+            window.navigation.patternsLearned += 1;
+            window.navigation.updateLearningDisplay();
+            window.navigation.updateActionDisplay();
+        };
+        
+        window.showLearningExplanation = function() {
+            window.navigation.showToastMessage(
+                '🧠 How Adaptive Learning Works',
+                'I analyze your navigation patterns, timing preferences, and task sequences to suggest relevant actions and optimize your workflow. All learning is transparent and you control what I learn.'
+            );
+        };
+        
+        window.toggleLearningMode = function() {
+            window.navigation.learningActive = !window.navigation.learningActive;
+            const indicator = document.getElementById('learning-indicator');
+            const toggleText = document.getElementById('learning-toggle-text');
+            const learningText = document.getElementById('learning-text');
+            
+            if (window.navigation.learningActive) {
+                indicator.classList.add('active');
+                learningText.textContent = 'Learning Active';
+                toggleText.textContent = 'Pause Learning';
+                window.navigation.announceToUser('Adaptive learning resumed. I\'ll continue learning from your patterns.');
+            } else {
+                indicator.classList.remove('active');
+                learningText.textContent = 'Learning Paused';
+                toggleText.textContent = 'Resume Learning';
+                window.navigation.announceToUser('Adaptive learning paused. Your interface will remain static.');
+            }
+        };
+        
+        window.acceptToastSuggestion = function() {
+            window.navigation.announceToUser('Pattern learned! I\'ll use this insight to improve suggestions.');
+            window.navigation.dismissToast();
+            window.navigation.patternsLearned += 1;
+            window.navigation.learningAccuracy += 0.5;
+            window.navigation.updateLearningDisplay();
+        };
+        
+        window.dismissToast = function() {
+            document.getElementById('suggestion-toast').classList.add('hidden');
+        };
+        
+        // Initialize navigation
+        document.addEventListener('DOMContentLoaded', () => {
+            window.navigation = new AdaptiveIntelligenceNavigation();
+        });
+    </script>
+</body>
+</html>

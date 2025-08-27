@@ -1,0 +1,1278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Option A: Minimal Cognitive Load Navigation - Coffee Roast Tracker</title>
+    <style>
+        /* Import Epic #12 design system foundation */
+        :root {
+            --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            --font-size-xs: 0.75rem;
+            --font-size-sm: 0.875rem;
+            --font-size-base: 1rem;
+            --font-size-lg: 1.125rem;
+            --font-size-xl: 1.25rem;
+            --font-size-2xl: 1.5rem;
+            --font-size-3xl: 1.875rem;
+            --font-weight-normal: 400;
+            --font-weight-medium: 500;
+            --font-weight-semibold: 600;
+            --font-weight-bold: 700;
+            --line-height-normal: 1.5;
+            --line-height-tight: 1.25;
+            
+            --space-1: 0.25rem;
+            --space-2: 0.5rem;
+            --space-3: 0.75rem;
+            --space-4: 1rem;
+            --space-5: 1.25rem;
+            --space-6: 1.5rem;
+            --space-8: 2rem;
+            --space-10: 2.5rem;
+            --space-12: 3rem;
+            --space-16: 4rem;
+            
+            --radius-md: 0.75rem;
+            --radius-lg: 1rem;
+            --radius-xl: 1.5rem;
+            --radius-2xl: 2rem;
+            --radius-full: 9999px;
+            
+            /* Enhanced high contrast colors for minimal cognitive load */
+            --color-primary-500: #c8794a;
+            --color-primary-600: #b86c3e;
+            --color-primary-700: #995536;
+            --color-primary-300: #e4b894;
+            --color-primary-100: #f9ede0;
+            --color-primary-50: #fdf7f0;
+            
+            --color-success-500: #10b981;
+            --color-success-600: #059669;
+            --color-success-100: #d1fae5;
+            --color-success-50: #ecfdf5;
+            
+            --color-focus-500: #3b82f6;
+            --color-focus-100: #dbeafe;
+            --color-focus-50: #eff6ff;
+            
+            --color-text-primary: #1c1917;
+            --color-text-secondary: #57534e;
+            --color-text-tertiary: #78716c;
+            --color-text-on-primary: #fafaf9;
+            
+            --color-surface: #ffffff;
+            --color-surface-secondary: #f5f5f4;
+            --color-surface-elevated: #ffffff;
+            --color-background: #fafaf9;
+            
+            --color-border: #e7e5e4;
+            --color-border-secondary: #d6d3d1;
+            --color-border-strong: #a8a29e;
+            
+            --color-focus: #c8794a;
+            --color-focus-ring: rgba(200, 121, 74, 0.5);
+            
+            --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            
+            --duration-150: 150ms;
+            --duration-200: 200ms;
+            --duration-300: 300ms;
+            --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+            --ease-out: cubic-bezier(0, 0, 0.2, 1);
+            
+            --z-base: 0;
+            --z-docked: 10;
+            --z-sticky: 1020;
+            --z-overlay: 1040;
+            --z-modal: 1050;
+        }
+        
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: var(--font-primary);
+            font-size: 18px; /* Enhanced base font size for ADHD readability */
+            line-height: var(--line-height-normal);
+            color: var(--color-text-primary);
+            background-color: var(--color-background);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+        
+        .app {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            max-width: 800px; /* Constrained width reduces cognitive load */
+            margin: 0 auto;
+        }
+        
+        /* Skip Link for Accessibility */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 6px;
+            background: var(--color-surface);
+            color: var(--color-text-primary);
+            padding: var(--space-4) var(--space-6);
+            text-decoration: none;
+            border-radius: var(--radius-md);
+            font-weight: var(--font-weight-bold);
+            font-size: var(--font-size-lg);
+            z-index: calc(var(--z-modal) + 10);
+            border: 3px solid var(--color-primary-500);
+            transition: top var(--duration-200) var(--ease-out);
+        }
+        
+        .skip-link:focus {
+            top: 6px;
+        }
+        
+        /* Simplified Header - Minimal Cognitive Load */
+        .header {
+            background-color: var(--color-surface);
+            border-bottom: 3px solid var(--color-primary-500);
+            box-shadow: var(--shadow-md);
+            position: sticky;
+            top: 0;
+            z-index: var(--z-sticky);
+        }
+        
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--space-6) var(--space-8);
+        }
+        
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: var(--space-4);
+        }
+        
+        .brand-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--color-primary-500), var(--color-primary-600));
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: var(--font-size-2xl);
+            font-weight: var(--font-weight-bold);
+        }
+        
+        .brand-title {
+            font-size: var(--font-size-2xl);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-primary-600);
+            margin: 0;
+        }
+        
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: var(--space-4);
+        }
+        
+        /* Focus Mode Indicator */
+        .focus-mode-indicator {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+            padding: var(--space-3) var(--space-5);
+            background: linear-gradient(135deg, var(--color-focus-50), var(--color-focus-100));
+            color: var(--color-focus-500);
+            border: 2px solid var(--color-focus-500);
+            border-radius: var(--radius-full);
+            font-size: var(--font-size-base);
+            font-weight: var(--font-weight-semibold);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .focus-mode-indicator.active {
+            background: linear-gradient(135deg, var(--color-success-50), var(--color-success-100));
+            color: var(--color-success-600);
+            border-color: var(--color-success-500);
+            animation: gentle-pulse 3s infinite;
+        }
+        
+        @keyframes gentle-pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+        
+        /* Minimal Navigation - Maximum 3 Options */
+        .minimal-nav {
+            background-color: var(--color-surface-secondary);
+            border-bottom: 2px solid var(--color-border-strong);
+            padding: var(--space-6) var(--space-8);
+        }
+        
+        .nav-container {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-4);
+        }
+        
+        .nav-title {
+            font-size: var(--font-size-lg);
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-text-primary);
+            margin: 0;
+            text-align: center;
+        }
+        
+        .nav-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-3);
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .nav-item {
+            width: 100%;
+        }
+        
+        .nav-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-4);
+            padding: var(--space-6) var(--space-8);
+            background: var(--color-surface);
+            color: var(--color-text-primary);
+            text-decoration: none;
+            font-weight: var(--font-weight-semibold);
+            font-size: var(--font-size-xl);
+            border: 3px solid var(--color-border);
+            border-radius: var(--radius-xl);
+            transition: all var(--duration-200) var(--ease-in-out);
+            min-height: 80px; /* Extra large touch targets for ADHD users */
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .nav-link:hover,
+        .nav-link:focus {
+            background: linear-gradient(135deg, var(--color-primary-50), var(--color-primary-100));
+            border-color: var(--color-primary-500);
+            color: var(--color-primary-700);
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: var(--shadow-md);
+            outline: none;
+        }
+        
+        .nav-link.active {
+            background: linear-gradient(135deg, var(--color-primary-100), var(--color-primary-300));
+            border-color: var(--color-primary-600);
+            color: var(--color-primary-700);
+            font-weight: var(--font-weight-bold);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .nav-icon {
+            font-size: 2rem;
+            display: block;
+        }
+        
+        .nav-text {
+            font-size: var(--font-size-xl);
+            font-weight: inherit;
+        }
+        
+        /* Encouragement Section */
+        .encouragement-section {
+            background: linear-gradient(135deg, var(--color-success-50), var(--color-success-100));
+            border: 2px solid var(--color-success-500);
+            border-radius: var(--radius-xl);
+            padding: var(--space-8);
+            margin: var(--space-6) var(--space-8);
+            text-align: center;
+        }
+        
+        .encouragement-title {
+            font-size: var(--font-size-2xl);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-success-600);
+            margin: 0 0 var(--space-4) 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-3);
+        }
+        
+        .encouragement-message {
+            font-size: var(--font-size-lg);
+            color: var(--color-text-primary);
+            margin: 0;
+            line-height: 1.6;
+        }
+        
+        /* Main Content Area */
+        .main-content {
+            flex: 1;
+            padding: var(--space-8);
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-8);
+        }
+        
+        .content-card {
+            background-color: var(--color-surface);
+            border: 2px solid var(--color-border);
+            border-radius: var(--radius-xl);
+            padding: var(--space-8);
+            box-shadow: var(--shadow-md);
+            text-align: center;
+        }
+        
+        .content-title {
+            font-size: var(--font-size-2xl);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-text-primary);
+            margin: 0 0 var(--space-6) 0;
+        }
+        
+        .content-description {
+            font-size: var(--font-size-lg);
+            color: var(--color-text-secondary);
+            margin: 0 0 var(--space-8) 0;
+            line-height: 1.6;
+        }
+        
+        /* Single Primary Action */
+        .primary-action {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-3);
+            padding: var(--space-6) var(--space-10);
+            background: linear-gradient(135deg, var(--color-primary-500), var(--color-primary-600));
+            color: var(--color-text-on-primary);
+            text-decoration: none;
+            font-weight: var(--font-weight-bold);
+            font-size: var(--font-size-xl);
+            border: 3px solid var(--color-primary-700);
+            border-radius: var(--radius-xl);
+            transition: all var(--duration-200) var(--ease-in-out);
+            min-height: 80px;
+            box-shadow: var(--shadow-md);
+        }
+        
+        .primary-action:hover,
+        .primary-action:focus {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: var(--shadow-lg);
+            outline: none;
+        }
+        
+        .primary-action:active {
+            transform: translateY(-1px) scale(1.02);
+        }
+        
+        /* More Options - Progressive Disclosure */
+        .more-options {
+            margin-top: var(--space-6);
+        }
+        
+        .more-toggle {
+            background: var(--color-surface-secondary);
+            color: var(--color-text-secondary);
+            border: 2px solid var(--color-border-secondary);
+            border-radius: var(--radius-lg);
+            padding: var(--space-4) var(--space-6);
+            font-size: var(--font-size-base);
+            font-weight: var(--font-weight-medium);
+            cursor: pointer;
+            transition: all var(--duration-200) var(--ease-in-out);
+        }
+        
+        .more-toggle:hover,
+        .more-toggle:focus {
+            background: var(--color-primary-50);
+            border-color: var(--color-primary-500);
+            color: var(--color-primary-600);
+            outline: none;
+        }
+        
+        .more-content {
+            margin-top: var(--space-4);
+            padding: var(--space-6);
+            background: var(--color-surface-secondary);
+            border-radius: var(--radius-lg);
+            border: 2px solid var(--color-border-secondary);
+        }
+        
+        .more-content.hidden {
+            display: none;
+        }
+        
+        .secondary-actions {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-3);
+        }
+        
+        .secondary-action {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-3);
+            padding: var(--space-4) var(--space-6);
+            background: var(--color-surface);
+            color: var(--color-text-primary);
+            text-decoration: none;
+            font-weight: var(--font-weight-medium);
+            font-size: var(--font-size-base);
+            border: 2px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            transition: all var(--duration-200) var(--ease-in-out);
+            min-height: 60px;
+        }
+        
+        .secondary-action:hover,
+        .secondary-action:focus {
+            border-color: var(--color-primary-500);
+            background: var(--color-primary-50);
+            color: var(--color-primary-600);
+            transform: translateY(-1px);
+            outline: none;
+        }
+        
+        /* Progress Indicator */
+        .progress-section {
+            background: var(--color-surface);
+            border: 2px solid var(--color-border);
+            border-radius: var(--radius-xl);
+            padding: var(--space-6);
+            text-align: center;
+        }
+        
+        .progress-title {
+            font-size: var(--font-size-lg);
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-text-primary);
+            margin: 0 0 var(--space-4) 0;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 16px;
+            background: var(--color-border-secondary);
+            border-radius: var(--radius-full);
+            overflow: hidden;
+            margin: var(--space-4) 0;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--color-success-500), var(--color-success-600));
+            border-radius: var(--radius-full);
+            transition: width var(--duration-300) var(--ease-out);
+            width: 0%;
+        }
+        
+        .progress-text {
+            font-size: var(--font-size-base);
+            color: var(--color-text-secondary);
+            margin: 0;
+        }
+        
+        /* Personalization Controls */
+        .personalization-panel {
+            position: fixed;
+            top: 50%;
+            right: -300px;
+            transform: translateY(-50%);
+            width: 280px;
+            background: var(--color-surface);
+            border: 3px solid var(--color-primary-500);
+            border-radius: var(--radius-xl);
+            padding: var(--space-6);
+            box-shadow: var(--shadow-lg);
+            z-index: var(--z-overlay);
+            transition: right var(--duration-300) var(--ease-out);
+        }
+        
+        .personalization-panel.open {
+            right: 20px;
+        }
+        
+        .personalization-toggle {
+            position: fixed;
+            top: 50%;
+            right: 20px;
+            transform: translateY(-50%);
+            width: 60px;
+            height: 60px;
+            background: var(--color-primary-500);
+            color: white;
+            border: none;
+            border-radius: var(--radius-full);
+            font-size: var(--font-size-xl);
+            cursor: pointer;
+            box-shadow: var(--shadow-lg);
+            z-index: var(--z-overlay);
+            transition: all var(--duration-200) var(--ease-in-out);
+        }
+        
+        .personalization-toggle:hover,
+        .personalization-toggle:focus {
+            transform: translateY(-50%) scale(1.1);
+            outline: none;
+            box-shadow: 0 0 0 4px var(--color-focus-ring);
+        }
+        
+        .panel-title {
+            font-size: var(--font-size-lg);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-text-primary);
+            margin: 0 0 var(--space-4) 0;
+            text-align: center;
+        }
+        
+        .control-group {
+            margin-bottom: var(--space-6);
+        }
+        
+        .control-label {
+            font-size: var(--font-size-base);
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-text-primary);
+            margin: 0 0 var(--space-3) 0;
+            display: block;
+        }
+        
+        .control-description {
+            font-size: var(--font-size-sm);
+            color: var(--color-text-secondary);
+            margin: 0 0 var(--space-3) 0;
+        }
+        
+        .toggle-switch {
+            position: relative;
+            width: 60px;
+            height: 32px;
+            background: var(--color-border-secondary);
+            border-radius: var(--radius-full);
+            border: 2px solid var(--color-border-strong);
+            cursor: pointer;
+            transition: all var(--duration-200) var(--ease-in-out);
+        }
+        
+        .toggle-switch.active {
+            background: var(--color-success-500);
+            border-color: var(--color-success-600);
+        }
+        
+        .toggle-handle {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 24px;
+            height: 24px;
+            background: white;
+            border-radius: var(--radius-full);
+            box-shadow: var(--shadow-sm);
+            transition: transform var(--duration-200) var(--ease-out);
+        }
+        
+        .toggle-switch.active .toggle-handle {
+            transform: translateX(28px);
+        }
+        
+        /* Loading States */
+        .loading {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+        
+        .loading-message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--color-surface);
+            border: 2px solid var(--color-primary-500);
+            border-radius: var(--radius-xl);
+            padding: var(--space-8);
+            box-shadow: var(--shadow-lg);
+            z-index: var(--z-modal);
+            text-align: center;
+            font-size: var(--font-size-lg);
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-primary-600);
+        }
+        
+        .loading-message.hidden {
+            display: none;
+        }
+        
+        /* Success Celebrations */
+        .celebration-message {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, var(--color-success-100), var(--color-success-50));
+            border: 2px solid var(--color-success-500);
+            border-radius: var(--radius-xl);
+            padding: var(--space-6);
+            box-shadow: var(--shadow-lg);
+            z-index: var(--z-overlay);
+            max-width: 320px;
+            animation: slide-in-celebration 0.3s ease-out;
+        }
+        
+        .celebration-message.hidden {
+            display: none;
+        }
+        
+        @keyframes slide-in-celebration {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        .celebration-title {
+            font-size: var(--font-size-lg);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-success-600);
+            margin: 0 0 var(--space-2) 0;
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+        }
+        
+        .celebration-text {
+            font-size: var(--font-size-base);
+            color: var(--color-text-primary);
+            margin: 0;
+        }
+        
+        /* Hidden utilities */
+        .hidden {
+            display: none !important;
+        }
+        
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+        
+        /* High contrast mode */
+        @media (prefers-contrast: high) {
+            .nav-link,
+            .primary-action,
+            .secondary-action,
+            .content-card {
+                border-width: 4px;
+            }
+            
+            .focus-mode-indicator {
+                border-width: 3px;
+            }
+        }
+        
+        /* Reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
+            
+            .gentle-pulse {
+                animation: none;
+            }
+        }
+        
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .app {
+                max-width: 100%;
+            }
+            
+            .header-content {
+                padding: var(--space-4) var(--space-6);
+            }
+            
+            .brand-title {
+                font-size: var(--font-size-xl);
+            }
+            
+            .minimal-nav {
+                padding: var(--space-4) var(--space-6);
+            }
+            
+            .main-content {
+                padding: var(--space-6);
+            }
+            
+            .personalization-toggle {
+                right: 15px;
+                width: 50px;
+                height: 50px;
+                font-size: var(--font-size-lg);
+            }
+            
+            .personalization-panel {
+                width: calc(100vw - 30px);
+                right: -100%;
+            }
+            
+            .personalization-panel.open {
+                right: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <!-- Skip Link for Accessibility -->
+        <a href="#main-content" class="skip-link">Skip to main content</a>
+        
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="brand">
+                    <div class="brand-icon" aria-hidden="true">☕</div>
+                    <h1 class="brand-title">Coffee Roast Tracker</h1>
+                </div>
+                
+                <div class="header-controls">
+                    <div class="focus-mode-indicator active" id="focus-indicator" 
+                         aria-live="polite" aria-label="Focus mode status">
+                        <span aria-hidden="true">🎯</span>
+                        <span>Focus Mode Active</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Minimal Navigation - Maximum 3 Options -->
+        <nav class="minimal-nav" aria-label="Main navigation">
+            <div class="nav-container">
+                <p class="nav-title">Choose your next action:</p>
+                <ul class="nav-list" role="menu">
+                    <li class="nav-item" role="none">
+                        <a href="#current-task" class="nav-link active" role="menuitem" 
+                           aria-current="page" id="nav-current">
+                            <span class="nav-icon" aria-hidden="true">⏱️</span>
+                            <span class="nav-text">Continue Current Roast</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" role="none">
+                        <a href="#quick-actions" class="nav-link" role="menuitem" id="nav-quick">
+                            <span class="nav-icon" aria-hidden="true">⚡</span>
+                            <span class="nav-text">Quick Actions</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" role="none">
+                        <a href="#home" class="nav-link" role="menuitem" id="nav-home">
+                            <span class="nav-icon" aria-hidden="true">🏠</span>
+                            <span class="nav-text">Home</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        
+        <!-- Encouragement Section -->
+        <section class="encouragement-section">
+            <h2 class="encouragement-title">
+                <span aria-hidden="true">✨</span>
+                You're doing great!
+            </h2>
+            <p class="encouragement-message">
+                Focus on one thing at a time. Your Colombian Supremo roast is coming along perfectly.
+            </p>
+        </section>
+        
+        <!-- Main Content -->
+        <main class="main-content" id="main-content" tabindex="-1">
+            <section class="content-card">
+                <h2 class="content-title">Current Roast: Colombian Supremo</h2>
+                <p class="content-description">
+                    Your roast is at First Crack phase. Timer shows 8:45 elapsed.
+                    Everything looks perfect - keep going!
+                </p>
+                
+                <a href="#continue-roast" class="primary-action" onclick="handlePrimaryAction()">
+                    <span aria-hidden="true">▶️</span>
+                    <span>Continue Roast Timer</span>
+                </a>
+                
+                <div class="more-options">
+                    <button class="more-toggle" onclick="toggleMoreOptions()" id="more-toggle">
+                        More options available (click if needed)
+                    </button>
+                    
+                    <div class="more-content hidden" id="more-content">
+                        <div class="secondary-actions">
+                            <a href="#add-note" class="secondary-action">
+                                <span aria-hidden="true">📝</span>
+                                <span>Add Quick Note</span>
+                            </a>
+                            <a href="#check-temperature" class="secondary-action">
+                                <span aria-hidden="true">🌡️</span>
+                                <span>Check Temperature</span>
+                            </a>
+                            <a href="#end-roast" class="secondary-action">
+                                <span aria-hidden="true">🏁</span>
+                                <span>End Roast Early</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="progress-section">
+                <h3 class="progress-title">Session Progress</h3>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+                <p class="progress-text" id="progress-text">8 minutes into roasting session</p>
+            </section>
+        </main>
+        
+        <!-- Personalization Controls -->
+        <button class="personalization-toggle" onclick="togglePersonalization()" 
+                aria-label="Open personalization settings">
+            ⚙️
+        </button>
+        
+        <aside class="personalization-panel" id="personalization-panel" 
+               aria-label="Personalization controls">
+            <h3 class="panel-title">Minimal Cognitive Load Settings</h3>
+            
+            <div class="control-group">
+                <label class="control-label">Focus Mode</label>
+                <p class="control-description">
+                    Reduces navigation to essential actions only
+                </p>
+                <div class="toggle-switch active" onclick="toggleFocusMode()" 
+                     role="switch" aria-checked="true" tabindex="0" 
+                     onkeydown="handleToggleKeydown(event, 'focus')">
+                    <div class="toggle-handle"></div>
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <label class="control-label">Gentle Coaching</label>
+                <p class="control-description">
+                    Positive encouragement without pressure
+                </p>
+                <div class="toggle-switch active" onclick="toggleCoaching()" 
+                     role="switch" aria-checked="true" tabindex="0"
+                     onkeydown="handleToggleKeydown(event, 'coaching')">
+                    <div class="toggle-handle"></div>
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <label class="control-label">Progressive Disclosure</label>
+                <p class="control-description">
+                    Hide advanced options behind "More" buttons
+                </p>
+                <div class="toggle-switch active" onclick="toggleProgressive()" 
+                     role="switch" aria-checked="true" tabindex="0"
+                     onkeydown="handleToggleKeydown(event, 'progressive')">
+                    <div class="toggle-handle"></div>
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <label class="control-label">Large Touch Targets</label>
+                <p class="control-description">
+                    Extra large buttons and navigation elements
+                </p>
+                <div class="toggle-switch active" onclick="toggleLargeTargets()" 
+                     role="switch" aria-checked="true" tabindex="0"
+                     onkeydown="handleToggleKeydown(event, 'targets')">
+                    <div class="toggle-handle"></div>
+                </div>
+            </div>
+        </aside>
+        
+        <!-- Loading Message -->
+        <div class="loading-message hidden" id="loading-message">
+            <span aria-hidden="true">⏳</span>
+            Optimizing interface for focus...
+        </div>
+        
+        <!-- Success Celebration -->
+        <div class="celebration-message hidden" id="celebration-message">
+            <div class="celebration-title">
+                <span aria-hidden="true">🎉</span>
+                Great choice!
+            </div>
+            <p class="celebration-text">Your interface is now optimized for minimal cognitive load.</p>
+        </div>
+        
+        <!-- Live region for announcements -->
+        <div aria-live="polite" aria-atomic="true" class="sr-only" id="announcements"></div>
+    </div>
+
+    <script>
+        // Minimal Cognitive Load Navigation Prototype JavaScript
+        class MinimalCognitiveLoadNavigation {
+            constructor() {
+                this.focusMode = true;
+                this.gentleCoaching = true;
+                this.progressiveDisclosure = true;
+                this.largeTargets = true;
+                this.currentSection = 'current-task';
+                this.sessionStartTime = Date.now();
+                this.celebrationTimeout = null;
+                
+                this.init();
+            }
+            
+            init() {
+                this.bindNavigationEvents();
+                this.setupKeyboardNavigation();
+                this.startProgressTracking();
+                this.updateFocusIndicator();
+                this.announcePageLoad();
+                this.bindAccessibilityEvents();
+            }
+            
+            bindNavigationEvents() {
+                // Navigation links
+                document.querySelectorAll('.nav-link').forEach(link => {
+                    link.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        this.navigateToSection(link.id.replace('nav-', ''));
+                    });
+                });
+                
+                // Personalization toggle keyboard support
+                document.querySelectorAll('[role="switch"]').forEach(toggle => {
+                    toggle.addEventListener('keydown', (e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            toggle.click();
+                        }
+                    });
+                });
+            }
+            
+            setupKeyboardNavigation() {
+                document.addEventListener('keydown', (e) => {
+                    // Alt + F for focus mode toggle
+                    if (e.altKey && e.key.toLowerCase() === 'f') {
+                        e.preventDefault();
+                        this.toggleFocusMode();
+                    }
+                    
+                    // Alt + 1-3 for main navigation
+                    if (e.altKey && e.key >= '1' && e.key <= '3') {
+                        e.preventDefault();
+                        const sections = ['current-task', 'quick-actions', 'home'];
+                        this.navigateToSection(sections[parseInt(e.key) - 1]);
+                    }
+                    
+                    // Escape to close panels
+                    if (e.key === 'Escape') {
+                        this.closeAllPanels();
+                    }
+                });
+            }
+            
+            startProgressTracking() {
+                const progressFill = document.getElementById('progress-fill');
+                const progressText = document.getElementById('progress-text');
+                
+                setInterval(() => {
+                    const elapsed = Date.now() - this.sessionStartTime;
+                    const minutes = Math.floor(elapsed / 60000);
+                    const progress = Math.min((elapsed / 1200000) * 100, 100); // 20 minute max
+                    
+                    progressFill.style.width = `${progress}%`;
+                    progressText.textContent = `${minutes} minutes into roasting session`;
+                    
+                    // Gentle milestone celebrations
+                    if (minutes > 0 && minutes % 5 === 0 && this.gentleCoaching) {
+                        this.showMilestoneCelebration(minutes);
+                    }
+                }, 1000);
+            }
+            
+            navigateToSection(section) {
+                this.showLoadingState();
+                
+                // Update active navigation
+                document.querySelectorAll('.nav-link').forEach(link => {
+                    link.classList.remove('active');
+                    link.removeAttribute('aria-current');
+                });
+                
+                const activeLink = document.getElementById(`nav-${section}`);
+                if (activeLink) {
+                    activeLink.classList.add('active');
+                    activeLink.setAttribute('aria-current', 'page');
+                }
+                
+                // Simulate content loading with focus-friendly delay
+                setTimeout(() => {
+                    this.hideLoadingState();
+                    this.currentSection = section;
+                    this.announceNavigation(section);
+                    
+                    if (this.gentleCoaching) {
+                        this.showEncouragement('Great choice! You\'re staying focused.');
+                    }
+                }, 500);
+            }
+            
+            showLoadingState() {
+                document.querySelector('.app').classList.add('loading');
+                document.getElementById('loading-message').classList.remove('hidden');
+            }
+            
+            hideLoadingState() {
+                document.querySelector('.app').classList.remove('loading');
+                document.getElementById('loading-message').classList.add('hidden');
+            }
+            
+            toggleFocusMode() {
+                this.focusMode = !this.focusMode;
+                this.updateFocusIndicator();
+                
+                if (this.focusMode) {
+                    this.announceToUser('Focus mode activated. Distractions minimized.');
+                    this.showEncouragement('Perfect! You\'ve got this.');
+                } else {
+                    this.announceToUser('Focus mode deactivated. More options available.');
+                }
+            }
+            
+            updateFocusIndicator() {
+                const indicator = document.getElementById('focus-indicator');
+                if (this.focusMode) {
+                    indicator.classList.add('active');
+                    indicator.innerHTML = '<span aria-hidden="true">🎯</span><span>Focus Mode Active</span>';
+                } else {
+                    indicator.classList.remove('active');
+                    indicator.innerHTML = '<span aria-hidden="true">👀</span><span>All Options Visible</span>';
+                }
+            }
+            
+            showEncouragement(message) {
+                const celebration = document.getElementById('celebration-message');
+                const textElement = celebration.querySelector('.celebration-text');
+                
+                textElement.textContent = message;
+                celebration.classList.remove('hidden');
+                
+                // Clear existing timeout
+                if (this.celebrationTimeout) {
+                    clearTimeout(this.celebrationTimeout);
+                }
+                
+                // Auto-hide after 4 seconds
+                this.celebrationTimeout = setTimeout(() => {
+                    celebration.classList.add('hidden');
+                }, 4000);
+            }
+            
+            showMilestoneCelebration(minutes) {
+                const milestoneMessages = {
+                    5: 'Nice work! 5 minutes of focused roasting.',
+                    10: 'Excellent! You\'re halfway through.',
+                    15: 'Amazing focus! Almost there.',
+                    20: 'Perfect roast! You did it!'
+                };
+                
+                const message = milestoneMessages[minutes];
+                if (message) {
+                    this.showEncouragement(message);
+                }
+            }
+            
+            announceToUser(message) {
+                const announcements = document.getElementById('announcements');
+                announcements.textContent = message;
+            }
+            
+            announceNavigation(section) {
+                const sectionNames = {
+                    'current-task': 'Current roast task',
+                    'quick-actions': 'Quick actions menu',
+                    'home': 'Home dashboard'
+                };
+                
+                const sectionName = sectionNames[section] || section;
+                this.announceToUser(`Navigated to ${sectionName}. Focus maintained.`);
+            }
+            
+            announcePageLoad() {
+                setTimeout(() => {
+                    this.announceToUser('Minimal cognitive load interface loaded. Focus mode active. You can do this.');
+                }, 1000);
+            }
+            
+            closeAllPanels() {
+                const panel = document.getElementById('personalization-panel');
+                panel.classList.remove('open');
+                
+                const moreContent = document.getElementById('more-content');
+                moreContent.classList.add('hidden');
+                
+                const moreToggle = document.getElementById('more-toggle');
+                moreToggle.textContent = 'More options available (click if needed)';
+            }
+            
+            bindAccessibilityEvents() {
+                // Focus management for personalization panel
+                const panel = document.getElementById('personalization-panel');
+                const toggle = document.querySelector('.personalization-toggle');
+                
+                panel.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape') {
+                        this.closeAllPanels();
+                        toggle.focus();
+                    }
+                });
+            }
+        }
+        
+        // Global functions for HTML onclick handlers
+        window.handlePrimaryAction = function() {
+            window.navigation.showLoadingState();
+            
+            setTimeout(() => {
+                window.navigation.hideLoadingState();
+                window.navigation.showEncouragement('Timer resumed! Keep up the great work.');
+                window.navigation.announceToUser('Roast timer resumed successfully.');
+            }, 800);
+        };
+        
+        window.toggleMoreOptions = function() {
+            const content = document.getElementById('more-content');
+            const toggle = document.getElementById('more-toggle');
+            
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                toggle.textContent = 'Hide extra options';
+                window.navigation.announceToUser('Additional options now visible.');
+            } else {
+                content.classList.add('hidden');
+                toggle.textContent = 'More options available (click if needed)';
+                window.navigation.announceToUser('Additional options hidden.');
+            }
+        };
+        
+        window.togglePersonalization = function() {
+            const panel = document.getElementById('personalization-panel');
+            panel.classList.toggle('open');
+            
+            if (panel.classList.contains('open')) {
+                window.navigation.announceToUser('Personalization panel opened.');
+                // Focus first control
+                setTimeout(() => {
+                    panel.querySelector('[role="switch"]').focus();
+                }, 100);
+            } else {
+                window.navigation.announceToUser('Personalization panel closed.');
+            }
+        };
+        
+        window.toggleFocusMode = function() {
+            const toggle = event.target.closest('.toggle-switch');
+            toggle.classList.toggle('active');
+            const isActive = toggle.classList.contains('active');
+            toggle.setAttribute('aria-checked', isActive);
+            
+            window.navigation.focusMode = isActive;
+            window.navigation.updateFocusIndicator();
+            
+            if (isActive) {
+                window.navigation.showEncouragement('Focus mode enabled! Distractions minimized.');
+            }
+        };
+        
+        window.toggleCoaching = function() {
+            const toggle = event.target.closest('.toggle-switch');
+            toggle.classList.toggle('active');
+            const isActive = toggle.classList.contains('active');
+            toggle.setAttribute('aria-checked', isActive);
+            
+            window.navigation.gentleCoaching = isActive;
+            
+            if (isActive) {
+                window.navigation.showEncouragement('Gentle coaching enabled! You\'ve got this.');
+            } else {
+                window.navigation.announceToUser('Gentle coaching disabled.');
+            }
+        };
+        
+        window.toggleProgressive = function() {
+            const toggle = event.target.closest('.toggle-switch');
+            toggle.classList.toggle('active');
+            const isActive = toggle.classList.contains('active');
+            toggle.setAttribute('aria-checked', isActive);
+            
+            window.navigation.progressiveDisclosure = isActive;
+            window.navigation.announceToUser(
+                isActive ? 'Progressive disclosure enabled.' : 'Progressive disclosure disabled.'
+            );
+        };
+        
+        window.toggleLargeTargets = function() {
+            const toggle = event.target.closest('.toggle-switch');
+            toggle.classList.toggle('active');
+            const isActive = toggle.classList.contains('active');
+            toggle.setAttribute('aria-checked', isActive);
+            
+            window.navigation.largeTargets = isActive;
+            
+            // Dynamically adjust target sizes
+            document.documentElement.style.setProperty(
+                '--touch-target-size', 
+                isActive ? '80px' : '60px'
+            );
+            
+            window.navigation.announceToUser(
+                isActive ? 'Large touch targets enabled.' : 'Standard touch targets enabled.'
+            );
+        };
+        
+        window.handleToggleKeydown = function(event, type) {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                event.target.click();
+            }
+        };
+        
+        // Initialize navigation
+        document.addEventListener('DOMContentLoaded', () => {
+            window.navigation = new MinimalCognitiveLoadNavigation();
+        });
+    </script>
+</body>
+</html>
