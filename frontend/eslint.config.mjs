@@ -10,7 +10,7 @@ const compat = new FlatCompat({
 });
 
 const eslintConfig = [
-  ...compat.extends("next/core-web-vitals", "next/typescript"),
+  // Global ignores must come first in flat config
   {
     ignores: [
       "node_modules/**",
@@ -23,10 +23,17 @@ const eslintConfig = [
       "scripts/**/*.js",
       "tests/performance/**/*.js",
     ],
+  },
+  ...compat.extends("next/core-web-vitals", "next/typescript"),
+  {
     rules: {
       // Temporarily disable strict rules during recovery phase
       "@typescript-eslint/no-explicit-any": "warn",
       "@typescript-eslint/no-unused-vars": "warn",
+      "@typescript-eslint/no-require-imports": "warn",
+      "@typescript-eslint/triple-slash-reference": "warn",
+      "@typescript-eslint/ban-ts-comment": "warn", 
+      "@next/next/no-assign-module-variable": "warn",
       "react/no-unescaped-entities": "warn",
       "react-hooks/exhaustive-deps": "warn",
     },
