@@ -1,0 +1,1233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PWA Installation Demo - Coffee Roast Tracker</title>
+    
+    <!-- PWA Meta Tags -->
+    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIkNvZmZlZSBSb2FzdCBUcmFja2VyIiwKICAic2hvcnRfbmFtZSI6ICJSb2FzdFRyYWNrZXIiLAogICJkaXNwbGF5IjogInN0YW5kYWxvbmUiLAogICJvcmllbnRhdGlvbiI6ICJwb3J0cmFpdC1wcmltYXJ5IiwKICAidGhlbWVfY29sb3IiOiAiIzhCNDUxMyIsCiAgImJhY2tncm91bmRfY29sb3IiOiAiI0ZGRkZGRiIsCiAgInN0YXJ0X3VybCI6ICIvIiwKICAic2NvcGUiOiAiLyIsCiAgImljb25zIjogWwogICAgewogICAgICAic3JjIjogImRhdGE6aW1hZ2Uvc3ZnK3htbDtiYXNlNjQsUEhOMlp5QjNhV1IwYUQwaU1qUWlJR2hsYVdkb2REMGlNalFpSUhabGNuTnBiMjQ5SWpFdU1TSWdlRzFzYm5NOUltaDBkSEE2THk5M2QzY3Vkek11YjNKbkx6SXdNREF2YzNabklpNCtRV0V6UTNBUU0rOGdPM0I5Y0E9PSIsCiAgICAgICJzaXplcyI6ICIyNHgyNCIsCiAgICAgICJ0eXBlIjogImltYWdlL3N2Zyt4bWwiCiAgICB9CiAgXQp9">
+    <meta name="theme-color" content="#8B4513">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="RoastTracker">
+    
+    <style>
+        /* Import design system styles */
+        :root {
+            --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            --font-size-sm: 0.875rem;
+            --font-size-base: 1rem;
+            --font-size-lg: 1.125rem;
+            --font-size-xl: 1.25rem;
+            --font-size-2xl: 1.5rem;
+            --font-size-3xl: 1.875rem;
+            --font-weight-normal: 400;
+            --font-weight-medium: 500;
+            --font-weight-semibold: 600;
+            --font-weight-bold: 700;
+            --line-height-normal: 1.5;
+            
+            --space-1: 0.25rem;
+            --space-2: 0.5rem;
+            --space-3: 0.75rem;
+            --space-4: 1rem;
+            --space-5: 1.25rem;
+            --space-6: 1.5rem;
+            --space-8: 2rem;
+            --space-10: 2.5rem;
+            --space-12: 3rem;
+            
+            --radius-lg: 1rem;
+            --radius-xl: 1.5rem;
+            --radius-2xl: 2rem;
+            --radius-full: 9999px;
+            
+            --color-primary-500: #c8794a;
+            --color-primary-600: #b86c3e;
+            --color-primary-700: #995536;
+            --color-primary-100: #f9ede0;
+            --color-primary-50: #fdf7f0;
+            
+            --color-success-500: #10b981;
+            --color-success-600: #059669;
+            --color-success-100: #d1fae5;
+            --color-success-50: #ecfdf5;
+            
+            --color-warning-500: #f59e0b;
+            --color-warning-100: #fef3c7;
+            
+            --color-info-500: #3b82f6;
+            --color-info-100: #dbeafe;
+            
+            --color-text-primary: #1c1917;
+            --color-text-secondary: #57534e;
+            --color-text-tertiary: #78716c;
+            --color-text-on-primary: #fafaf9;
+            
+            --color-surface: #ffffff;
+            --color-surface-secondary: #f5f5f4;
+            --color-surface-elevated: #ffffff;
+            --color-surface-overlay: rgba(0, 0, 0, 0.5);
+            --color-background: #fafaf9;
+            
+            --color-border: #e7e5e4;
+            --color-border-secondary: #d6d3d1;
+            
+            --color-focus: #c8794a;
+            --color-focus-ring: rgba(200, 121, 74, 0.5);
+            
+            --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            
+            --duration-150: 150ms;
+            --duration-200: 200ms;
+            --duration-300: 300ms;
+            --duration-500: 500ms;
+            --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+            --ease-out: cubic-bezier(0, 0, 0.2, 1);
+            
+            --z-modal: 1050;
+            --z-overlay: 1040;
+        }
+        
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: var(--font-primary);
+            font-size: var(--font-size-base);
+            line-height: var(--line-height-normal);
+            color: var(--color-text-primary);
+            background-color: var(--color-background);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+        
+        .app {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header {
+            background-color: var(--color-surface);
+            border-bottom: 2px solid var(--color-border);
+            padding: var(--space-4) var(--space-6);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+        }
+        
+        .brand-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--color-primary-500), var(--color-primary-600));
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: var(--font-weight-bold);
+        }
+        
+        .brand-title {
+            font-size: var(--font-size-xl);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-primary-600);
+            margin: 0;
+        }
+        
+        .install-status {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+            font-size: var(--font-size-sm);
+            color: var(--color-text-secondary);
+        }
+        
+        .main-content {
+            flex: 1;
+            padding: var(--space-8);
+            max-width: 800px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        
+        .demo-section {
+            margin-bottom: var(--space-10);
+        }
+        
+        .section-title {
+            font-size: var(--font-size-2xl);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-text-primary);
+            margin: 0 0 var(--space-4) 0;
+        }
+        
+        .section-subtitle {
+            font-size: var(--font-size-lg);
+            color: var(--color-text-secondary);
+            margin: 0 0 var(--space-6) 0;
+        }
+        
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--space-6);
+        }
+        
+        .demo-card {
+            background-color: var(--color-surface);
+            border: 2px solid var(--color-border);
+            border-radius: var(--radius-xl);
+            padding: var(--space-6);
+            box-shadow: var(--shadow-sm);
+            transition: all var(--duration-200) var(--ease-in-out);
+        }
+        
+        .demo-card:hover {
+            border-color: var(--color-primary-300);
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+        
+        .card-title {
+            font-size: var(--font-size-lg);
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-text-primary);
+            margin: 0 0 var(--space-3) 0;
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+        }
+        
+        .card-description {
+            color: var(--color-text-secondary);
+            margin: 0 0 var(--space-4) 0;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-2);
+            padding: var(--space-3) var(--space-5);
+            font-family: var(--font-primary);
+            font-size: var(--font-size-base);
+            font-weight: var(--font-weight-semibold);
+            text-decoration: none;
+            border: 2px solid transparent;
+            border-radius: var(--radius-lg);
+            cursor: pointer;
+            transition: all var(--duration-200) var(--ease-in-out);
+            user-select: none;
+        }
+        
+        .btn:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px var(--color-focus-ring);
+        }
+        
+        .btn--primary {
+            background-color: var(--color-primary-500);
+            color: var(--color-text-on-primary);
+            border-color: var(--color-primary-600);
+        }
+        
+        .btn--primary:hover:not(:disabled) {
+            background-color: var(--color-primary-600);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .btn--secondary {
+            background-color: var(--color-surface);
+            color: var(--color-text-primary);
+            border-color: var(--color-border-secondary);
+        }
+        
+        .btn--secondary:hover:not(:disabled) {
+            background-color: var(--color-surface-secondary);
+            border-color: var(--color-primary-500);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .btn--success {
+            background-color: var(--color-success-500);
+            color: white;
+            border-color: var(--color-success-600);
+        }
+        
+        .btn--success:hover:not(:disabled) {
+            background-color: var(--color-success-600);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+            box-shadow: none !important;
+        }
+        
+        .install-banner {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: var(--color-surface);
+            border-top: 2px solid var(--color-border);
+            box-shadow: var(--shadow-lg);
+            padding: var(--space-4);
+            transform: translateY(100%);
+            transition: transform var(--duration-300) var(--ease-out);
+            z-index: var(--z-overlay);
+        }
+        
+        .install-banner.show {
+            transform: translateY(0);
+        }
+        
+        .banner-content {
+            display: flex;
+            align-items: center;
+            gap: var(--space-4);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .banner-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--color-primary-500), var(--color-primary-600));
+            border-radius: var(--radius-xl);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: var(--font-size-xl);
+            flex-shrink: 0;
+        }
+        
+        .banner-text {
+            flex: 1;
+        }
+        
+        .banner-title {
+            font-weight: var(--font-weight-semibold);
+            margin: 0 0 var(--space-1) 0;
+        }
+        
+        .banner-subtitle {
+            font-size: var(--font-size-sm);
+            color: var(--color-text-secondary);
+            margin: 0;
+        }
+        
+        .banner-actions {
+            display: flex;
+            gap: var(--space-3);
+        }
+        
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: var(--z-modal);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--space-4);
+            background-color: var(--color-surface-overlay);
+            backdrop-filter: blur(8px);
+            opacity: 0;
+            visibility: hidden;
+            transition: all var(--duration-300) var(--ease-in-out);
+        }
+        
+        .modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .modal-content {
+            width: 100%;
+            max-width: 480px;
+            max-height: 80vh;
+            background-color: var(--color-surface);
+            border-radius: var(--radius-2xl);
+            box-shadow: var(--shadow-xl);
+            overflow: hidden;
+            transform: scale(0.9);
+            transition: transform var(--duration-300) var(--ease-out);
+        }
+        
+        .modal.show .modal-content {
+            transform: scale(1);
+        }
+        
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--space-6);
+            border-bottom: 2px solid var(--color-border);
+            background-color: var(--color-surface-secondary);
+        }
+        
+        .modal-title {
+            font-size: var(--font-size-xl);
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-text-primary);
+            margin: 0;
+        }
+        
+        .modal-close {
+            width: 32px;
+            height: 32px;
+            padding: 0;
+            background: none;
+            border: none;
+            border-radius: var(--radius-lg);
+            color: var(--color-text-tertiary);
+            cursor: pointer;
+            transition: all var(--duration-200) var(--ease-in-out);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-close:hover {
+            background-color: var(--color-surface-secondary);
+            color: var(--color-text-primary);
+        }
+        
+        .modal-body {
+            padding: var(--space-6);
+            overflow-y: auto;
+        }
+        
+        .installation-steps {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .installation-step {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--space-4);
+            margin-bottom: var(--space-6);
+            padding: var(--space-4);
+            background-color: var(--color-surface-secondary);
+            border-radius: var(--radius-lg);
+        }
+        
+        .installation-step:last-child {
+            margin-bottom: 0;
+        }
+        
+        .step-number {
+            width: 32px;
+            height: 32px;
+            background-color: var(--color-primary-500);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: var(--font-weight-bold);
+            flex-shrink: 0;
+        }
+        
+        .step-content {
+            flex: 1;
+        }
+        
+        .step-title {
+            font-weight: var(--font-weight-semibold);
+            margin: 0 0 var(--space-2) 0;
+        }
+        
+        .step-description {
+            color: var(--color-text-secondary);
+            margin: 0;
+        }
+        
+        .browser-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: var(--radius-lg);
+            background: linear-gradient(135deg, #4285f4, #34a853);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            margin-right: var(--space-2);
+        }
+        
+        .benefits-list {
+            list-style: none;
+            padding: 0;
+            margin: var(--space-4) 0;
+        }
+        
+        .benefit-item {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+            margin-bottom: var(--space-3);
+            padding: var(--space-3);
+            background-color: var(--color-success-50);
+            border-radius: var(--radius-lg);
+            border-left: 4px solid var(--color-success-500);
+        }
+        
+        .benefit-icon {
+            font-size: var(--font-size-lg);
+        }
+        
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-2);
+            padding: var(--space-2) var(--space-3);
+            border-radius: var(--radius-full);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-medium);
+        }
+        
+        .status--online {
+            background-color: var(--color-success-100);
+            color: var(--color-success-600);
+        }
+        
+        .status--offline {
+            background-color: var(--color-warning-100);
+            color: var(--color-warning-500);
+        }
+        
+        .status--installed {
+            background-color: var(--color-success-100);
+            color: var(--color-success-600);
+        }
+        
+        .feature-demo {
+            background-color: var(--color-info-100);
+            border: 2px solid var(--color-info-500);
+            border-radius: var(--radius-lg);
+            padding: var(--space-6);
+            margin: var(--space-6) 0;
+        }
+        
+        .offline-simulator {
+            text-align: center;
+        }
+        
+        .connection-toggle {
+            margin: var(--space-4) 0;
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+        
+        /* Mobile responsive */
+        @media (max-width: 768px) {
+            .main-content {
+                padding: var(--space-4);
+            }
+            
+            .demo-grid {
+                grid-template-columns: 1fr;
+                gap: var(--space-4);
+            }
+            
+            .banner-content {
+                flex-direction: column;
+                text-align: center;
+                gap: var(--space-3);
+            }
+            
+            .banner-actions {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .modal-content {
+                margin: var(--space-2);
+                max-height: calc(100vh - var(--space-4));
+            }
+        }
+        
+        /* Reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="brand">
+                    <div class="brand-icon">☕</div>
+                    <h1 class="brand-title">Coffee Roast Tracker</h1>
+                </div>
+                
+                <div class="install-status">
+                    <div class="status-indicator status--online" id="connection-status">
+                        <span>🌐</span>
+                        <span id="connection-text">Online</span>
+                    </div>
+                    <div class="status-indicator" id="install-status">
+                        <span>📱</span>
+                        <span id="install-text">Browser Version</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- PWA Benefits Section -->
+            <section class="demo-section">
+                <h2 class="section-title">🚀 Enhanced Experience as an App</h2>
+                <p class="section-subtitle">
+                    Coffee Roast Tracker works even better as an installed app. 
+                    Here's what you get with the full app experience:
+                </p>
+                
+                <div class="demo-grid">
+                    <div class="demo-card">
+                        <h3 class="card-title">
+                            <span>📵</span>
+                            Offline Tracking
+                        </h3>
+                        <p class="card-description">
+                            Track roasts without internet. Your data syncs automatically 
+                            when you reconnect.
+                        </p>
+                        <button class="btn btn--secondary" onclick="showOfflineDemo()">
+                            Try Offline Demo
+                        </button>
+                    </div>
+                    
+                    <div class="demo-card">
+                        <h3 class="card-title">
+                            <span>⚡</span>
+                            Lightning Fast
+                        </h3>
+                        <p class="card-description">
+                            Opens instantly like native apps. No more waiting for 
+                            page loads.
+                        </p>
+                        <button class="btn btn--secondary" onclick="showSpeedDemo()">
+                            See Speed Comparison
+                        </button>
+                    </div>
+                    
+                    <div class="demo-card">
+                        <h3 class="card-title">
+                            <span>🔔</span>
+                            Smart Notifications
+                        </h3>
+                        <p class="card-description">
+                            Get timer alerts for roast phases even when the app 
+                            is closed.
+                        </p>
+                        <button class="btn btn--secondary" onclick="showNotificationDemo()">
+                            Preview Notifications
+                        </button>
+                    </div>
+                </div>
+                
+                <div style="text-align: center; margin-top: var(--space-8);">
+                    <button class="btn btn--primary" onclick="showInstallGuide()">
+                        <span>📱</span>
+                        Get These Features - Install App
+                    </button>
+                </div>
+            </section>
+            
+            <!-- Browser Detection Section -->
+            <section class="demo-section">
+                <h2 class="section-title">🌐 Installation Guide</h2>
+                <p class="section-subtitle">
+                    Installation steps vary by browser. We'll show you exactly 
+                    how to install on your device.
+                </p>
+                
+                <div class="demo-grid">
+                    <div class="demo-card">
+                        <h3 class="card-title">
+                            <span class="browser-icon">🍎</span>
+                            iOS Safari
+                        </h3>
+                        <p class="card-description">
+                            Add to Home Screen for native app experience on iPhone and iPad.
+                        </p>
+                        <button class="btn btn--secondary" onclick="showIOSGuide()">
+                            Show iOS Steps
+                        </button>
+                    </div>
+                    
+                    <div class="demo-card">
+                        <h3 class="card-title">
+                            <span class="browser-icon">🤖</span>
+                            Android Chrome
+                        </h3>
+                        <p class="card-description">
+                            Install directly from browser with native app features.
+                        </p>
+                        <button class="btn btn--secondary" onclick="showAndroidGuide()">
+                            Show Android Steps
+                        </button>
+                    </div>
+                    
+                    <div class="demo-card">
+                        <h3 class="card-title">
+                            <span class="browser-icon">💻</span>
+                            Desktop
+                        </h3>
+                        <p class="card-description">
+                            Install on Windows, Mac, or Linux for desktop app experience.
+                        </p>
+                        <button class="btn btn--secondary" onclick="showDesktopGuide()">
+                            Show Desktop Steps
+                        </button>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Feature Demos -->
+            <section class="demo-section">
+                <h2 class="section-title">🧪 Interactive Demos</h2>
+                <p class="section-subtitle">
+                    Try these features to see how the app enhances your roasting experience.
+                </p>
+                
+                <!-- Offline Demo -->
+                <div class="feature-demo hidden" id="offline-demo">
+                    <div class="offline-simulator">
+                        <h4>📵 Offline Capability Demo</h4>
+                        <p>Simulating offline mode. Try these features while "offline":</p>
+                        
+                        <div class="connection-toggle">
+                            <button class="btn btn--secondary" id="connection-toggle">
+                                Go Offline
+                            </button>
+                        </div>
+                        
+                        <div style="display: flex; gap: var(--space-4); justify-content: center; flex-wrap: wrap; margin: var(--space-4) 0;">
+                            <button class="btn btn--primary" onclick="simulateOfflineAction('roast')">
+                                Start New Roast
+                            </button>
+                            <button class="btn btn--primary" onclick="simulateOfflineAction('view')">
+                                View Saved Roasts
+                            </button>
+                            <button class="btn btn--primary" onclick="simulateOfflineAction('notes')">
+                                Edit Notes
+                            </button>
+                        </div>
+                        
+                        <div id="offline-status" class="status-indicator status--online">
+                            <span>✅</span>
+                            <span>Everything works! Data will sync when you reconnect.</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+        
+        <!-- Install Banner -->
+        <div class="install-banner" id="install-banner">
+            <div class="banner-content">
+                <div class="banner-icon">☕</div>
+                <div class="banner-text">
+                    <div class="banner-title">Install Coffee Roast Tracker</div>
+                    <div class="banner-subtitle">Works offline • Push notifications • Faster loading</div>
+                </div>
+                <div class="banner-actions">
+                    <button class="btn btn--primary" onclick="installApp()">Install</button>
+                    <button class="btn btn--secondary" onclick="dismissBanner()">Later</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Installation Guide Modal -->
+        <div class="modal" id="install-modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="modal-title">Install App</h3>
+                    <button class="modal-close" onclick="closeModal()">✕</button>
+                </div>
+                <div class="modal-body" id="modal-body">
+                    <!-- Dynamic content -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // PWA Installation Demo JavaScript
+        class PWADemo {
+            constructor() {
+                this.isOnline = navigator.onLine;
+                this.isInstalled = false;
+                this.installPrompt = null;
+                this.init();
+            }
+            
+            init() {
+                this.setupInstallPrompt();
+                this.updateConnectionStatus();
+                this.updateInstallStatus();
+                this.bindEvents();
+                
+                // Show install banner after delay if not installed
+                setTimeout(() => {
+                    if (!this.isInstalled) {
+                        this.showInstallBanner();
+                    }
+                }, 3000);
+            }
+            
+            setupInstallPrompt() {
+                window.addEventListener('beforeinstallprompt', (e) => {
+                    e.preventDefault();
+                    this.installPrompt = e;
+                    this.updateInstallStatus();
+                });
+                
+                window.addEventListener('appinstalled', () => {
+                    this.isInstalled = true;
+                    this.updateInstallStatus();
+                    this.showInstallSuccess();
+                });
+            }
+            
+            bindEvents() {
+                window.addEventListener('online', () => {
+                    this.isOnline = true;
+                    this.updateConnectionStatus();
+                });
+                
+                window.addEventListener('offline', () => {
+                    this.isOnline = false;
+                    this.updateConnectionStatus();
+                });
+                
+                // Connection toggle for demo
+                document.getElementById('connection-toggle').addEventListener('click', () => {
+                    this.toggleConnection();
+                });
+            }
+            
+            updateConnectionStatus() {
+                const statusEl = document.getElementById('connection-status');
+                const textEl = document.getElementById('connection-text');
+                
+                if (this.isOnline) {
+                    statusEl.className = 'status-indicator status--online';
+                    textEl.textContent = 'Online';
+                } else {
+                    statusEl.className = 'status-indicator status--offline';
+                    textEl.textContent = 'Offline';
+                }
+            }
+            
+            updateInstallStatus() {
+                const statusEl = document.getElementById('install-status');
+                const textEl = document.getElementById('install-text');
+                
+                if (this.isInstalled) {
+                    statusEl.className = 'status-indicator status--installed';
+                    textEl.textContent = 'App Installed';
+                } else if (this.installPrompt) {
+                    statusEl.className = 'status-indicator';
+                    textEl.textContent = 'Ready to Install';
+                } else {
+                    statusEl.className = 'status-indicator';
+                    textEl.textContent = 'Browser Version';
+                }
+            }
+            
+            showInstallBanner() {
+                const banner = document.getElementById('install-banner');
+                banner.classList.add('show');
+            }
+            
+            dismissBanner() {
+                const banner = document.getElementById('install-banner');
+                banner.classList.remove('show');
+            }
+            
+            async installApp() {
+                if (this.installPrompt) {
+                    const result = await this.installPrompt.prompt();
+                    if (result.outcome === 'accepted') {
+                        this.isInstalled = true;
+                        this.dismissBanner();
+                    }
+                    this.installPrompt = null;
+                } else {
+                    // Show installation guide based on browser
+                    this.showInstallGuide();
+                }
+            }
+            
+            showInstallGuide() {
+                const userAgent = navigator.userAgent.toLowerCase();
+                let guide = '';
+                
+                if (userAgent.includes('iphone') || userAgent.includes('ipad')) {
+                    guide = this.getIOSGuide();
+                } else if (userAgent.includes('android')) {
+                    guide = this.getAndroidGuide();
+                } else {
+                    guide = this.getDesktopGuide();
+                }
+                
+                this.showModal('📱 Install as App', guide);
+            }
+            
+            getIOSGuide() {
+                return `
+                    <ul class="benefits-list">
+                        <li class="benefit-item">
+                            <span class="benefit-icon">✓</span>
+                            <span>Works offline</span>
+                        </li>
+                        <li class="benefit-item">
+                            <span class="benefit-icon">✓</span>
+                            <span>Faster loading</span>
+                        </li>
+                        <li class="benefit-item">
+                            <span class="benefit-icon">✓</span>
+                            <span>Native app experience</span>
+                        </li>
+                    </ul>
+                    
+                    <h4>How to install on your iPhone/iPad:</h4>
+                    
+                    <ol class="installation-steps">
+                        <li class="installation-step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <div class="step-title">Tap the Share button</div>
+                                <div class="step-description">
+                                    Look for the share icon (□↑) at the bottom of Safari
+                                </div>
+                            </div>
+                        </li>
+                        <li class="installation-step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <div class="step-title">Select "Add to Home Screen"</div>
+                                <div class="step-description">
+                                    Scroll down and tap "Add to Home Screen"
+                                </div>
+                            </div>
+                        </li>
+                        <li class="installation-step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <div class="step-title">Tap "Add"</div>
+                                <div class="step-description">
+                                    The app will appear on your home screen!
+                                </div>
+                            </div>
+                        </li>
+                    </ol>
+                `;
+            }
+            
+            getAndroidGuide() {
+                return `
+                    <ul class="benefits-list">
+                        <li class="benefit-item">
+                            <span class="benefit-icon">✓</span>
+                            <span>Offline tracking</span>
+                        </li>
+                        <li class="benefit-item">
+                            <span class="benefit-icon">✓</span>
+                            <span>Push notifications</span>
+                        </li>
+                        <li class="benefit-item">
+                            <span class="benefit-icon">✓</span>
+                            <span>Full-screen app experience</span>
+                        </li>
+                    </ul>
+                    
+                    <h4>Easy installation:</h4>
+                    
+                    <ol class="installation-steps">
+                        <li class="installation-step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <div class="step-title">Look for the install banner</div>
+                                <div class="step-description">
+                                    Chrome will show "Add Coffee Roast Tracker" at the bottom
+                                </div>
+                            </div>
+                        </li>
+                        <li class="installation-step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <div class="step-title">Tap "Install"</div>
+                                <div class="step-description">
+                                    Or use menu (⋮) and select "Install app"
+                                </div>
+                            </div>
+                        </li>
+                        <li class="installation-step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <div class="step-title">Enjoy the app!</div>
+                                <div class="step-description">
+                                    Find it in your app drawer like any native app
+                                </div>
+                            </div>
+                        </li>
+                    </ol>
+                `;
+            }
+            
+            getDesktopGuide() {
+                return `
+                    <ul class="benefits-list">
+                        <li class="benefit-item">
+                            <span class="benefit-icon">✓</span>
+                            <span>Native desktop app experience</span>
+                        </li>
+                        <li class="benefit-item">
+                            <span class="benefit-icon">✓</span>
+                            <span>Works offline</span>
+                        </li>
+                        <li class="benefit-item">
+                            <span class="benefit-icon">✓</span>
+                            <span>System notifications</span>
+                        </li>
+                        <li class="benefit-item">
+                            <span class="benefit-icon">✓</span>
+                            <span>Runs independently from browser</span>
+                        </li>
+                    </ul>
+                    
+                    <h4>Install on desktop:</h4>
+                    
+                    <ol class="installation-steps">
+                        <li class="installation-step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <div class="step-title">Look for install icon</div>
+                                <div class="step-description">
+                                    Check your address bar for an install icon (usually a + or download symbol)
+                                </div>
+                            </div>
+                        </li>
+                        <li class="installation-step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <div class="step-title">Use browser menu</div>
+                                <div class="step-description">
+                                    <strong>Chrome:</strong> Menu > Install Coffee Roast Tracker<br>
+                                    <strong>Edge:</strong> Menu > Apps > Install this site as app
+                                </div>
+                            </div>
+                        </li>
+                        <li class="installation-step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <div class="step-title">Launch like any app</div>
+                                <div class="step-description">
+                                    Find it in your start menu or applications folder
+                                </div>
+                            </div>
+                        </li>
+                    </ol>
+                `;
+            }
+            
+            showModal(title, content) {
+                document.getElementById('modal-title').textContent = title;
+                document.getElementById('modal-body').innerHTML = content;
+                document.getElementById('install-modal').classList.add('show');
+            }
+            
+            closeModal() {
+                document.getElementById('install-modal').classList.remove('show');
+            }
+            
+            showInstallSuccess() {
+                this.showModal('✅ Success!', `
+                    <div style="text-align: center;">
+                        <h4>App Installed Successfully!</h4>
+                        <p>Coffee Roast Tracker is now available as an app on your device.</p>
+                        
+                        <ul class="benefits-list">
+                            <li class="benefit-item">
+                                <span class="benefit-icon">✓</span>
+                                <span>Find the app icon on your device</span>
+                            </li>
+                            <li class="benefit-item">
+                                <span class="benefit-icon">✓</span>
+                                <span>Open it like any other app</span>
+                            </li>
+                            <li class="benefit-item">
+                                <span class="benefit-icon">✓</span>
+                                <span>Enjoy offline roasting tracking</span>
+                            </li>
+                            <li class="benefit-item">
+                                <span class="benefit-icon">✓</span>
+                                <span>Get notifications for your roast timers</span>
+                            </li>
+                        </ul>
+                        
+                        <div style="margin-top: var(--space-6);">
+                            <button class="btn btn--primary" onclick="closeModal()">
+                                Start Using the App
+                            </button>
+                        </div>
+                    </div>
+                `);
+                
+                this.dismissBanner();
+            }
+            
+            toggleConnection() {
+                this.isOnline = !this.isOnline;
+                this.updateConnectionStatus();
+                
+                const toggleBtn = document.getElementById('connection-toggle');
+                const statusEl = document.getElementById('offline-status');
+                
+                if (this.isOnline) {
+                    toggleBtn.textContent = 'Go Offline';
+                    statusEl.className = 'status-indicator status--online';
+                    statusEl.innerHTML = '<span>✅</span><span>Back online! Data syncing...</span>';
+                } else {
+                    toggleBtn.textContent = 'Go Online';
+                    statusEl.className = 'status-indicator status--offline';
+                    statusEl.innerHTML = '<span>📵</span><span>Offline mode - everything still works!</span>';
+                }
+            }
+            
+            simulateOfflineAction(action) {
+                const actions = {
+                    roast: 'Started new roast (saved locally)',
+                    view: 'Viewing saved roasts (cached data)',
+                    notes: 'Notes updated (will sync when online)'
+                };
+                
+                alert(`${actions[action]}\n\nThis demonstrates how the app works seamlessly offline!`);
+            }
+        }
+        
+        // Global functions for demo
+        window.showOfflineDemo = function() {
+            document.getElementById('offline-demo').classList.remove('hidden');
+        };
+        
+        window.showSpeedDemo = function() {
+            alert('Speed Demo:\n\n🌐 Browser: 2.8s loading\n📱 App: 0.6s loading\n\n⚡ That\'s 78% faster!');
+        };
+        
+        window.showNotificationDemo = function() {
+            if ('Notification' in window) {
+                if (Notification.permission === 'granted') {
+                    new Notification('Coffee Roast Tracker', {
+                        body: 'First crack detected! Your roast is progressing perfectly.',
+                        icon: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTcgMTBWOUMzIDkgNiA2IDkgNlMxNSA5IDE1IDlWMTBIMTdWMTJIMTVWMTRIMTdWMTZIMTVWMTRINVYxNkg3VjE0SDlWMTJIN1YxMEg5WiIgZmlsbD0iIzhCNDUxMyIvPgo8L3N2Zz4K'
+                    });
+                } else if (Notification.permission !== 'denied') {
+                    Notification.requestPermission().then(permission => {
+                        if (permission === 'granted') {
+                            new Notification('Coffee Roast Tracker', {
+                                body: 'Notifications enabled! You\'ll get alerts for roast phases.',
+                                icon: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTcgMTBWOUMzIDkgNiA2IDkgNlMxNSA5IDE1IDlWMTBIMTdWMTJIMTVWMTRIMTdWMTZIMTVWMTRINVYxNkg3VjE0SDlWMTJIN1YxMEg5WiIgZmlsbD0iIzhCNDUxMyIvPgo8L3N2Zz4K'
+                            });
+                        }
+                    });
+                } else {
+                    alert('Notification Demo:\n\n"First crack detected! Your roast is progressing perfectly."\n\nThis is how you\'d get roast updates even when the app is closed!');
+                }
+            } else {
+                alert('Notification Demo:\n\n"First crack detected! Your roast is progressing perfectly."\n\nThis is how you\'d get roast updates even when the app is closed!');
+            }
+        };
+        
+        window.showIOSGuide = function() {
+            window.pwaDemo.showModal('📱 iOS Installation', window.pwaDemo.getIOSGuide());
+        };
+        
+        window.showAndroidGuide = function() {
+            window.pwaDemo.showModal('🤖 Android Installation', window.pwaDemo.getAndroidGuide());
+        };
+        
+        window.showDesktopGuide = function() {
+            window.pwaDemo.showModal('💻 Desktop Installation', window.pwaDemo.getDesktopGuide());
+        };
+        
+        window.showInstallGuide = function() {
+            window.pwaDemo.showInstallGuide();
+        };
+        
+        window.installApp = function() {
+            window.pwaDemo.installApp();
+        };
+        
+        window.dismissBanner = function() {
+            window.pwaDemo.dismissBanner();
+        };
+        
+        window.closeModal = function() {
+            window.pwaDemo.closeModal();
+        };
+        
+        window.simulateOfflineAction = function(action) {
+            window.pwaDemo.simulateOfflineAction(action);
+        };
+        
+        // Initialize PWA Demo
+        document.addEventListener('DOMContentLoaded', () => {
+            window.pwaDemo = new PWADemo();
+        });
+        
+        // Service Worker registration (for demo)
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js').catch(() => {
+                console.log('Service worker demo - no actual SW file needed for prototype');
+            });
+        }
+    </script>
+</body>
+</html>

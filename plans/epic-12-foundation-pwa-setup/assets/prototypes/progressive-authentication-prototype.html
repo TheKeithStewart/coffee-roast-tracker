@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Progressive Authentication - Coffee Roast Tracker</title>
+    <style>
+        /* Import design system styles */
+        :root {
+            --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            --font-size-base: 1rem;
+            --font-size-lg: 1.125rem;
+            --font-size-xl: 1.25rem;
+            --font-size-2xl: 1.5rem;
+            --font-weight-medium: 500;
+            --font-weight-semibold: 600;
+            --font-weight-bold: 700;
+            --line-height-normal: 1.5;
+            
+            --space-2: 0.5rem;
+            --space-3: 0.75rem;
+            --space-4: 1rem;
+            --space-6: 1.5rem;
+            --space-8: 2rem;
+            
+            --radius-lg: 1rem;
+            --radius-xl: 1.5rem;
+            
+            --color-primary-500: #c8794a;
+            --color-primary-600: #b86c3e;
+            --color-primary-700: #995536;
+            --color-primary-100: #f9ede0;
+            --color-primary-50: #fdf7f0;
+            
+            --color-success-500: #10b981;
+            --color-success-100: #d1fae5;
+            --color-error-500: #ef4444;
+            --color-error-100: #fee2e2;
+            
+            --color-text-primary: #1c1917;
+            --color-text-secondary: #57534e;
+            --color-text-tertiary: #78716c;
+            --color-text-on-primary: #fafaf9;
+            
+            --color-surface: #ffffff;
+            --color-surface-secondary: #f5f5f4;
+            --color-background: #fafaf9;
+            
+            --color-border: #e7e5e4;
+            --color-border-secondary: #d6d3d1;
+            
+            --color-focus: #c8794a;
+            --color-focus-ring: rgba(200, 121, 74, 0.5);
+            
+            --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            
+            --duration-200: 200ms;
+            --duration-300: 300ms;
+            --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: var(--font-primary);
+            font-size: var(--font-size-base);
+            line-height: var(--line-height-normal);
+            color: var(--color-text-primary);
+            background-color: var(--color-background);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .auth-container {
+            width: 100%;
+            max-width: 480px;
+            margin: var(--space-4);
+            background-color: var(--color-surface);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+        }
+        
+        .step-indicator {
+            padding: var(--space-6);
+            background-color: var(--color-surface-secondary);
+            text-align: center;
+            border-bottom: 2px solid var(--color-border);
+        }
+        
+        .step-progress {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-4);
+            margin-bottom: var(--space-4);
+        }
+        
+        .step-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: var(--color-border-secondary);
+            transition: all var(--duration-200) var(--ease-in-out);
+        }
+        
+        .step-dot.active {
+            background-color: var(--color-primary-500);
+            transform: scale(1.2);
+        }
+        
+        .step-dot.completed {
+            background-color: var(--color-success-500);
+        }
+        
+        .step-line {
+            width: 40px;
+            height: 2px;
+            background-color: var(--color-border-secondary);
+            transition: background-color var(--duration-200) var(--ease-in-out);
+        }
+        
+        .step-line.completed {
+            background-color: var(--color-success-500);
+        }
+        
+        .step-title {
+            font-size: var(--font-size-lg);
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-text-primary);
+            margin: 0;
+        }
+        
+        .step-content {
+            padding: var(--space-8);
+        }
+        
+        .brand-header {
+            text-align: center;
+            margin-bottom: var(--space-8);
+        }
+        
+        .brand-title {
+            font-size: var(--font-size-2xl);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-primary-600);
+            margin: 0 0 var(--space-2) 0;
+        }
+        
+        .brand-subtitle {
+            font-size: var(--font-size-base);
+            color: var(--color-text-secondary);
+            margin: 0;
+        }
+        
+        .form-group {
+            margin-bottom: var(--space-6);
+        }
+        
+        .form-label {
+            display: block;
+            font-size: var(--font-size-base);
+            font-weight: var(--font-weight-medium);
+            color: var(--color-text-primary);
+            margin-bottom: var(--space-2);
+        }
+        
+        .form-label--required::after {
+            content: ' *';
+            color: var(--color-error-500);
+        }
+        
+        .form-input {
+            width: 100%;
+            min-height: 60px;
+            padding: var(--space-4);
+            font-family: var(--font-primary);
+            font-size: var(--font-size-lg);
+            color: var(--color-text-primary);
+            background-color: var(--color-surface);
+            border: 2px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            transition: all var(--duration-200) var(--ease-in-out);
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: var(--color-focus);
+            box-shadow: 0 0 0 3px var(--color-focus-ring);
+        }
+        
+        .form-input--error {
+            border-color: var(--color-error-500);
+        }
+        
+        .form-input--error:focus {
+            border-color: var(--color-error-500);
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2);
+        }
+        
+        .form-input--success {
+            border-color: var(--color-success-500);
+        }
+        
+        .form-error {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+            margin-top: var(--space-2);
+            font-size: var(--font-size-base);
+            color: var(--color-error-500);
+        }
+        
+        .form-hint {
+            margin-top: var(--space-2);
+            font-size: var(--font-size-base);
+            color: var(--color-text-tertiary);
+        }
+        
+        .password-requirements {
+            margin-top: var(--space-4);
+            padding: var(--space-4);
+            background-color: var(--color-surface-secondary);
+            border-radius: var(--radius-lg);
+        }
+        
+        .requirement {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+            margin-bottom: var(--space-2);
+            font-size: var(--font-size-base);
+            transition: color var(--duration-200) var(--ease-in-out);
+        }
+        
+        .requirement:last-child {
+            margin-bottom: 0;
+        }
+        
+        .requirement.met {
+            color: var(--color-success-500);
+        }
+        
+        .requirement.unmet {
+            color: var(--color-text-tertiary);
+        }
+        
+        .requirement-icon {
+            width: 16px;
+            height: 16px;
+            display: inline-block;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            min-height: 60px;
+            padding: var(--space-4) var(--space-6);
+            font-family: var(--font-primary);
+            font-size: var(--font-size-lg);
+            font-weight: var(--font-weight-semibold);
+            text-align: center;
+            text-decoration: none;
+            border: 2px solid transparent;
+            border-radius: var(--radius-lg);
+            cursor: pointer;
+            transition: all var(--duration-200) var(--ease-in-out);
+            user-select: none;
+        }
+        
+        .btn:focus {
+            outline: none;
+            box-shadow: 0 0 0 4px var(--color-focus-ring);
+        }
+        
+        .btn--primary {
+            background-color: var(--color-primary-500);
+            color: var(--color-text-on-primary);
+            border-color: var(--color-primary-600);
+        }
+        
+        .btn--primary:hover:not(:disabled) {
+            background-color: var(--color-primary-600);
+            border-color: var(--color-primary-700);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .btn--primary:disabled {
+            background-color: var(--color-border-secondary);
+            color: var(--color-text-tertiary);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .btn--secondary {
+            background-color: var(--color-surface);
+            color: var(--color-text-primary);
+            border-color: var(--color-border-secondary);
+        }
+        
+        .btn--secondary:hover:not(:disabled) {
+            background-color: var(--color-surface-secondary);
+            border-color: var(--color-primary-500);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: var(--space-4);
+            margin-top: var(--space-8);
+        }
+        
+        .form-actions .btn {
+            flex: 1;
+        }
+        
+        .secondary-action {
+            text-align: center;
+            margin-top: var(--space-6);
+        }
+        
+        .secondary-action a {
+            color: var(--color-primary-600);
+            text-decoration: none;
+            font-weight: var(--font-weight-medium);
+        }
+        
+        .secondary-action a:hover {
+            text-decoration: underline;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--space-3);
+            margin-bottom: var(--space-4);
+        }
+        
+        .checkbox {
+            width: 20px;
+            height: 20px;
+            margin-top: 2px;
+            accent-color: var(--color-primary-500);
+        }
+        
+        .checkbox-label {
+            font-size: var(--font-size-base);
+            color: var(--color-text-primary);
+            line-height: var(--line-height-normal);
+        }
+        
+        .success-message {
+            padding: var(--space-6);
+            background-color: var(--color-success-100);
+            color: var(--color-success-500);
+            border-radius: var(--radius-lg);
+            text-align: center;
+            margin-bottom: var(--space-6);
+        }
+        
+        .success-icon {
+            font-size: var(--font-size-2xl);
+            margin-bottom: var(--space-2);
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+        
+        .shake {
+            animation: shake 0.3s ease-in-out;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+        
+        /* Loading state */
+        .btn--loading {
+            position: relative;
+            color: transparent;
+            pointer-events: none;
+        }
+        
+        .btn--loading::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            margin: -10px 0 0 -10px;
+            border: 2px solid currentColor;
+            border-right-color: transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            color: var(--color-text-on-primary);
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Mobile responsive */
+        @media (max-width: 768px) {
+            .auth-container {
+                margin: var(--space-2);
+                border-radius: var(--radius-lg);
+            }
+            
+            .step-content {
+                padding: var(--space-6);
+            }
+            
+            .form-input {
+                font-size: var(--font-size-base);
+            }
+            
+            .btn {
+                font-size: var(--font-size-base);
+            }
+        }
+        
+        /* High contrast mode */
+        @media (prefers-contrast: high) {
+            .auth-container {
+                border: 3px solid var(--color-text-primary);
+            }
+            
+            .form-input,
+            .btn {
+                border-width: 3px;
+            }
+        }
+        
+        /* Reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <!-- Step Indicator -->
+        <div class="step-indicator">
+            <div class="step-progress">
+                <div class="step-dot active" id="step-dot-1"></div>
+                <div class="step-line" id="step-line-1"></div>
+                <div class="step-dot" id="step-dot-2"></div>
+                <div class="step-line" id="step-line-2"></div>
+                <div class="step-dot" id="step-dot-3"></div>
+            </div>
+            <h2 class="step-title" id="step-title">Step 1 of 3</h2>
+        </div>
+        
+        <!-- Step 1: Email -->
+        <div class="step-content" id="step-1">
+            <div class="brand-header">
+                <h1 class="brand-title">Coffee Roast Tracker</h1>
+                <p class="brand-subtitle">Let's create your account</p>
+            </div>
+            
+            <form id="email-form">
+                <div class="form-group">
+                    <label for="email" class="form-label form-label--required">Email Address</label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email" 
+                        class="form-input" 
+                        placeholder="your@email.com"
+                        aria-describedby="email-hint"
+                        required
+                    >
+                    <div class="form-hint" id="email-hint">We'll never share your email address</div>
+                    <div class="form-error hidden" id="email-error">
+                        <span class="requirement-icon">⚠️</span>
+                        <span>Please enter a valid email address</span>
+                    </div>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="submit" class="btn btn--primary" id="continue-email">
+                        Continue →
+                    </button>
+                </div>
+            </form>
+            
+            <div class="secondary-action">
+                Already have an account? <a href="#" id="switch-to-login">Sign In</a>
+            </div>
+        </div>
+        
+        <!-- Step 2: Password -->
+        <div class="step-content hidden" id="step-2">
+            <div class="brand-header">
+                <button type="button" class="btn btn--secondary" id="back-to-step-1" style="width: auto; min-height: auto; padding: var(--space-2) var(--space-4); margin-bottom: var(--space-4);">
+                    ← Back
+                </button>
+                <h1 class="brand-title">Choose a Strong Password</h1>
+                <p class="brand-subtitle">Keep your roasting data secure</p>
+            </div>
+            
+            <form id="password-form">
+                <div class="form-group">
+                    <label for="password" class="form-label form-label--required">Password</label>
+                    <input 
+                        type="password" 
+                        id="password" 
+                        name="password" 
+                        class="form-input" 
+                        placeholder="Choose a strong password"
+                        aria-describedby="password-requirements"
+                        required
+                    >
+                    
+                    <div class="password-requirements" id="password-requirements">
+                        <div class="requirement unmet" id="req-length">
+                            <span class="requirement-icon">○</span>
+                            <span>At least 8 characters</span>
+                        </div>
+                        <div class="requirement unmet" id="req-uppercase">
+                            <span class="requirement-icon">○</span>
+                            <span>One uppercase letter</span>
+                        </div>
+                        <div class="requirement unmet" id="req-number">
+                            <span class="requirement-icon">○</span>
+                            <span>One number</span>
+                        </div>
+                        <div class="requirement unmet" id="req-special">
+                            <span class="requirement-icon">○</span>
+                            <span>One special character</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="submit" class="btn btn--primary" id="continue-password" disabled>
+                        Continue →
+                    </button>
+                </div>
+            </form>
+        </div>
+        
+        <!-- Step 3: Final Details -->
+        <div class="step-content hidden" id="step-3">
+            <div class="brand-header">
+                <button type="button" class="btn btn--secondary" id="back-to-step-2" style="width: auto; min-height: auto; padding: var(--space-2) var(--space-4); margin-bottom: var(--space-4);">
+                    ← Back
+                </button>
+                <h1 class="brand-title">Almost Ready</h1>
+                <p class="brand-subtitle">Just a few more details</p>
+            </div>
+            
+            <form id="details-form">
+                <div class="form-group">
+                    <label for="first-name" class="form-label">First Name (Optional)</label>
+                    <input 
+                        type="text" 
+                        id="first-name" 
+                        name="firstName" 
+                        class="form-input" 
+                        placeholder="What should we call you?"
+                    >
+                </div>
+                
+                <div class="form-group">
+                    <label for="last-name" class="form-label">Last Name (Optional)</label>
+                    <input 
+                        type="text" 
+                        id="last-name" 
+                        name="lastName" 
+                        class="form-input" 
+                        placeholder="Your last name"
+                    >
+                </div>
+                
+                <div class="checkbox-group">
+                    <input type="checkbox" id="terms" name="terms" class="checkbox" required>
+                    <label for="terms" class="checkbox-label">
+                        I agree to the <a href="#" style="color: var(--color-primary-600);">Terms of Service</a> and <a href="#" style="color: var(--color-primary-600);">Privacy Policy</a>
+                    </label>
+                </div>
+                
+                <div class="checkbox-group">
+                    <input type="checkbox" id="newsletter" name="newsletter" class="checkbox">
+                    <label for="newsletter" class="checkbox-label">
+                        Send me helpful roasting tips and product updates
+                    </label>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="submit" class="btn btn--primary" id="create-account">
+                        Create My Account
+                    </button>
+                </div>
+            </form>
+        </div>
+        
+        <!-- Success State -->
+        <div class="step-content hidden" id="success">
+            <div class="success-message">
+                <div class="success-icon">✅</div>
+                <h2 style="margin: 0 0 var(--space-2) 0;">Welcome to Coffee Roast Tracker!</h2>
+                <p style="margin: 0;">Your account has been created successfully. Let's start tracking your perfect roasts!</p>
+            </div>
+            
+            <div class="form-actions">
+                <button type="button" class="btn btn--primary" id="get-started">
+                    Get Started
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Progressive Authentication Prototype JavaScript
+        class ProgressiveAuth {
+            constructor() {
+                this.currentStep = 1;
+                this.userData = {};
+                this.init();
+            }
+            
+            init() {
+                this.bindEvents();
+                this.updateStepIndicator();
+            }
+            
+            bindEvents() {
+                // Email form
+                document.getElementById('email-form').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.handleEmailSubmit();
+                });
+                
+                // Password form
+                document.getElementById('password-form').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.handlePasswordSubmit();
+                });
+                
+                // Details form
+                document.getElementById('details-form').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.handleDetailsSubmit();
+                });
+                
+                // Back buttons
+                document.getElementById('back-to-step-1').addEventListener('click', () => {
+                    this.goToStep(1);
+                });
+                
+                document.getElementById('back-to-step-2').addEventListener('click', () => {
+                    this.goToStep(2);
+                });
+                
+                // Email validation
+                document.getElementById('email').addEventListener('input', () => {
+                    this.validateEmail();
+                });
+                
+                // Password validation
+                document.getElementById('password').addEventListener('input', () => {
+                    this.validatePassword();
+                });
+                
+                // Switch to login
+                document.getElementById('switch-to-login').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    alert('This would switch to login form');
+                });
+                
+                // Get started
+                document.getElementById('get-started').addEventListener('click', () => {
+                    alert('This would redirect to the dashboard');
+                });
+            }
+            
+            validateEmail() {
+                const email = document.getElementById('email').value;
+                const emailInput = document.getElementById('email');
+                const emailError = document.getElementById('email-error');
+                const continueBtn = document.getElementById('continue-email');
+                
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                const isValid = emailRegex.test(email);
+                
+                if (email && !isValid) {
+                    emailInput.classList.add('form-input--error');
+                    emailError.classList.remove('hidden');
+                    continueBtn.disabled = true;
+                } else if (isValid) {
+                    emailInput.classList.remove('form-input--error');
+                    emailInput.classList.add('form-input--success');
+                    emailError.classList.add('hidden');
+                    continueBtn.disabled = false;
+                } else {
+                    emailInput.classList.remove('form-input--error', 'form-input--success');
+                    emailError.classList.add('hidden');
+                    continueBtn.disabled = true;
+                }
+            }
+            
+            validatePassword() {
+                const password = document.getElementById('password').value;
+                const continueBtn = document.getElementById('continue-password');
+                
+                const requirements = {
+                    length: password.length >= 8,
+                    uppercase: /[A-Z]/.test(password),
+                    number: /[0-9]/.test(password),
+                    special: /[^A-Za-z0-9]/.test(password)
+                };
+                
+                // Update requirement indicators
+                Object.keys(requirements).forEach(req => {
+                    const element = document.getElementById(`req-${req}`);
+                    if (requirements[req]) {
+                        element.classList.remove('unmet');
+                        element.classList.add('met');
+                        element.querySelector('.requirement-icon').textContent = '✓';
+                    } else {
+                        element.classList.remove('met');
+                        element.classList.add('unmet');
+                        element.querySelector('.requirement-icon').textContent = '○';
+                    }
+                });
+                
+                // Enable/disable continue button
+                const allMet = Object.values(requirements).every(Boolean);
+                continueBtn.disabled = !allMet;
+                
+                if (allMet) {
+                    document.getElementById('password').classList.add('form-input--success');
+                } else {
+                    document.getElementById('password').classList.remove('form-input--success');
+                }
+            }
+            
+            handleEmailSubmit() {
+                const email = document.getElementById('email').value;
+                
+                if (!this.isValidEmail(email)) {
+                    this.showError('email', 'Please enter a valid email address');
+                    return;
+                }
+                
+                this.userData.email = email;
+                this.goToStep(2);
+            }
+            
+            handlePasswordSubmit() {
+                const password = document.getElementById('password').value;
+                
+                if (!this.isValidPassword(password)) {
+                    this.showError('password', 'Password does not meet requirements');
+                    return;
+                }
+                
+                this.userData.password = password;
+                this.goToStep(3);
+            }
+            
+            async handleDetailsSubmit() {
+                const form = document.getElementById('details-form');
+                const formData = new FormData(form);
+                
+                if (!formData.get('terms')) {
+                    alert('Please accept the Terms of Service to continue');
+                    return;
+                }
+                
+                const btn = document.getElementById('create-account');
+                btn.classList.add('btn--loading');
+                btn.textContent = 'Creating Account...';
+                
+                // Simulate API call
+                await this.delay(2000);
+                
+                this.userData.firstName = formData.get('firstName');
+                this.userData.lastName = formData.get('lastName');
+                this.userData.newsletter = formData.get('newsletter') === 'on';
+                
+                this.showSuccess();
+            }
+            
+            goToStep(step) {
+                // Hide all steps
+                for (let i = 1; i <= 3; i++) {
+                    document.getElementById(`step-${i}`).classList.add('hidden');
+                }
+                
+                // Show target step
+                document.getElementById(`step-${step}`).classList.remove('hidden');
+                
+                this.currentStep = step;
+                this.updateStepIndicator();
+                
+                // Focus on first input
+                setTimeout(() => {
+                    const firstInput = document.querySelector(`#step-${step} input`);
+                    if (firstInput) {
+                        firstInput.focus();
+                    }
+                }, 100);
+            }
+            
+            updateStepIndicator() {
+                const stepTitle = document.getElementById('step-title');
+                
+                // Update step dots
+                for (let i = 1; i <= 3; i++) {
+                    const dot = document.getElementById(`step-dot-${i}`);
+                    const line = document.getElementById(`step-line-${i}`);
+                    
+                    dot.classList.remove('active', 'completed');
+                    if (line) line.classList.remove('completed');
+                    
+                    if (i < this.currentStep) {
+                        dot.classList.add('completed');
+                        if (line) line.classList.add('completed');
+                    } else if (i === this.currentStep) {
+                        dot.classList.add('active');
+                    }
+                }
+                
+                // Update title
+                const titles = {
+                    1: 'Step 1 of 3 - Get Started',
+                    2: 'Step 2 of 3 - Secure Password', 
+                    3: 'Step 3 of 3 - Almost Ready'
+                };
+                stepTitle.textContent = titles[this.currentStep];
+            }
+            
+            showSuccess() {
+                // Hide all steps and step indicator
+                for (let i = 1; i <= 3; i++) {
+                    document.getElementById(`step-${i}`).classList.add('hidden');
+                }
+                document.querySelector('.step-indicator').classList.add('hidden');
+                
+                // Show success
+                document.getElementById('success').classList.remove('hidden');
+                
+                // Reset button
+                const btn = document.getElementById('create-account');
+                btn.classList.remove('btn--loading');
+                btn.textContent = 'Create My Account';
+            }
+            
+            showError(field, message) {
+                const input = document.getElementById(field);
+                const container = input.closest('.auth-container');
+                
+                input.classList.add('form-input--error');
+                container.classList.add('shake');
+                
+                setTimeout(() => {
+                    container.classList.remove('shake');
+                }, 300);
+            }
+            
+            isValidEmail(email) {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return emailRegex.test(email);
+            }
+            
+            isValidPassword(password) {
+                return password.length >= 8 && 
+                       /[A-Z]/.test(password) && 
+                       /[0-9]/.test(password) && 
+                       /[^A-Za-z0-9]/.test(password);
+            }
+            
+            delay(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            }
+        }
+        
+        // Initialize the progressive authentication
+        document.addEventListener('DOMContentLoaded', () => {
+            new ProgressiveAuth();
+        });
+        
+        // Accessibility improvements
+        document.addEventListener('keydown', (e) => {
+            // Allow Escape to go back a step
+            if (e.key === 'Escape' && window.progressiveAuth?.currentStep > 1) {
+                window.progressiveAuth.goToStep(window.progressiveAuth.currentStep - 1);
+            }
+        });
+    </script>
+</body>
+</html>

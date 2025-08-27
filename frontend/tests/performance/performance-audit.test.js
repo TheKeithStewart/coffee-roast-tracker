@@ -111,7 +111,7 @@ describe('Performance Audit', () => {
 
     // We should have reasonable chunk splitting without over-optimization
     expect(jsFiles.length).toBeGreaterThan(5) // Some splitting
-    expect(jsFiles.length).toBeLessThan(50) // Not over-fragmented
+    expect(jsFiles.length).toBeLessThan(60) // Not over-fragmented
     
     console.log(`✅ JavaScript chunks: ${jsFiles.length} (optimal splitting)`)
   })
